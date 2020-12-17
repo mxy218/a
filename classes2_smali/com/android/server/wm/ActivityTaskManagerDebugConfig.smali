@@ -106,7 +106,7 @@
 
 .field static final TAG_ATM:Ljava/lang/String; = "ActivityTaskManager"
 
-.field static final TAG_WITH_CLASS_NAME:Z = false
+.field static final TAG_WITH_CLASS_NAME:Z
 
 
 # direct methods

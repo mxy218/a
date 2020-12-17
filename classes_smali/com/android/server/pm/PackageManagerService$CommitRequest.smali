@@ -43,17 +43,17 @@
         }
     .end annotation
 
-    .line 17036
+    .line 17033
     .local p1, "reconciledPackages":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Lcom/android/server/pm/PackageManagerService$ReconciledPackage;>;"
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 17037
+    .line 17034
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$CommitRequest;->reconciledPackages:Ljava/util/Map;
 
-    .line 17038
+    .line 17035
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$CommitRequest;->mAllUsers:[I
 
-    .line 17039
+    .line 17036
     return-void
 .end method
 
@@ -63,7 +63,7 @@
     .param p2, "x1"  # [I
     .param p3, "x2"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 17032
+    .line 17029
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageManagerService$CommitRequest;-><init>(Ljava/util/Map;[I)V
 
     return-void

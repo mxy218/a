@@ -15,19 +15,19 @@
 .method private constructor <init>()V
     .registers 1
 
-    .line 42
+    .line 41
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 .method public static checkAccessLevel(Landroid/content/Context;ILjava/lang/String;)I
-    .registers 12
+    .registers 11
     .param p0, "context"  # Landroid/content/Context;
     .param p1, "callingUid"  # I
     .param p2, "callingPackage"  # Ljava/lang/String;
 
-    .line 108
+    .line 107
     const-class v0, Landroid/app/admin/DevicePolicyManagerInternal;
 
     invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
@@ -36,11 +36,11 @@
 
     check-cast v0, Landroid/app/admin/DevicePolicyManagerInternal;
 
-    .line 110
+    .line 109
     .local v0, "dpmi":Landroid/app/admin/DevicePolicyManagerInternal;
     nop
 
-    .line 111
+    .line 110
     const-string/jumbo v1, "phone"
 
     invoke-virtual {p0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
@@ -49,7 +49,7 @@
 
     check-cast v1, Landroid/telephony/TelephonyManager;
 
-    .line 112
+    .line 111
     .local v1, "tm":Landroid/telephony/TelephonyManager;
     const/4 v2, 0x0
 
@@ -57,7 +57,7 @@
 
     if-eqz v1, :cond_1e
 
-    .line 113
+    .line 112
     invoke-virtual {v1, p2}, Landroid/telephony/TelephonyManager;->checkCarrierPrivilegesForPackageAnyPhone(Ljava/lang/String;)I
 
     move-result v4
@@ -71,7 +71,7 @@
     :cond_1e
     move v4, v2
 
-    .line 115
+    .line 114
     .local v4, "hasCarrierPrivileges":Z
     :goto_1f
     if-eqz v0, :cond_2a
@@ -91,92 +91,87 @@
     :cond_2a
     move v5, v2
 
-    .line 117
+    .line 116
     .local v5, "isDeviceOwner":Z
     :goto_2b
+    if-nez v4, :cond_59
+
+    if-nez v5, :cond_59
+
+    .line 117
     invoke-static {p1}, Landroid/os/UserHandle;->getAppId(I)I
 
     move-result v6
 
-    .line 118
-    .local v6, "appId":I
-    if-nez v4, :cond_5d
-
-    if-nez v5, :cond_5d
-
     const/16 v7, 0x3e8
 
-    if-eq v6, v7, :cond_5d
+    if-ne v6, v7, :cond_38
 
-    const/16 v7, 0x431
+    goto :goto_59
 
-    if-ne v6, v7, :cond_3c
-
-    goto :goto_5d
-
-    .line 125
-    :cond_3c
+    .line 123
+    :cond_38
     invoke-static {p0, p1, p2}, Lcom/android/server/net/NetworkStatsAccess;->hasAppOpsPermission(Landroid/content/Context;ILjava/lang/String;)Z
+
+    move-result v6
+
+    .line 124
+    .local v6, "hasAppOpsPermission":Z
+    if-nez v6, :cond_57
+
+    const-string v7, "android.permission.READ_NETWORK_USAGE_HISTORY"
+
+    invoke-virtual {p0, v7}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
 
     move-result v7
 
-    .line 126
-    .local v7, "hasAppOpsPermission":Z
-    if-nez v7, :cond_5b
-
-    const-string v8, "android.permission.READ_NETWORK_USAGE_HISTORY"
-
-    invoke-virtual {p0, v8}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
-
-    move-result v8
-
-    if-nez v8, :cond_4b
-
-    goto :goto_5b
-
-    .line 131
-    :cond_4b
-    if-eqz v0, :cond_56
-
-    const/4 v8, -0x1
-
-    invoke-virtual {v0, p1, v8}, Landroid/app/admin/DevicePolicyManagerInternal;->isActiveAdminWithPolicy(II)Z
-
-    move-result v8
-
-    if-eqz v8, :cond_56
-
-    move v8, v3
+    if-nez v7, :cond_47
 
     goto :goto_57
 
-    :cond_56
-    move v8, v2
+    .line 129
+    :cond_47
+    if-eqz v0, :cond_52
 
-    .line 133
-    .local v8, "isProfileOwner":Z
-    :goto_57
-    if-eqz v8, :cond_5a
+    const/4 v7, -0x1
 
-    .line 136
+    invoke-virtual {v0, p1, v7}, Landroid/app/admin/DevicePolicyManagerInternal;->isActiveAdminWithPolicy(II)Z
+
+    move-result v7
+
+    if-eqz v7, :cond_52
+
+    move v7, v3
+
+    goto :goto_53
+
+    :cond_52
+    move v7, v2
+
+    .line 131
+    .local v7, "isProfileOwner":Z
+    :goto_53
+    if-eqz v7, :cond_56
+
+    .line 134
     return v3
 
-    .line 140
-    :cond_5a
+    .line 138
+    :cond_56
     return v2
 
-    .line 128
-    .end local v8  # "isProfileOwner":Z
-    :cond_5b
-    :goto_5b
+    .line 126
+    .end local v7  # "isProfileOwner":Z
+    :cond_57
+    :goto_57
     const/4 v2, 0x2
 
     return v2
 
-    .line 122
-    .end local v7  # "hasAppOpsPermission":Z
-    :cond_5d
-    :goto_5d
+    .line 120
+    .end local v6  # "hasAppOpsPermission":Z
+    :cond_59
+    :goto_59
     const/4 v2, 0x3
 
     return v2
@@ -188,12 +183,12 @@
     .param p1, "callingUid"  # I
     .param p2, "callingPackage"  # Ljava/lang/String;
 
-    .line 175
+    .line 173
     const/4 v0, 0x0
 
     if-eqz p2, :cond_23
 
-    .line 176
+    .line 174
     const-string v1, "appops"
 
     invoke-virtual {p0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
@@ -202,7 +197,7 @@
 
     check-cast v1, Landroid/app/AppOpsManager;
 
-    .line 179
+    .line 177
     .local v1, "appOps":Landroid/app/AppOpsManager;
     const/16 v2, 0x2b
 
@@ -210,7 +205,7 @@
 
     move-result v2
 
-    .line 181
+    .line 179
     .local v2, "mode":I
     const/4 v3, 0x3
 
@@ -218,14 +213,14 @@
 
     if-ne v2, v3, :cond_1f
 
-    .line 184
+    .line 182
     const-string v3, "android.permission.PACKAGE_USAGE_STATS"
 
     invoke-virtual {p0, v3}, Landroid/content/Context;->checkCallingPermission(Ljava/lang/String;)I
 
     move-result v3
 
-    .line 186
+    .line 184
     .local v3, "permissionCheck":I
     if-nez v3, :cond_1e
 
@@ -234,7 +229,7 @@
     :cond_1e
     return v0
 
-    .line 188
+    .line 186
     .end local v3  # "permissionCheck":I
     :cond_1f
     if-nez v2, :cond_22
@@ -244,7 +239,7 @@
     :cond_22
     return v0
 
-    .line 190
+    .line 188
     .end local v1  # "appOps":Landroid/app/AppOpsManager;
     .end local v2  # "mode":I
     :cond_23
@@ -257,7 +252,7 @@
     .param p1, "callerUid"  # I
     .param p2, "accessLevel"  # I
 
-    .line 149
+    .line 147
     const/4 v0, -0x5
 
     const/4 v1, -0x4
@@ -278,7 +273,7 @@
 
     if-eq p2, v0, :cond_12
 
-    .line 169
+    .line 167
     if-ne p0, p1, :cond_11
 
     move v3, v4
@@ -286,11 +281,11 @@
     :cond_11
     return v3
 
-    .line 152
+    .line 150
     :cond_12
     return v4
 
-    .line 157
+    .line 155
     :cond_13
     if-eq p0, v2, :cond_26
 
@@ -302,7 +297,7 @@
 
     if-eq p0, v0, :cond_26
 
-    .line 159
+    .line 157
     invoke-static {p0}, Landroid/os/UserHandle;->getUserId(I)I
 
     move-result v0
@@ -316,11 +311,11 @@
     :cond_26
     move v3, v4
 
-    .line 157
+    .line 155
     :cond_27
     return v3
 
-    .line 163
+    .line 161
     :cond_28
     if-eq p0, v2, :cond_38
 
@@ -328,7 +323,7 @@
 
     if-eq p0, v0, :cond_38
 
-    .line 165
+    .line 163
     invoke-static {p0}, Landroid/os/UserHandle;->getUserId(I)I
 
     move-result v0
@@ -342,7 +337,7 @@
     :cond_38
     move v3, v4
 
-    .line 163
+    .line 161
     :cond_39
     return v3
 .end method

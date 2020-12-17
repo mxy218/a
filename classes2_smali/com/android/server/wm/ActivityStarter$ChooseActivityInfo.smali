@@ -34,52 +34,52 @@
     .param p3, "_aInfo"  # Landroid/content/pm/ActivityInfo;
     .param p4, "_rType"  # Ljava/lang/String;
 
-    .line 3409
+    .line 3407
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 3403
+    .line 3401
     const/4 v0, 0x0
 
     iput-boolean v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->isOk:Z
 
-    .line 3404
+    .line 3402
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->intent:Landroid/content/Intent;
 
-    .line 3405
+    .line 3403
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->rInfo:Landroid/content/pm/ResolveInfo;
 
-    .line 3406
+    .line 3404
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->aInfo:Landroid/content/pm/ActivityInfo;
 
-    .line 3407
+    .line 3405
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->resolvedType:Ljava/lang/String;
 
-    .line 3410
+    .line 3408
     new-instance v0, Landroid/content/Intent;
 
     invoke-direct {v0, p1}, Landroid/content/Intent;-><init>(Landroid/content/Intent;)V
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->intent:Landroid/content/Intent;
 
-    .line 3411
+    .line 3409
     new-instance v0, Landroid/content/pm/ResolveInfo;
 
     invoke-direct {v0, p2}, Landroid/content/pm/ResolveInfo;-><init>(Landroid/content/pm/ResolveInfo;)V
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->rInfo:Landroid/content/pm/ResolveInfo;
 
-    .line 3412
+    .line 3410
     new-instance v0, Landroid/content/pm/ActivityInfo;
 
     invoke-direct {v0, p3}, Landroid/content/pm/ActivityInfo;-><init>(Landroid/content/pm/ActivityInfo;)V
 
     iput-object v0, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->aInfo:Landroid/content/pm/ActivityInfo;
 
-    .line 3413
+    .line 3411
     iput-object p4, p0, Lcom/android/server/wm/ActivityStarter$ChooseActivityInfo;->resolvedType:Ljava/lang/String;
 
-    .line 3414
+    .line 3412
     return-void
 .end method

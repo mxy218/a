@@ -1102,11 +1102,11 @@
 
     move-result v1
 
-    if-nez v1, :cond_36
+    if-nez v1, :cond_35
 
     new-instance v1, Ljava/io/File;
 
-    const-string/jumbo v2, "icon.png"
+    const-string v2, "icon.png"
 
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -1115,7 +1115,7 @@
 
     move-result v1
 
-    if-nez v1, :cond_36
+    if-nez v1, :cond_35
 
     new-instance v1, Ljava/io/File;
 
@@ -1128,28 +1128,28 @@
 
     move-result v1
 
-    if-nez v1, :cond_36
+    if-nez v1, :cond_35
 
     .line 621
     invoke-static {p1, p2}, Lcom/android/server/pm/InstantAppRegistry;->peekInstantCookieFile(Ljava/lang/String;I)Ljava/io/File;
 
     move-result-object v1
 
-    if-eqz v1, :cond_34
+    if-eqz v1, :cond_33
+
+    goto :goto_35
+
+    :cond_33
+    const/4 v1, 0x0
 
     goto :goto_36
 
-    :cond_34
-    const/4 v1, 0x0
-
-    goto :goto_37
-
-    :cond_36
-    :goto_36
+    :cond_35
+    :goto_35
     const/4 v1, 0x1
 
     .line 618
-    :goto_37
+    :goto_36
     return v1
 .end method
 
@@ -3324,45 +3324,45 @@
 
     move-result-object v4
 
-    const-string/jumbo v5, "icon.png"
+    const-string v5, "icon.png"
 
     invoke-direct {v3, v4, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
     .line 538
     .local v3, "iconFile":Ljava/io/File;
-    :try_start_57
+    :try_start_56
     new-instance v4, Ljava/io/FileOutputStream;
 
     invoke-direct {v4, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
-    :try_end_5c
-    .catch Ljava/lang/Exception; {:try_start_57 .. :try_end_5c} :catch_6f
+    :try_end_5b
+    .catch Ljava/lang/Exception; {:try_start_56 .. :try_end_5b} :catch_6e
 
     .local v4, "out":Ljava/io/FileOutputStream;
     const/4 v5, 0x0
 
     .line 539
-    :try_start_5d
+    :try_start_5c
     sget-object v6, Landroid/graphics/Bitmap$CompressFormat;->PNG:Landroid/graphics/Bitmap$CompressFormat;
 
     const/16 v7, 0x64
 
     invoke-virtual {v2, v6, v7, v4}, Landroid/graphics/Bitmap;->compress(Landroid/graphics/Bitmap$CompressFormat;ILjava/io/OutputStream;)Z
-    :try_end_64
-    .catchall {:try_start_5d .. :try_end_64} :catchall_68
+    :try_end_63
+    .catchall {:try_start_5c .. :try_end_63} :catchall_67
 
     .line 540
-    :try_start_64
+    :try_start_63
     invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
-    :try_end_67
-    .catch Ljava/lang/Exception; {:try_start_64 .. :try_end_67} :catch_6f
+    :try_end_66
+    .catch Ljava/lang/Exception; {:try_start_63 .. :try_end_66} :catch_6e
 
     .line 542
     .end local v4  # "out":Ljava/io/FileOutputStream;
-    goto :goto_77
+    goto :goto_76
 
     .line 538
     .restart local v4  # "out":Ljava/io/FileOutputStream;
-    :catchall_68
+    :catchall_67
     move-exception v5
 
     .end local v0  # "appDir":Ljava/io/File;
@@ -3373,10 +3373,10 @@
     .end local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
     .end local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
     .end local p2  # "userId":I
-    :try_start_69
+    :try_start_68
     throw v5
-    :try_end_6a
-    .catchall {:try_start_69 .. :try_end_6a} :catchall_6a
+    :try_end_69
+    .catchall {:try_start_68 .. :try_end_69} :catchall_69
 
     .line 540
     .restart local v0  # "appDir":Ljava/io/File;
@@ -3387,10 +3387,10 @@
     .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
     .restart local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
     .restart local p2  # "userId":I
-    :catchall_6a
+    :catchall_69
     move-exception v6
 
-    :try_start_6b
+    :try_start_6a
     invoke-static {v5, v4}, Lcom/android/server/pm/InstantAppRegistry;->$closeResource(Ljava/lang/Throwable;Ljava/lang/AutoCloseable;)V
 
     .end local v0  # "appDir":Ljava/io/File;
@@ -3401,8 +3401,8 @@
     .end local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
     .end local p2  # "userId":I
     throw v6
-    :try_end_6f
-    .catch Ljava/lang/Exception; {:try_start_6b .. :try_end_6f} :catch_6f
+    :try_end_6e
+    .catch Ljava/lang/Exception; {:try_start_6a .. :try_end_6e} :catch_6e
 
     .end local v4  # "out":Ljava/io/FileOutputStream;
     .restart local v0  # "appDir":Ljava/io/File;
@@ -3412,7 +3412,7 @@
     .restart local p0  # "this":Lcom/android/server/pm/InstantAppRegistry;
     .restart local p1  # "pkg":Landroid/content/pm/PackageParser$Package;
     .restart local p2  # "userId":I
-    :catch_6f
+    :catch_6e
     move-exception v4
 
     .line 541
@@ -3425,7 +3425,7 @@
 
     .line 543
     .end local v4  # "e":Ljava/lang/Exception;
-    :goto_77
+    :goto_76
     return-void
 .end method
 
@@ -3849,7 +3849,7 @@
     .line 560
     new-instance v1, Ljava/io/File;
 
-    const-string/jumbo v2, "icon.png"
+    const-string v2, "icon.png"
 
     invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -3871,13 +3871,13 @@
 
     .line 563
     .local v1, "cookie":Ljava/io/File;
-    if-eqz v1, :cond_35
+    if-eqz v1, :cond_34
 
     .line 564
     invoke-virtual {v1}, Ljava/io/File;->delete()Z
 
     .line 566
-    :cond_35
+    :cond_34
     return-void
 .end method
 
@@ -4070,7 +4070,7 @@
 
     move-result-object v1
 
-    const-string/jumbo v2, "icon.png"
+    const-string v2, "icon.png"
 
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -4080,7 +4080,7 @@
 
     move-result v1
 
-    if-eqz v1, :cond_1b
+    if-eqz v1, :cond_1a
 
     .line 214
     invoke-virtual {v0}, Ljava/io/File;->toString()Ljava/lang/String;
@@ -4094,7 +4094,7 @@
     return-object v1
 
     .line 216
-    :cond_1b
+    :cond_1a
     const/4 v1, 0x0
 
     return-object v1
@@ -4588,7 +4588,7 @@
     move v6, v5
 
     :goto_10
-    if-ge v6, v4, :cond_c8
+    if-ge v6, v4, :cond_c7
 
     aget v7, v2, v6
 
@@ -4604,7 +4604,7 @@
 
     move-result-object v8
 
-    if-eqz v8, :cond_c4
+    if-eqz v8, :cond_c3
 
     invoke-virtual {v3, v7}, Lcom/android/server/pm/PackageSetting;->getInstalled(I)Z
 
@@ -4613,7 +4613,7 @@
     if-nez v8, :cond_28
 
     .line 277
-    goto/16 :goto_c4
+    goto/16 :goto_c3
 
     .line 281
     :cond_28
@@ -4659,7 +4659,7 @@
     .line 296
     new-instance v9, Ljava/io/File;
 
-    const-string/jumbo v10, "icon.png"
+    const-string v10, "icon.png"
 
     invoke-direct {v9, v8, v10}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
@@ -4674,13 +4674,13 @@
 
     .line 300
     .local v9, "currentCookieFile":Ljava/io/File;
-    if-nez v9, :cond_63
+    if-nez v9, :cond_62
 
     .line 301
-    goto :goto_c4
+    goto :goto_c3
 
     .line 304
-    :cond_63
+    :cond_62
     invoke-virtual {v9}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v10
@@ -4724,13 +4724,13 @@
 
     move-result v12
 
-    if-eqz v12, :cond_87
+    if-eqz v12, :cond_86
 
     .line 316
     return-void
 
     .line 321
-    :cond_87
+    :cond_86
     iget-object v12, v1, Landroid/content/pm/PackageParser$Package;->mSigningDetails:Landroid/content/pm/PackageParser$SigningDetails;
 
     iget-object v12, v12, Landroid/content/pm/PackageParser$SigningDetails;->signatures:[Landroid/content/pm/Signature;
@@ -4746,8 +4746,8 @@
 
     move v14, v5
 
-    :goto_91
-    if-ge v14, v13, :cond_9f
+    :goto_90
+    if-ge v14, v13, :cond_9e
 
     aget-object v15, v12, v14
 
@@ -4757,20 +4757,20 @@
 
     move-result v16
 
-    if-eqz v16, :cond_9c
+    if-eqz v16, :cond_9b
 
     .line 325
     return-void
 
     .line 323
     .end local v15  # "s":Ljava/lang/String;
-    :cond_9c
+    :cond_9b
     add-int/lit8 v14, v14, 0x1
 
-    goto :goto_91
+    goto :goto_90
 
     .line 330
-    :cond_9f
+    :cond_9e
     new-instance v13, Ljava/lang/StringBuilder;
 
     invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
@@ -4810,14 +4810,14 @@
     .end local v10  # "cookieName":Ljava/lang/String;
     .end local v11  # "currentCookieSha256":Ljava/lang/String;
     .end local v12  # "signaturesSha256Digests":[Ljava/lang/String;
-    :cond_c4
-    :goto_c4
+    :cond_c3
+    :goto_c3
     add-int/lit8 v6, v6, 0x1
 
     goto/16 :goto_10
 
     .line 336
-    :cond_c8
+    :cond_c7
     return-void
 .end method
 

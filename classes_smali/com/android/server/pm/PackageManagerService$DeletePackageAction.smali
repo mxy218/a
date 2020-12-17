@@ -35,25 +35,25 @@
     .param p4, "flags"  # I
     .param p5, "user"  # Landroid/os/UserHandle;
 
-    .line 20271
+    .line 20268
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 20272
+    .line 20269
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$DeletePackageAction;->deletingPs:Lcom/android/server/pm/PackageSetting;
 
-    .line 20273
+    .line 20270
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$DeletePackageAction;->disabledPs:Lcom/android/server/pm/PackageSetting;
 
-    .line 20274
+    .line 20271
     iput-object p3, p0, Lcom/android/server/pm/PackageManagerService$DeletePackageAction;->outInfo:Lcom/android/server/pm/PackageManagerService$PackageRemovedInfo;
 
-    .line 20275
+    .line 20272
     iput p4, p0, Lcom/android/server/pm/PackageManagerService$DeletePackageAction;->flags:I
 
-    .line 20276
+    .line 20273
     iput-object p5, p0, Lcom/android/server/pm/PackageManagerService$DeletePackageAction;->user:Landroid/os/UserHandle;
 
-    .line 20277
+    .line 20274
     return-void
 .end method
 
@@ -66,7 +66,7 @@
     .param p5, "x4"  # Landroid/os/UserHandle;
     .param p6, "x5"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 20263
+    .line 20260
     invoke-direct/range {p0 .. p5}, Lcom/android/server/pm/PackageManagerService$DeletePackageAction;-><init>(Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageSetting;Lcom/android/server/pm/PackageManagerService$PackageRemovedInfo;ILandroid/os/UserHandle;)V
 
     return-void

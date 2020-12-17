@@ -8,9 +8,9 @@
 
 .field private static final TAG:Ljava/lang/String; = "BootEvent"
 
-.field private static mBootProfDisable:Z = false
+.field private static mBootProfDisable:Z
 
-.field private static final sDebug:Z = false
+.field private static final sDebug:Z
 
 .field private static sEnabled:Z
 

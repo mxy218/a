@@ -20,9 +20,9 @@
 
 .field static final TAG:Ljava/lang/String; = "WindowManager"
 
-.field static final TWO_PHASE_ANIMATION:Z = false
+.field static final TWO_PHASE_ANIMATION:Z
 
-.field static final USE_CUSTOM_BLACK_FRAME:Z = false
+.field static final USE_CUSTOM_BLACK_FRAME:Z
 
 
 # instance fields

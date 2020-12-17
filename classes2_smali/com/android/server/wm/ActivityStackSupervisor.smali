@@ -91,7 +91,7 @@
 
 .field static final TOP_RESUMED_STATE_LOSS_TIMEOUT_MSG:I = 0xd9
 
-.field static final VALIDATE_WAKE_LOCK_CALLER:Z = false
+.field static final VALIDATE_WAKE_LOCK_CALLER:Z
 
 .field public static mIsPerfBoostAcquired:Z
 

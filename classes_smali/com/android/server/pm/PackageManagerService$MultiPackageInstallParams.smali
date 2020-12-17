@@ -62,26 +62,26 @@
         }
     .end annotation
 
-    .line 15588
+    .line 15585
     .local p3, "activeInstallSessions":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;>;"
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    .line 15589
+    .line 15586
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageManagerService$HandlerParams;-><init>(Lcom/android/server/pm/PackageManagerService;Landroid/os/UserHandle;)V
 
-    .line 15579
+    .line 15576
     const/4 v0, 0x1
 
     iput v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mRet:I
 
-    .line 15590
+    .line 15587
     invoke-interface {p3}, Ljava/util/List;->size()I
 
     move-result v0
 
     if-eqz v0, :cond_43
 
-    .line 15593
+    .line 15590
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-interface {p3}, Ljava/util/List;->size()I
@@ -92,7 +92,7 @@
 
     iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mChildParams:Ljava/util/ArrayList;
 
-    .line 15594
+    .line 15591
     const/4 v0, 0x0
 
     .local v0, "i":I
@@ -103,7 +103,7 @@
 
     if-ge v0, v1, :cond_35
 
-    .line 15595
+    .line 15592
     new-instance v1, Lcom/android/server/pm/PackageManagerService$InstallParams;
 
     invoke-interface {p3, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
@@ -114,22 +114,22 @@
 
     invoke-direct {v1, p1, v2}, Lcom/android/server/pm/PackageManagerService$InstallParams;-><init>(Lcom/android/server/pm/PackageManagerService;Lcom/android/server/pm/PackageManagerService$ActiveInstallSession;)V
 
-    .line 15596
+    .line 15593
     .local v1, "childParams":Lcom/android/server/pm/PackageManagerService$InstallParams;
     iput-object p0, v1, Lcom/android/server/pm/PackageManagerService$InstallParams;->mParentInstallParams:Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;
 
-    .line 15597
+    .line 15594
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mChildParams:Ljava/util/ArrayList;
 
     invoke-virtual {v2, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 15594
+    .line 15591
     .end local v1  # "childParams":Lcom/android/server/pm/PackageManagerService$InstallParams;
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_1a
 
-    .line 15599
+    .line 15596
     .end local v0  # "i":I
     :cond_35
     new-instance v0, Landroid/util/ArrayMap;
@@ -144,10 +144,10 @@
 
     iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mCurrentState:Ljava/util/Map;
 
-    .line 15600
+    .line 15597
     return-void
 
-    .line 15591
+    .line 15588
     :cond_43
     new-instance v0, Lcom/android/server/pm/PackageManagerException;
 
@@ -163,7 +163,7 @@
 .method handleReturnCode()V
     .registers 5
 
-    .line 15614
+    .line 15611
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mChildParams:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -183,28 +183,28 @@
 
     check-cast v1, Lcom/android/server/pm/PackageManagerService$InstallParams;
 
-    .line 15615
+    .line 15612
     .local v1, "params":Lcom/android/server/pm/PackageManagerService$InstallParams;
     invoke-virtual {v1}, Lcom/android/server/pm/PackageManagerService$InstallParams;->handleReturnCode()V
 
-    .line 15616
+    .line 15613
     iget v2, v1, Lcom/android/server/pm/PackageManagerService$InstallParams;->mRet:I
 
     const/4 v3, 0x1
 
     if-eq v2, v3, :cond_1e
 
-    .line 15617
+    .line 15614
     iget v2, v1, Lcom/android/server/pm/PackageManagerService$InstallParams;->mRet:I
 
     iput v2, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mRet:I
 
-    .line 15619
+    .line 15616
     .end local v1  # "params":Lcom/android/server/pm/PackageManagerService$InstallParams;
     :cond_1e
     goto :goto_6
 
-    .line 15620
+    .line 15617
     :cond_1f
     return-void
 .end method
@@ -212,7 +212,7 @@
 .method handleStartCopy()V
     .registers 5
 
-    .line 15604
+    .line 15601
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mChildParams:Ljava/util/ArrayList;
 
     invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -232,28 +232,28 @@
 
     check-cast v1, Lcom/android/server/pm/PackageManagerService$InstallParams;
 
-    .line 15605
+    .line 15602
     .local v1, "params":Lcom/android/server/pm/PackageManagerService$InstallParams;
     invoke-virtual {v1}, Lcom/android/server/pm/PackageManagerService$InstallParams;->handleStartCopy()V
 
-    .line 15606
+    .line 15603
     iget v2, v1, Lcom/android/server/pm/PackageManagerService$InstallParams;->mRet:I
 
     const/4 v3, 0x1
 
     if-eq v2, v3, :cond_1e
 
-    .line 15607
+    .line 15604
     iget v2, v1, Lcom/android/server/pm/PackageManagerService$InstallParams;->mRet:I
 
     iput v2, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mRet:I
 
-    .line 15609
+    .line 15606
     .end local v1  # "params":Lcom/android/server/pm/PackageManagerService$InstallParams;
     :cond_1e
     goto :goto_6
 
-    .line 15610
+    .line 15607
     :cond_1f
     return-void
 .end method
@@ -263,7 +263,7 @@
     .param p1, "args"  # Lcom/android/server/pm/PackageManagerService$InstallArgs;
     .param p2, "currentStatus"  # I
 
-    .line 15623
+    .line 15620
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mCurrentState:Ljava/util/Map;
 
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -272,7 +272,7 @@
 
     invoke-interface {v0, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 15624
+    .line 15621
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mCurrentState:Ljava/util/Map;
 
     invoke-interface {v0}, Ljava/util/Map;->size()I
@@ -287,14 +287,14 @@
 
     if-eq v0, v1, :cond_18
 
-    .line 15625
+    .line 15622
     return-void
 
-    .line 15627
+    .line 15624
     :cond_18
     const/4 v0, 0x1
 
-    .line 15628
+    .line 15625
     .local v0, "completeStatus":I
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mCurrentState:Ljava/util/Map;
 
@@ -321,7 +321,7 @@
 
     check-cast v2, Ljava/lang/Integer;
 
-    .line 15629
+    .line 15626
     .local v2, "status":Ljava/lang/Integer;
     invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
@@ -329,10 +329,10 @@
 
     if-nez v4, :cond_37
 
-    .line 15630
+    .line 15627
     return-void
 
-    .line 15631
+    .line 15628
     :cond_37
     invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
@@ -340,20 +340,20 @@
 
     if-eq v4, v3, :cond_42
 
-    .line 15632
+    .line 15629
     invoke-virtual {v2}, Ljava/lang/Integer;->intValue()I
 
     move-result v0
 
-    .line 15633
+    .line 15630
     goto :goto_43
 
-    .line 15635
+    .line 15632
     .end local v2  # "status":Ljava/lang/Integer;
     :cond_42
     goto :goto_23
 
-    .line 15636
+    .line 15633
     :cond_43
     :goto_43
     new-instance v1, Ljava/util/ArrayList;
@@ -366,7 +366,7 @@
 
     invoke-direct {v1, v2}, Ljava/util/ArrayList;-><init>(I)V
 
-    .line 15637
+    .line 15634
     .local v1, "installRequests":Ljava/util/List;, "Ljava/util/List<Lcom/android/server/pm/PackageManagerService$InstallRequest;>;"
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->mCurrentState:Ljava/util/Map;
 
@@ -391,7 +391,7 @@
 
     check-cast v4, Ljava/util/Map$Entry;
 
-    .line 15638
+    .line 15635
     .local v4, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Lcom/android/server/pm/PackageManagerService$InstallArgs;Ljava/lang/Integer;>;"
     new-instance v5, Lcom/android/server/pm/PackageManagerService$InstallRequest;
 
@@ -403,7 +403,7 @@
 
     iget-object v7, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->this$0:Lcom/android/server/pm/PackageManagerService;
 
-    .line 15639
+    .line 15636
     invoke-static {v7, v0}, Lcom/android/server/pm/PackageManagerService;->access$2500(Lcom/android/server/pm/PackageManagerService;I)Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;
 
     move-result-object v7
@@ -412,14 +412,14 @@
 
     invoke-direct {v5, v6, v7, v8}, Lcom/android/server/pm/PackageManagerService$InstallRequest;-><init>(Lcom/android/server/pm/PackageManagerService$InstallArgs;Lcom/android/server/pm/PackageManagerService$PackageInstalledInfo;Lcom/android/server/pm/PackageManagerService$1;)V
 
-    .line 15638
+    .line 15635
     invoke-interface {v1, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 15640
+    .line 15637
     .end local v4  # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Lcom/android/server/pm/PackageManagerService$InstallArgs;Ljava/lang/Integer;>;"
     goto :goto_58
 
-    .line 15641
+    .line 15638
     :cond_7a
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService$MultiPackageInstallParams;->this$0:Lcom/android/server/pm/PackageManagerService;
 
@@ -433,6 +433,6 @@
     :goto_80
     invoke-static {v2, v3, v1}, Lcom/android/server/pm/PackageManagerService;->access$2600(Lcom/android/server/pm/PackageManagerService;ZLjava/util/List;)V
 
-    .line 15644
+    .line 15641
     return-void
 .end method

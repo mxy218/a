@@ -29,7 +29,7 @@
     .registers 5
     .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
 
-    .line 20803
+    .line 20800
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$5;->val$revokedPermissions:Landroid/util/ArraySet;
@@ -50,7 +50,7 @@
     .param p1, "appId"  # I
     .param p2, "userId"  # I
 
-    .line 20805
+    .line 20802
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5100(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;
@@ -59,14 +59,14 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;->onGidsChanged(II)V
 
-    .line 20806
+    .line 20803
     return-void
 .end method
 
 .method public onInstallPermissionGranted()V
     .registers 2
 
-    .line 20817
+    .line 20814
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5100(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;
@@ -75,14 +75,14 @@
 
     invoke-virtual {v0}, Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;->onInstallPermissionGranted()V
 
-    .line 20818
+    .line 20815
     return-void
 .end method
 
 .method public onInstallPermissionRevoked()V
     .registers 2
 
-    .line 20827
+    .line 20824
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5100(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;
@@ -91,14 +91,14 @@
 
     invoke-virtual {v0}, Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;->onInstallPermissionRevoked()V
 
-    .line 20828
+    .line 20825
     return-void
 .end method
 
 .method public onInstallPermissionUpdated()V
     .registers 2
 
-    .line 20848
+    .line 20845
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5100(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;
@@ -107,14 +107,14 @@
 
     invoke-virtual {v0}, Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;->onInstallPermissionUpdated()V
 
-    .line 20849
+    .line 20846
     return-void
 .end method
 
 .method public onPermissionChanged()V
     .registers 2
 
-    .line 20809
+    .line 20806
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5100(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;
@@ -123,7 +123,7 @@
 
     invoke-virtual {v0}, Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;->onPermissionChanged()V
 
-    .line 20810
+    .line 20807
     return-void
 .end method
 
@@ -132,7 +132,7 @@
     .param p1, "uid"  # I
     .param p2, "userId"  # I
 
-    .line 20813
+    .line 20810
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-static {v0}, Lcom/android/server/pm/PackageManagerService;->access$5100(Lcom/android/server/pm/PackageManagerService;)Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;
@@ -141,14 +141,14 @@
 
     invoke-virtual {v0, p1, p2}, Lcom/android/server/pm/permission/PermissionManagerServiceInternal$PermissionCallback;->onPermissionGranted(II)V
 
-    .line 20814
+    .line 20811
     return-void
 .end method
 
 .method public onPermissionRemoved()V
     .registers 4
 
-    .line 20844
+    .line 20841
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->val$permissionRemoved:[Z
 
     const/4 v1, 0x0
@@ -157,7 +157,7 @@
 
     aput-boolean v2, v0, v1
 
-    .line 20845
+    .line 20842
     return-void
 .end method
 
@@ -166,7 +166,7 @@
     .param p1, "uid"  # I
     .param p2, "userId"  # I
 
-    .line 20821
+    .line 20818
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->val$revokedPermissions:Landroid/util/ArraySet;
 
     invoke-static {p1, p2}, Lcom/android/internal/util/IntPair;->of(II)J
@@ -179,14 +179,14 @@
 
     invoke-virtual {v0, v1}, Landroid/util/ArraySet;->add(Ljava/lang/Object;)Z
 
-    .line 20823
+    .line 20820
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$5;->val$updatedUsers:Landroid/util/SparseBooleanArray;
 
     const/4 v1, 0x1
 
     invoke-virtual {v0, p2, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 20824
+    .line 20821
     return-void
 .end method
 
@@ -195,7 +195,7 @@
     .param p1, "updatedUserIds"  # [I
     .param p2, "sync"  # Z
 
-    .line 20831
+    .line 20828
     array-length v0, p1
 
     const/4 v1, 0x0
@@ -207,11 +207,11 @@
 
     aget v3, p1, v2
 
-    .line 20832
+    .line 20829
     .local v3, "userId":I
     if-eqz p2, :cond_10
 
-    .line 20833
+    .line 20830
     iget-object v4, p0, Lcom/android/server/pm/PackageManagerService$5;->val$updatedUsers:Landroid/util/SparseBooleanArray;
 
     const/4 v5, 0x1
@@ -220,7 +220,7 @@
 
     goto :goto_1d
 
-    .line 20836
+    .line 20833
     :cond_10
     iget-object v4, p0, Lcom/android/server/pm/PackageManagerService$5;->val$updatedUsers:Landroid/util/SparseBooleanArray;
 
@@ -230,12 +230,12 @@
 
     if-nez v4, :cond_1d
 
-    .line 20837
+    .line 20834
     iget-object v4, p0, Lcom/android/server/pm/PackageManagerService$5;->val$updatedUsers:Landroid/util/SparseBooleanArray;
 
     invoke-virtual {v4, v3, v1}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 20831
+    .line 20828
     .end local v3  # "userId":I
     :cond_1d
     :goto_1d
@@ -243,7 +243,7 @@
 
     goto :goto_3
 
-    .line 20841
+    .line 20838
     :cond_20
     return-void
 .end method

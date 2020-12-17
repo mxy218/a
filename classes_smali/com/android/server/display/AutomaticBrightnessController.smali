@@ -5113,18 +5113,18 @@
 
     const-wide/16 v1, 0x0
 
-    if-eqz v0, :cond_49
+    if-eqz v0, :cond_41
 
     .line 1534
     invoke-virtual {v0}, Lcom/android/server/display/hbm/HBMController;->isHBMSwitchOn()Z
 
     move-result v0
 
-    if-eqz v0, :cond_49
+    if-eqz v0, :cond_41
 
     iget-boolean v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mLightSensorEnabled:Z
 
-    if-eqz v0, :cond_49
+    if-eqz v0, :cond_41
 
     iget v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mAmbientLux:F
 
@@ -5132,13 +5132,13 @@
 
     sget v3, Lcom/android/server/display/DisplayPowerController;->HBM_LUX_THRESHOLD:I
 
-    if-le v0, v3, :cond_49
+    if-le v0, v3, :cond_41
 
     iget v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mScreenAutoBrightness:I
 
     sget v3, Landroid/os/PowerManager;->BRIGHTNESS_ON:I
 
-    if-ne v0, v3, :cond_49
+    if-ne v0, v3, :cond_41
 
     iget v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mTemporaryScreenBrightness:I
 
@@ -5146,14 +5146,14 @@
 
     sget v3, Landroid/os/PowerManager;->BRIGHTNESS_ON:I
 
-    if-ne v0, v3, :cond_49
+    if-ne v0, v3, :cond_41
 
     :cond_25
     iget v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mDisplayPolicy:I
 
     const/4 v3, 0x3
 
-    if-ne v0, v3, :cond_49
+    if-ne v0, v3, :cond_41
 
     iget-object v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mHBMController:Lcom/android/server/display/hbm/HBMController;
 
@@ -5162,7 +5162,7 @@
 
     move-result v0
 
-    if-nez v0, :cond_49
+    if-nez v0, :cond_41
 
     .line 1542
     iget-object v0, p0, Lcom/android/server/display/AutomaticBrightnessController;->mContext:Landroid/content/Context;
@@ -5179,44 +5179,35 @@
     .local v0, "fingerprintManager":Landroid/hardware/fingerprint/FingerprintManager;
     const/4 v3, 0x1
 
-    invoke-virtual {v0}, Landroid/hardware/fingerprint/FingerprintManager;->hasClient()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_45
-
-    const-wide/16 v1, 0x64
-
-    :cond_45
     invoke-direct {p0, v3, v1, v2}, Lcom/android/server/display/AutomaticBrightnessController;->setHBMModeEnabled(ZJ)V
 
     .line 1545
     .end local v0  # "fingerprintManager":Landroid/hardware/fingerprint/FingerprintManager;
-    goto :goto_57
+    goto :goto_4f
 
     .line 1547
-    :cond_49
+    :cond_41
     const/4 v0, 0x0
 
-    if-nez p1, :cond_54
+    if-nez p1, :cond_4c
 
     iget v3, p0, Lcom/android/server/display/AutomaticBrightnessController;->mDisplayPolicy:I
 
     const/4 v4, 0x2
 
-    if-ne v3, v4, :cond_52
+    if-ne v3, v4, :cond_4a
 
-    goto :goto_54
+    goto :goto_4c
 
-    :cond_52
+    :cond_4a
     const-wide/16 v1, 0x1388
 
-    :cond_54
-    :goto_54
+    :cond_4c
+    :goto_4c
     invoke-direct {p0, v0, v1, v2}, Lcom/android/server/display/AutomaticBrightnessController;->setHBMModeEnabled(ZJ)V
 
     .line 1549
-    :goto_57
+    :goto_4f
     return-void
 .end method
 

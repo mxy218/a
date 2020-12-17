@@ -295,21 +295,11 @@
 .end method
 
 .method public static isFODOn()Z
-    .registers 2
+    .registers 1
 
     .line 63
-    nop
+    const/4 v0, 0x0
 
-    .line 64
-    const-string/jumbo v0, "persist.sys.meizu.fingerprint"
-
-    const/4 v1, 0x0
-
-    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
-
-    move-result v0
-
-    .line 63
     return v0
 .end method
 

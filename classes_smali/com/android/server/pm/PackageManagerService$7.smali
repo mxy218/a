@@ -26,7 +26,7 @@
     .registers 2
     .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
 
-    .line 22686
+    .line 22683
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$7;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -41,19 +41,19 @@
     .param p1, "uid"  # I
     .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 22689
+    .line 22686
     invoke-static {p1}, Landroid/os/Process;->isIsolated(I)Z
 
     move-result v0
 
     if-eqz v0, :cond_8
 
-    .line 22690
+    .line 22687
     const/4 v0, 0x0
 
     return v0
 
-    .line 22692
+    .line 22689
     :cond_8
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$7;->this$0:Lcom/android/server/pm/PackageManagerService;
 
@@ -67,12 +67,12 @@
 
     if-ne v0, v1, :cond_15
 
-    .line 22693
+    .line 22690
     const/4 v0, 0x1
 
     return v0
 
-    .line 22695
+    .line 22692
     :cond_15
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$7;->this$0:Lcom/android/server/pm/PackageManagerService;
 
@@ -84,12 +84,12 @@
 
     if-ne v0, v1, :cond_21
 
-    .line 22696
+    .line 22693
     const/4 v0, 0x2
 
     return v0
 
-    .line 22698
+    .line 22695
     :cond_21
     const/4 v0, 0x3
 
@@ -101,7 +101,7 @@
     .param p1, "uid"  # I
     .param p2, "packageName"  # Ljava/lang/String;
 
-    .line 22703
+    .line 22700
     const/4 v0, 0x1
 
     return v0

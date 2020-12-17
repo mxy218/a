@@ -23,7 +23,7 @@
     .registers 2
     .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
 
-    .line 22714
+    .line 22711
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$8;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
@@ -38,20 +38,20 @@
     .param p1, "context"  # Landroid/content/Context;
     .param p2, "intent"  # Landroid/content/Intent;
 
-    .line 22717
+    .line 22714
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$8;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mInstantAppResolverConnection:Lcom/android/server/pm/InstantAppResolverConnection;
 
     invoke-virtual {v0}, Lcom/android/server/pm/InstantAppResolverConnection;->optimisticBind()V
 
-    .line 22718
+    .line 22715
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$8;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iget-object v0, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     invoke-virtual {v0, p0}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
 
-    .line 22719
+    .line 22716
     return-void
 .end method

@@ -2382,73 +2382,9 @@
     :cond_3c
     move v1, v2
 
-    .line 553
+    .line 567
     .local v1, "down":Z
     :goto_3d
-    const/16 v4, 0x19d
-
-    if-ne v0, v4, :cond_6f
-
-    .line 554
-    iget-object v2, p0, Lcom/android/server/policy/MzPhoneWindowManager;->mFingerprintManager:Landroid/hardware/fingerprint/FingerprintManager;
-
-    if-nez v2, :cond_51
-
-    .line 555
-    iget-object v2, p0, Lcom/android/server/policy/MzPhoneWindowManager;->mContext:Landroid/content/Context;
-
-    const-string v4, "fingerprint"
-
-    invoke-virtual {v2, v4}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
-
-    move-result-object v2
-
-    check-cast v2, Landroid/hardware/fingerprint/FingerprintManager;
-
-    iput-object v2, p0, Lcom/android/server/policy/MzPhoneWindowManager;->mFingerprintManager:Landroid/hardware/fingerprint/FingerprintManager;
-
-    .line 557
-    :cond_51
-    iget-object v2, p0, Lcom/android/server/policy/MzPhoneWindowManager;->mFingerprintManager:Landroid/hardware/fingerprint/FingerprintManager;
-
-    invoke-virtual {v2}, Landroid/hardware/fingerprint/FingerprintManager;->hasClient()Z
-
-    move-result v2
-
-    if-nez v2, :cond_61
-
-    iget-object v2, p0, Lcom/android/server/policy/MzPhoneWindowManager;->mPhoneWindowManager:Lcom/android/server/policy/PhoneWindowManager;
-
-    invoke-virtual {v2}, Lcom/android/server/policy/PhoneWindowManager;->isKeyguardShowingAndNotOccluded()Z
-
-    move-result v2
-
-    if-eqz v2, :cond_6e
-
-    .line 558
-    :cond_61
-    if-eqz v1, :cond_69
-
-    .line 559
-    const/16 v2, 0x1ae
-
-    invoke-direct {p0, v2}, Lcom/android/server/policy/MzPhoneWindowManager;->triggerGesture(I)V
-
-    goto :goto_6e
-
-    .line 561
-    :cond_69
-    const/16 v2, 0x1af
-
-    invoke-direct {p0, v2}, Lcom/android/server/policy/MzPhoneWindowManager;->triggerGesture(I)V
-
-    .line 564
-    :cond_6e
-    :goto_6e
-    return v3
-
-    .line 567
-    :cond_6f
     invoke-virtual {p0, p1, v1}, Lcom/android/server/policy/MzPhoneWindowManager;->interceptFingerTouchKey(Landroid/view/KeyEvent;Z)V
 
     .line 569
@@ -2458,15 +2394,15 @@
 
     const/16 v5, 0x18
 
-    if-eq v4, v5, :cond_9d
+    if-eq v4, v5, :cond_6b
 
     const/16 v5, 0x19
 
-    if-eq v4, v5, :cond_9d
+    if-eq v4, v5, :cond_6b
 
     const/16 v5, 0xa4
 
-    if-eq v4, v5, :cond_9d
+    if-eq v4, v5, :cond_6b
 
     .line 580
     sget-object v4, Lcom/android/server/policy/MzPhoneWindowManager;->TAG:Ljava/lang/String;
@@ -2491,27 +2427,27 @@
 
     invoke-static {v4, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_a4
+    goto :goto_72
 
     .line 573
-    :cond_9d
+    :cond_6b
     invoke-virtual {p0, p1}, Lcom/android/server/policy/MzPhoneWindowManager;->interceptVolumeKeyForTelephony(Landroid/view/KeyEvent;)Z
 
     move-result v4
 
-    if-eqz v4, :cond_a4
+    if-eqz v4, :cond_72
 
     .line 574
     return v3
 
     .line 584
-    :cond_a4
-    :goto_a4
+    :cond_72
+    :goto_72
     invoke-direct {p0, p1}, Lcom/android/server/policy/MzPhoneWindowManager;->isNotDispatchKey(Landroid/view/KeyEvent;)Z
 
     move-result v4
 
-    if-nez v4, :cond_b2
+    if-nez v4, :cond_80
 
     iget-object v4, p0, Lcom/android/server/policy/MzPhoneWindowManager;->mSystemGesture:Lcom/android/server/policy/gesture/SystemGesture;
 
@@ -2519,12 +2455,12 @@
 
     move-result v4
 
-    if-eqz v4, :cond_b3
+    if-eqz v4, :cond_81
 
-    :cond_b2
+    :cond_80
     move v2, v3
 
-    :cond_b3
+    :cond_81
     return v2
 .end method
 

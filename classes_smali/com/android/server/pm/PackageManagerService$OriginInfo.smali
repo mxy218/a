@@ -33,43 +33,43 @@
     .param p2, "staged"  # Z
     .param p3, "existing"  # Z
 
-    .line 15511
+    .line 15508
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 15512
+    .line 15509
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->file:Ljava/io/File;
 
-    .line 15513
+    .line 15510
     iput-boolean p2, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->staged:Z
 
-    .line 15514
+    .line 15511
     iput-boolean p3, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->existing:Z
 
-    .line 15516
+    .line 15513
     if-eqz p1, :cond_14
 
-    .line 15517
+    .line 15514
     invoke-virtual {p1}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedPath:Ljava/lang/String;
 
-    .line 15518
+    .line 15515
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedFile:Ljava/io/File;
 
     goto :goto_19
 
-    .line 15520
+    .line 15517
     :cond_14
     const/4 v0, 0x0
 
     iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedPath:Ljava/lang/String;
 
-    .line 15521
+    .line 15518
     iput-object v0, p0, Lcom/android/server/pm/PackageManagerService$OriginInfo;->resolvedFile:Ljava/io/File;
 
-    .line 15523
+    .line 15520
     :goto_19
     return-void
 .end method
@@ -78,7 +78,7 @@
     .registers 4
     .param p0, "file"  # Ljava/io/File;
 
-    .line 15504
+    .line 15501
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x0
@@ -93,7 +93,7 @@
 .method static fromNothing()Lcom/android/server/pm/PackageManagerService$OriginInfo;
     .registers 3
 
-    .line 15496
+    .line 15493
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x0
@@ -109,7 +109,7 @@
     .registers 4
     .param p0, "file"  # Ljava/io/File;
 
-    .line 15508
+    .line 15505
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x1
@@ -125,7 +125,7 @@
     .registers 3
     .param p0, "file"  # Ljava/io/File;
 
-    .line 15500
+    .line 15497
     new-instance v0, Lcom/android/server/pm/PackageManagerService$OriginInfo;
 
     const/4 v1, 0x0

@@ -29,15 +29,15 @@
     .registers 3
     .param p2, "user"  # Landroid/os/UserHandle;
 
-    .line 15431
+    .line 15428
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 15432
+    .line 15429
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
-    .line 15433
+    .line 15430
     return-void
 .end method
 
@@ -46,19 +46,19 @@
 .method getRollbackUser()Landroid/os/UserHandle;
     .registers 3
 
-    .line 15447
+    .line 15444
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
     sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
 
     if-ne v0, v1, :cond_9
 
-    .line 15448
+    .line 15445
     sget-object v0, Landroid/os/UserHandle;->SYSTEM:Landroid/os/UserHandle;
 
     return-object v0
 
-    .line 15450
+    .line 15447
     :cond_9
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
@@ -68,7 +68,7 @@
 .method getUser()Landroid/os/UserHandle;
     .registers 2
 
-    .line 15436
+    .line 15433
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->mUser:Landroid/os/UserHandle;
 
     return-object v0
@@ -84,10 +84,10 @@
     .registers 2
     .param p1, "traceCookie"  # I
 
-    .line 15459
+    .line 15456
     iput p1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->traceCookie:I
 
-    .line 15460
+    .line 15457
     return-object p0
 .end method
 
@@ -95,17 +95,17 @@
     .registers 2
     .param p1, "traceMethod"  # Ljava/lang/String;
 
-    .line 15454
+    .line 15451
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$HandlerParams;->traceMethod:Ljava/lang/String;
 
-    .line 15455
+    .line 15452
     return-object p0
 .end method
 
 .method final startCopy()V
     .registers 3
 
-    .line 15464
+    .line 15461
     sget-boolean v0, Lcom/android/server/pm/PackageManagerService;->DEBUG_INSTALL:Z
 
     if-eqz v0, :cond_25
@@ -136,13 +136,13 @@
 
     invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 15465
+    .line 15462
     :cond_25
     invoke-virtual {p0}, Lcom/android/server/pm/PackageManagerService$HandlerParams;->handleStartCopy()V
 
-    .line 15466
+    .line 15463
     invoke-virtual {p0}, Lcom/android/server/pm/PackageManagerService$HandlerParams;->handleReturnCode()V
 
-    .line 15467
+    .line 15464
     return-void
 .end method

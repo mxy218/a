@@ -19,7 +19,7 @@
 .method static constructor <clinit>()V
     .registers 3
 
-    .line 110
+    .line 108
     const/4 v0, 0x2
 
     new-array v0, v0, [I
@@ -45,17 +45,17 @@
     .registers 3
     .param p1, "header"  # Landroid/net/netlink/StructNlMsgHdr;
 
-    .line 81
+    .line 79
     invoke-direct {p0, p1}, Landroid/net/netlink/NetlinkMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
-    .line 82
+    .line 80
     new-instance v0, Landroid/net/netlink/StructInetDiagMsg;
 
     invoke-direct {v0}, Landroid/net/netlink/StructInetDiagMsg;-><init>()V
 
     iput-object v0, p0, Landroid/net/netlink/InetDiagMessage;->mStructInetDiagMsg:Landroid/net/netlink/StructInetDiagMsg;
 
-    .line 83
+    .line 81
     return-void
 .end method
 
@@ -67,18 +67,18 @@
     .param p3, "family"  # I
     .param p4, "flags"  # S
 
-    .line 62
+    .line 60
     const/16 v0, 0x48
 
     new-array v0, v0, [B
 
-    .line 63
+    .line 61
     .local v0, "bytes":[B
     invoke-static {v0}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
 
     move-result-object v1
 
-    .line 64
+    .line 62
     .local v1, "byteBuffer":Ljava/nio/ByteBuffer;
     invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
 
@@ -86,181 +86,91 @@
 
     invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
 
-    .line 66
+    .line 64
     new-instance v2, Landroid/net/netlink/StructNlMsgHdr;
 
     invoke-direct {v2}, Landroid/net/netlink/StructNlMsgHdr;-><init>()V
 
-    .line 67
+    .line 65
     .local v2, "nlMsgHdr":Landroid/net/netlink/StructNlMsgHdr;
     array-length v3, v0
 
     iput v3, v2, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_len:I
 
-    .line 68
+    .line 66
     const/16 v3, 0x14
 
     iput-short v3, v2, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
 
-    .line 69
+    .line 67
     iput-short p4, v2, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_flags:S
 
-    .line 70
+    .line 68
     invoke-virtual {v2, v1}, Landroid/net/netlink/StructNlMsgHdr;->pack(Ljava/nio/ByteBuffer;)V
 
-    .line 72
+    .line 70
     new-instance v3, Landroid/net/netlink/StructInetDiagReqV2;
 
     invoke-direct {v3, p0, p1, p2, p3}, Landroid/net/netlink/StructInetDiagReqV2;-><init>(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;I)V
 
-    .line 74
+    .line 72
     .local v3, "inetDiagReqV2":Landroid/net/netlink/StructInetDiagReqV2;
     invoke-virtual {v3, v1}, Landroid/net/netlink/StructInetDiagReqV2;->pack(Ljava/nio/ByteBuffer;)V
 
-    .line 75
+    .line 73
     return-object v0
 .end method
 
 .method public static getConnectionOwnerUid(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;)I
-    .registers 9
+    .registers 6
     .param p0, "protocol"  # I
     .param p1, "local"  # Ljava/net/InetSocketAddress;
     .param p2, "remote"  # Ljava/net/InetSocketAddress;
 
+    .line 167
+    :try_start_0
+    sget v0, Landroid/system/OsConstants;->NETLINK_INET_DIAG:I
+
+    invoke-static {v0}, Landroid/net/netlink/NetlinkSocket;->forProto(I)Ljava/io/FileDescriptor;
+
+    move-result-object v0
+
     .line 168
-    const-string v0, "InetDiagMessage"
+    .local v0, "fd":Ljava/io/FileDescriptor;
+    invoke-static {v0}, Landroid/net/netlink/NetlinkSocket;->connectToKernel(Ljava/io/FileDescriptor;)V
 
-    const/4 v1, -0x1
+    .line 170
+    invoke-static {p0, p1, p2, v0}, Landroid/net/netlink/InetDiagMessage;->lookupUid(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/io/FileDescriptor;)I
 
-    .line 169
-    .local v1, "uid":I
-    const/4 v2, 0x0
+    move-result v1
+    :try_end_d
+    .catch Landroid/system/ErrnoException; {:try_start_0 .. :try_end_d} :catch_e
+    .catch Ljava/net/SocketException; {:try_start_0 .. :try_end_d} :catch_e
+    .catch Ljava/lang/IllegalArgumentException; {:try_start_0 .. :try_end_d} :catch_e
+    .catch Ljava/io/InterruptedIOException; {:try_start_0 .. :try_end_d} :catch_e
 
-    .line 171
-    .local v2, "fd":Ljava/io/FileDescriptor;
-    :try_start_4
-    sget v3, Landroid/system/OsConstants;->NETLINK_INET_DIAG:I
-
-    invoke-static {v3}, Landroid/net/netlink/NetlinkSocket;->forProto(I)Ljava/io/FileDescriptor;
-
-    move-result-object v3
-
-    move-object v2, v3
-
-    .line 172
-    invoke-static {v2}, Landroid/net/netlink/NetlinkSocket;->connectToKernel(Ljava/io/FileDescriptor;)V
-
-    .line 173
-    invoke-static {p0, p1, p2, v2}, Landroid/net/netlink/InetDiagMessage;->lookupUid(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/io/FileDescriptor;)I
-
-    move-result v3
-    :try_end_12
-    .catch Landroid/system/ErrnoException; {:try_start_4 .. :try_end_12} :catch_24
-    .catch Ljava/net/SocketException; {:try_start_4 .. :try_end_12} :catch_24
-    .catch Ljava/lang/IllegalArgumentException; {:try_start_4 .. :try_end_12} :catch_24
-    .catch Ljava/io/InterruptedIOException; {:try_start_4 .. :try_end_12} :catch_24
-    .catchall {:try_start_4 .. :try_end_12} :catchall_22
-
-    move v1, v3
-
-    .line 178
-    if-eqz v2, :cond_33
-
-    .line 180
-    :try_start_15
-    invoke-static {v2}, Landroid/net/util/SocketUtils;->closeSocket(Ljava/io/FileDescriptor;)V
-    :try_end_18
-    .catch Ljava/io/IOException; {:try_start_15 .. :try_end_18} :catch_19
-
-    .line 183
-    :goto_18
-    goto :goto_33
-
-    .line 181
-    :catch_19
-    move-exception v3
-
-    .line 182
-    .local v3, "e":Ljava/io/IOException;
-    invoke-virtual {v3}, Ljava/io/IOException;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v0, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .end local v3  # "e":Ljava/io/IOException;
-    goto :goto_18
-
-    .line 178
-    :catchall_22
-    move-exception v3
-
-    goto :goto_34
-
-    .line 174
-    :catch_24
-    move-exception v3
-
-    .line 176
-    .local v3, "e":Ljava/lang/Exception;
-    :try_start_25
-    invoke-virtual {v3}, Ljava/lang/Exception;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v0, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_2c
-    .catchall {:try_start_25 .. :try_end_2c} :catchall_22
-
-    .line 178
-    nop
-
-    .end local v3  # "e":Ljava/lang/Exception;
-    if-eqz v2, :cond_33
-
-    .line 180
-    :try_start_2f
-    invoke-static {v2}, Landroid/net/util/SocketUtils;->closeSocket(Ljava/io/FileDescriptor;)V
-    :try_end_32
-    .catch Ljava/io/IOException; {:try_start_2f .. :try_end_32} :catch_19
-
-    goto :goto_18
-
-    .line 186
-    :cond_33
-    :goto_33
     return v1
 
-    .line 178
-    :goto_34
-    if-eqz v2, :cond_42
+    .line 172
+    .end local v0  # "fd":Ljava/io/FileDescriptor;
+    :catch_e
+    move-exception v0
 
-    .line 180
-    :try_start_36
-    invoke-static {v2}, Landroid/net/util/SocketUtils;->closeSocket(Ljava/io/FileDescriptor;)V
-    :try_end_39
-    .catch Ljava/io/IOException; {:try_start_36 .. :try_end_39} :catch_3a
+    .line 174
+    .local v0, "e":Ljava/lang/Exception;
+    invoke-virtual {v0}, Ljava/lang/Exception;->toString()Ljava/lang/String;
 
-    .line 183
-    goto :goto_42
+    move-result-object v1
 
-    .line 181
-    :catch_3a
-    move-exception v4
+    const-string v2, "InetDiagMessage"
 
-    .line 182
-    .local v4, "e":Ljava/io/IOException;
-    invoke-virtual {v4}, Ljava/io/IOException;->toString()Ljava/lang/String;
+    invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result-object v5
+    .line 176
+    .end local v0  # "e":Ljava/lang/Exception;
+    const/4 v0, -0x1
 
-    invoke-static {v0, v5}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 183
-    .end local v4  # "e":Ljava/io/IOException;
-    :cond_42
-    :goto_42
-    throw v3
+    return v0
 .end method
 
 .method private static lookupUid(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/io/FileDescriptor;)I
@@ -276,7 +186,7 @@
         }
     .end annotation
 
-    .line 117
+    .line 115
     move v7, p0
 
     sget-object v0, Landroid/net/netlink/InetDiagMessage;->FAMILY:[I
@@ -294,13 +204,13 @@
 
     aget v12, v0, v10
 
-    .line 123
+    .line 121
     .local v12, "family":I
     sget v1, Landroid/system/OsConstants;->IPPROTO_UDP:I
 
     if-ne v7, v1, :cond_1b
 
-    .line 124
+    .line 122
     const/4 v5, 0x1
 
     move v1, p0
@@ -320,7 +230,7 @@
     .local v1, "uid":I
     goto :goto_26
 
-    .line 126
+    .line 124
     .end local v1  # "uid":I
     :cond_1b
     const/4 v5, 0x1
@@ -339,42 +249,42 @@
 
     move-result v1
 
-    .line 128
+    .line 126
     .restart local v1  # "uid":I
     :goto_26
     if-eq v1, v11, :cond_29
 
-    .line 129
+    .line 127
     return v1
 
-    .line 117
+    .line 115
     .end local v12  # "family":I
     :cond_29
     add-int/lit8 v10, v10, 0x1
 
     goto :goto_6
 
-    .line 140
+    .line 138
     .end local v1  # "uid":I
     :cond_2c
     sget v0, Landroid/system/OsConstants;->IPPROTO_UDP:I
 
     if-ne v7, v0, :cond_71
 
-    .line 142
+    .line 140
     :try_start_30
     new-instance v3, Ljava/net/InetSocketAddress;
 
     const-string v0, "::"
 
-    .line 143
+    .line 141
     invoke-static {v0}, Ljava/net/Inet6Address;->getByName(Ljava/lang/String;)Ljava/net/InetAddress;
 
     move-result-object v0
 
     invoke-direct {v3, v0, v9}, Ljava/net/InetSocketAddress;-><init>(Ljava/net/InetAddress;I)V
 
-    .line 144
+    .line 142
     .local v3, "wildcard":Ljava/net/InetSocketAddress;
     sget v4, Landroid/system/OsConstants;->AF_INET6:I
 
@@ -390,14 +300,14 @@
 
     move-result v0
 
-    .line 146
+    .line 144
     .local v0, "uid":I
     if-eq v0, v11, :cond_4a
 
-    .line 147
+    .line 145
     return v0
 
-    .line 149
+    .line 147
     :cond_4a
     new-instance v1, Ljava/net/InetSocketAddress;
 
@@ -411,7 +321,7 @@
 
     move-object v3, v1
 
-    .line 150
+    .line 148
     sget v4, Landroid/system/OsConstants;->AF_INET:I
 
     const/16 v5, 0x301
@@ -430,23 +340,23 @@
 
     move v0, v1
 
-    .line 152
+    .line 150
     if-eq v0, v11, :cond_66
 
-    .line 153
+    .line 151
     return v0
 
-    .line 157
+    .line 155
     .end local v3  # "wildcard":Ljava/net/InetSocketAddress;
     :cond_66
     goto :goto_71
 
-    .line 155
+    .line 153
     .end local v0  # "uid":I
     :catch_67
     move-exception v0
 
-    .line 156
+    .line 154
     .local v0, "e":Ljava/net/UnknownHostException;
     invoke-virtual {v0}, Ljava/net/UnknownHostException;->toString()Ljava/lang/String;
 
@@ -456,7 +366,7 @@
 
     invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 159
+    .line 157
     .end local v0  # "e":Ljava/net/UnknownHostException;
     :cond_71
     :goto_71
@@ -478,12 +388,12 @@
         }
     .end annotation
 
-    .line 95
+    .line 93
     invoke-static {p0, p1, p2, p3, p4}, Landroid/net/netlink/InetDiagMessage;->InetDiagReqV2(ILjava/net/InetSocketAddress;Ljava/net/InetSocketAddress;IS)[B
 
     move-result-object v6
 
-    .line 96
+    .line 94
     .local v6, "msg":[B
     array-length v3, v6
 
@@ -497,7 +407,7 @@
 
     invoke-static/range {v0 .. v5}, Landroid/net/netlink/NetlinkSocket;->sendMessage(Ljava/io/FileDescriptor;[BIIJ)I
 
-    .line 97
+    .line 95
     const/16 v0, 0x2000
 
     const-wide/16 v1, 0x1f4
@@ -506,19 +416,19 @@
 
     move-result-object v0
 
-    .line 99
+    .line 97
     .local v0, "response":Ljava/nio/ByteBuffer;
     invoke-static {v0}, Landroid/net/netlink/NetlinkMessage;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/NetlinkMessage;
 
     move-result-object v1
 
-    .line 100
+    .line 98
     .local v1, "nlMsg":Landroid/net/netlink/NetlinkMessage;
     invoke-virtual {v1}, Landroid/net/netlink/NetlinkMessage;->getHeader()Landroid/net/netlink/StructNlMsgHdr;
 
     move-result-object v2
 
-    .line 101
+    .line 99
     .local v2, "hdr":Landroid/net/netlink/StructNlMsgHdr;
     iget-short v3, v2, Landroid/net/netlink/StructNlMsgHdr;->nlmsg_type:S
 
@@ -528,16 +438,16 @@
 
     if-ne v3, v5, :cond_24
 
-    .line 102
+    .line 100
     return v4
 
-    .line 104
+    .line 102
     :cond_24
     instance-of v3, v1, Landroid/net/netlink/InetDiagMessage;
 
     if-eqz v3, :cond_30
 
-    .line 105
+    .line 103
     move-object v3, v1
 
     check-cast v3, Landroid/net/netlink/InetDiagMessage;
@@ -548,7 +458,7 @@
 
     return v3
 
-    .line 107
+    .line 105
     :cond_30
     return v4
 .end method
@@ -558,12 +468,12 @@
     .param p0, "header"  # Landroid/net/netlink/StructNlMsgHdr;
     .param p1, "byteBuffer"  # Ljava/nio/ByteBuffer;
 
-    .line 86
+    .line 84
     new-instance v0, Landroid/net/netlink/InetDiagMessage;
 
     invoke-direct {v0, p0}, Landroid/net/netlink/InetDiagMessage;-><init>(Landroid/net/netlink/StructNlMsgHdr;)V
 
-    .line 87
+    .line 85
     .local v0, "msg":Landroid/net/netlink/InetDiagMessage;
     invoke-static {p1}, Landroid/net/netlink/StructInetDiagMsg;->parse(Ljava/nio/ByteBuffer;)Landroid/net/netlink/StructInetDiagMsg;
 
@@ -571,7 +481,7 @@
 
     iput-object v1, v0, Landroid/net/netlink/InetDiagMessage;->mStructInetDiagMsg:Landroid/net/netlink/StructInetDiagMsg;
 
-    .line 88
+    .line 86
     return-object v0
 .end method
 
@@ -580,7 +490,7 @@
 .method public toString()Ljava/lang/String;
     .registers 4
 
-    .line 191
+    .line 181
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -589,7 +499,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 192
+    .line 182
     iget-object v1, p0, Landroid/net/netlink/InetDiagMessage;->mHeader:Landroid/net/netlink/StructNlMsgHdr;
 
     const-string v2, ""
@@ -614,7 +524,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 194
+    .line 184
     iget-object v1, p0, Landroid/net/netlink/InetDiagMessage;->mStructInetDiagMsg:Landroid/net/netlink/StructInetDiagMsg;
 
     if-nez v1, :cond_26
@@ -637,6 +547,6 @@
 
     move-result-object v0
 
-    .line 191
+    .line 181
     return-object v0
 .end method

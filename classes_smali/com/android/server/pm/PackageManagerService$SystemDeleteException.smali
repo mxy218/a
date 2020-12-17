@@ -23,13 +23,13 @@
     .registers 2
     .param p1, "reason"  # Lcom/android/server/pm/PackageManagerException;
 
-    .line 20365
+    .line 20362
     invoke-direct {p0}, Ljava/lang/Exception;-><init>()V
 
-    .line 20366
+    .line 20363
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$SystemDeleteException;->reason:Lcom/android/server/pm/PackageManagerException;
 
-    .line 20367
+    .line 20364
     return-void
 .end method
 
@@ -38,7 +38,7 @@
     .param p1, "x0"  # Lcom/android/server/pm/PackageManagerException;
     .param p2, "x1"  # Lcom/android/server/pm/PackageManagerService$1;
 
-    .line 20362
+    .line 20359
     invoke-direct {p0, p1}, Lcom/android/server/pm/PackageManagerService$SystemDeleteException;-><init>(Lcom/android/server/pm/PackageManagerException;)V
 
     return-void

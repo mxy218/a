@@ -1251,62 +1251,7 @@
 
     invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 191
-    :try_start_8
-    iget-object v0, p0, Lcom/android/server/DeviceControlService;->mContext:Landroid/content/Context;
-
-    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object v0
-
-    const-string/jumbo v1, "mz_display_lut_mode"
-
-    invoke-static {v0, v1}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 192
-    .local v0, "displaylutmode":I
-    sget-object v1, Lcom/android/server/DeviceControlService;->TAG:Ljava/lang/String;
-
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v3, "DeviceControlService init displaylutmode:"
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-static {v1, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 193
-    invoke-virtual {p0, v0}, Lcom/android/server/DeviceControlService;->setDisplayLutMode(I)I
-    :try_end_2e
-    .catch Ljava/lang/Exception; {:try_start_8 .. :try_end_2e} :catch_30
-
-    .line 196
-    nop
-
-    .end local v0  # "displaylutmode":I
-    goto :goto_34
-
-    .line 194
-    :catch_30
-    move-exception v0
-
-    .line 195
-    .local v0, "e":Ljava/lang/Exception;
-    invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
-
     .line 199
-    .end local v0  # "e":Ljava/lang/Exception;
-    :goto_34
     iget-object v0, p0, Lcom/android/server/DeviceControlService;->mContext:Landroid/content/Context;
 
     const-string/jumbo v1, "sensor"
@@ -1333,7 +1278,7 @@
 
     move-result v0
 
-    if-eqz v0, :cond_67
+    if-eqz v0, :cond_3b
 
     .line 204
     iget-object v0, p0, Lcom/android/server/DeviceControlService;->mSensorManager:Landroid/hardware/SensorManager;
@@ -1349,7 +1294,7 @@
     .line 205
     iget-object v0, p0, Lcom/android/server/DeviceControlService;->mStepCounterSensor:Landroid/hardware/Sensor;
 
-    if-eqz v0, :cond_67
+    if-eqz v0, :cond_3b
 
     .line 206
     iget-object v2, p0, Lcom/android/server/DeviceControlService;->mSensorManager:Landroid/hardware/SensorManager;
@@ -1361,7 +1306,7 @@
     invoke-virtual {v2, v3, v0, v4}, Landroid/hardware/SensorManager;->registerListener(Landroid/hardware/SensorEventListener;Landroid/hardware/Sensor;I)Z
 
     .line 211
-    :cond_67
+    :cond_3b
     new-instance v0, Lcom/android/server/DeviceControlService$SettingsObserver;
 
     new-instance v2, Landroid/os/Handler;
@@ -1463,15 +1408,6 @@
 
     iput-object v0, p0, Lcom/android/server/DeviceControlService;->mDisplay:Landroid/view/Display;
 
-    .line 236
-    iget-object v0, p0, Lcom/android/server/DeviceControlService;->mDisplayManager:Landroid/hardware/display/DisplayManager;
-
-    iget-object v2, p0, Lcom/android/server/DeviceControlService;->mDisplayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
-
-    iget-object v3, p0, Lcom/android/server/DeviceControlService;->mHandler:Landroid/os/Handler;
-
-    invoke-virtual {v0, v2, v3}, Landroid/hardware/display/DisplayManager;->registerDisplayListener(Landroid/hardware/display/DisplayManager$DisplayListener;Landroid/os/Handler;)V
-
     .line 238
     iget-object v0, p0, Lcom/android/server/DeviceControlService;->mContext:Landroid/content/Context;
 
@@ -1493,11 +1429,11 @@
 
     move-result v0
 
-    if-nez v0, :cond_ff
+    if-nez v0, :cond_ca
 
     iget-object v0, p0, Lcom/android/server/DeviceControlService;->mPackageManager:Landroid/content/pm/PackageManager;
 
-    if-eqz v0, :cond_ff
+    if-eqz v0, :cond_ca
 
     .line 243
     const-string v2, "flyme.face.facerecognition"
@@ -1506,7 +1442,7 @@
 
     move-result v0
 
-    if-eqz v0, :cond_ff
+    if-eqz v0, :cond_ca
 
     .line 244
     iget-object v0, p0, Lcom/android/server/DeviceControlService;->mContext:Landroid/content/Context;
@@ -1522,7 +1458,7 @@
     invoke-virtual {v0, v2, v1, v3, v4}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
 
     .line 247
-    :cond_ff
+    :cond_ca
     return-void
 .end method
 

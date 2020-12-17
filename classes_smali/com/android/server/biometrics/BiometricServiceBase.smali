@@ -1910,8 +1910,6 @@
     .param p1, "userId"  # I
 
     .line 1221
-    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->enumerateUser(I)V
-
     .line 1223
     return-void
 .end method

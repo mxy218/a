@@ -26,7 +26,7 @@
     .param p1, "this$0"  # Lcom/android/server/pm/PackageManagerService;
     .param p2, "x0"  # Landroid/os/Handler;
 
-    .line 22567
+    .line 22564
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$6;->this$0:Lcom/android/server/pm/PackageManagerService;
 
     iput-object p3, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
@@ -42,10 +42,10 @@
     .registers 11
     .param p1, "selfChange"  # Z
 
-    .line 22570
+    .line 22567
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
 
-    .line 22571
+    .line 22568
     const/4 v1, 0x1
 
     const-string v2, "enable_ephemeral_feature"
@@ -65,7 +65,7 @@
     :cond_e
     move v0, v2
 
-    .line 22572
+    .line 22569
     .local v0, "ephemeralFeatureDisabled":Z
     :goto_f
     invoke-static {}, Lcom/android/server/pm/UserManagerService;->getInstance()Lcom/android/server/pm/UserManagerService;
@@ -85,13 +85,13 @@
 
     aget v6, v3, v5
 
-    .line 22573
+    .line 22570
     .local v6, "userId":I
     if-nez v0, :cond_2d
 
     iget-object v7, p0, Lcom/android/server/pm/PackageManagerService$6;->val$resolver:Landroid/content/ContentResolver;
 
-    .line 22574
+    .line 22571
     const-string/jumbo v8, "instant_apps_enabled"
 
     invoke-static {v7, v8, v1, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
@@ -111,7 +111,7 @@
     :goto_2d
     move v7, v1
 
-    .line 22576
+    .line 22573
     .local v7, "instantAppsDisabledForUser":Z
     :goto_2e
     iget-object v8, p0, Lcom/android/server/pm/PackageManagerService$6;->this$0:Lcom/android/server/pm/PackageManagerService;
@@ -122,14 +122,14 @@
 
     invoke-virtual {v8, v6, v7}, Landroid/util/SparseBooleanArray;->put(IZ)V
 
-    .line 22572
+    .line 22569
     .end local v6  # "userId":I
     .end local v7  # "instantAppsDisabledForUser":Z
     add-int/lit8 v5, v5, 0x1
 
     goto :goto_19
 
-    .line 22578
+    .line 22575
     :cond_3a
     return-void
 .end method

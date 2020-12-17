@@ -25,12 +25,12 @@
     .registers 3
     .param p1, "error"  # I
 
-    .line 17926
+    .line 17923
     const-string v0, "Failed to prepare for install."
 
     invoke-direct {p0, p1, v0}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    .line 17927
+    .line 17924
     return-void
 .end method
 
@@ -39,10 +39,10 @@
     .param p1, "error"  # I
     .param p2, "detailMessage"  # Ljava/lang/String;
 
-    .line 17930
+    .line 17927
     invoke-direct {p0, p1, p2}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    .line 17931
+    .line 17928
     return-void
 .end method
 
@@ -51,12 +51,12 @@
     .param p1, "message"  # Ljava/lang/String;
     .param p2, "e"  # Ljava/lang/Exception;
 
-    .line 17934
+    .line 17931
     instance-of v0, p2, Landroid/content/pm/PackageParser$PackageParserException;
 
     if-eqz v0, :cond_a
 
-    .line 17935
+    .line 17932
     move-object v0, p2
 
     check-cast v0, Landroid/content/pm/PackageParser$PackageParserException;
@@ -65,7 +65,7 @@
 
     goto :goto_f
 
-    .line 17936
+    .line 17933
     :cond_a
     move-object v0, p2
 
@@ -73,16 +73,16 @@
 
     iget v0, v0, Lcom/android/server/pm/PackageManagerException;->error:I
 
-    .line 17937
+    .line 17934
     :goto_f
     invoke-static {p1, p2}, Landroid/util/ExceptionUtils;->getCompleteMessage(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/lang/String;
 
     move-result-object v1
 
-    .line 17934
+    .line 17931
     invoke-direct {p0, v0, v1}, Lcom/android/server/pm/PackageManagerException;-><init>(ILjava/lang/String;)V
 
-    .line 17938
+    .line 17935
     return-void
 .end method
 
@@ -93,12 +93,12 @@
     .param p1, "conflictingPermission"  # Ljava/lang/String;
     .param p2, "conflictingPackage"  # Ljava/lang/String;
 
-    .line 17942
+    .line 17939
     iput-object p1, p0, Lcom/android/server/pm/PackageManagerService$PrepareFailure;->conflictingPermission:Ljava/lang/String;
 
-    .line 17943
+    .line 17940
     iput-object p2, p0, Lcom/android/server/pm/PackageManagerService$PrepareFailure;->conflictingPackage:Ljava/lang/String;
 
-    .line 17944
+    .line 17941
     return-object p0
 .end method

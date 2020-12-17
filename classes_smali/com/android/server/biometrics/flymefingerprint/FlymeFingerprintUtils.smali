@@ -4,7 +4,7 @@
 
 
 # static fields
-.field public static final IS_UNDER_GLASS_FINGERPRINT:Z = true
+.field public static final IS_UNDER_GLASS_FINGERPRINT:Z = false
 
 .field private static final PACKAGES_ALWAYS_ALLOW:Ljava/util/ArrayList;
     .annotation system Ldalvik/annotation/Signature;
