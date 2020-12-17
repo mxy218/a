@@ -1,0 +1,105 @@
+.class public Lcom/android/settings/notification/SuppressorHelper;
+.super Ljava/lang/Object;
+.source "SuppressorHelper.java"
+
+
+# direct methods
+.method public static getSuppressionText(Landroid/content/Context;Landroid/content/ComponentName;)Ljava/lang/String;
+    .registers 5
+
+    if-eqz p1, :cond_14
+
+    const v0, 0x104044a
+
+    const/4 v1, 0x1
+
+    new-array v1, v1, [Ljava/lang/Object;
+
+    const/4 v2, 0x0
+
+    .line 33
+    invoke-static {p0, p1}, Lcom/android/settings/notification/SuppressorHelper;->getSuppressorCaption(Landroid/content/Context;Landroid/content/ComponentName;)Ljava/lang/String;
+
+    move-result-object p1
+
+    aput-object p1, v1, v2
+
+    .line 32
+    invoke-virtual {p0, v0, v1}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object p0
+
+    goto :goto_15
+
+    :cond_14
+    const/4 p0, 0x0
+
+    :goto_15
+    return-object p0
+.end method
+
+.method static getSuppressorCaption(Landroid/content/Context;Landroid/content/ComponentName;)Ljava/lang/String;
+    .registers 4
+    .annotation build Landroidx/annotation/VisibleForTesting;
+    .end annotation
+
+    .line 38
+    invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object p0
+
+    const/4 v0, 0x0
+
+    .line 40
+    :try_start_5
+    invoke-virtual {p0, p1, v0}, Landroid/content/pm/PackageManager;->getServiceInfo(Landroid/content/ComponentName;I)Landroid/content/pm/ServiceInfo;
+
+    move-result-object v0
+
+    if-eqz v0, :cond_28
+
+    .line 42
+    invoke-virtual {v0, p0}, Landroid/content/pm/ServiceInfo;->loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+
+    move-result-object p0
+
+    if-eqz p0, :cond_28
+
+    .line 44
+    invoke-interface {p0}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
+
+    move-result-object p0
+
+    invoke-virtual {p0}, Ljava/lang/String;->trim()Ljava/lang/String;
+
+    move-result-object p0
+
+    .line 45
+    invoke-virtual {p0}, Ljava/lang/String;->length()I
+
+    move-result v0
+    :try_end_1d
+    .catchall {:try_start_5 .. :try_end_1d} :catchall_20
+
+    if-lez v0, :cond_28
+
+    return-object p0
+
+    :catchall_20
+    move-exception p0
+
+    const-string v0, "SuppressorHelper"
+
+    const-string v1, "Error loading suppressor caption"
+
+    .line 51
+    invoke-static {v0, v1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    .line 53
+    :cond_28
+    invoke-virtual {p1}, Landroid/content/ComponentName;->getPackageName()Ljava/lang/String;
+
+    move-result-object p0
+
+    return-object p0
+.end method

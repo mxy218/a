@@ -1,0 +1,150 @@
+.class Landroidx/transition/ViewUtilsApi21;
+.super Landroidx/transition/ViewUtilsApi19;
+.source "ViewUtilsApi21.java"
+
+
+# annotations
+.annotation build Landroidx/annotation/RequiresApi;
+    value = 0x15
+.end annotation
+
+
+# static fields
+.field private static sTryHiddenSetAnimationMatrix:Z = true
+
+.field private static sTryHiddenTransformMatrixToGlobal:Z = true
+
+.field private static sTryHiddenTransformMatrixToLocal:Z = true
+
+
+# direct methods
+.method constructor <init>()V
+    .registers 1
+
+    .line 28
+    invoke-direct {p0}, Landroidx/transition/ViewUtilsApi19;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public setAnimationMatrix(Landroid/view/View;Landroid/graphics/Matrix;)V
+    .registers 3
+    .param p1  # Landroid/view/View;
+        .annotation build Landroidx/annotation/NonNull;
+        .end annotation
+    .end param
+    .param p2  # Landroid/graphics/Matrix;
+        .annotation build Landroidx/annotation/Nullable;
+        .end annotation
+    .end param
+    .annotation build Landroid/annotation/SuppressLint;
+        value = {
+            "NewApi"
+        }
+    .end annotation
+
+    .line 74
+    sget-boolean p0, Landroidx/transition/ViewUtilsApi21;->sTryHiddenSetAnimationMatrix:Z
+
+    if-eqz p0, :cond_b
+
+    .line 78
+    :try_start_4
+    invoke-virtual {p1, p2}, Landroid/view/View;->setAnimationMatrix(Landroid/graphics/Matrix;)V
+    :try_end_7
+    .catch Ljava/lang/NoSuchMethodError; {:try_start_4 .. :try_end_7} :catch_8
+
+    goto :goto_b
+
+    :catch_8
+    const/4 p0, 0x0
+
+    .line 80
+    sput-boolean p0, Landroidx/transition/ViewUtilsApi21;->sTryHiddenSetAnimationMatrix:Z
+
+    :cond_b
+    :goto_b
+    return-void
+.end method
+
+.method public transformMatrixToGlobal(Landroid/view/View;Landroid/graphics/Matrix;)V
+    .registers 3
+    .param p1  # Landroid/view/View;
+        .annotation build Landroidx/annotation/NonNull;
+        .end annotation
+    .end param
+    .param p2  # Landroid/graphics/Matrix;
+        .annotation build Landroidx/annotation/NonNull;
+        .end annotation
+    .end param
+    .annotation build Landroid/annotation/SuppressLint;
+        value = {
+            "NewApi"
+        }
+    .end annotation
+
+    .line 46
+    sget-boolean p0, Landroidx/transition/ViewUtilsApi21;->sTryHiddenTransformMatrixToGlobal:Z
+
+    if-eqz p0, :cond_b
+
+    .line 50
+    :try_start_4
+    invoke-virtual {p1, p2}, Landroid/view/View;->transformMatrixToGlobal(Landroid/graphics/Matrix;)V
+    :try_end_7
+    .catch Ljava/lang/NoSuchMethodError; {:try_start_4 .. :try_end_7} :catch_8
+
+    goto :goto_b
+
+    :catch_8
+    const/4 p0, 0x0
+
+    .line 52
+    sput-boolean p0, Landroidx/transition/ViewUtilsApi21;->sTryHiddenTransformMatrixToGlobal:Z
+
+    :cond_b
+    :goto_b
+    return-void
+.end method
+
+.method public transformMatrixToLocal(Landroid/view/View;Landroid/graphics/Matrix;)V
+    .registers 3
+    .param p1  # Landroid/view/View;
+        .annotation build Landroidx/annotation/NonNull;
+        .end annotation
+    .end param
+    .param p2  # Landroid/graphics/Matrix;
+        .annotation build Landroidx/annotation/NonNull;
+        .end annotation
+    .end param
+    .annotation build Landroid/annotation/SuppressLint;
+        value = {
+            "NewApi"
+        }
+    .end annotation
+
+    .line 60
+    sget-boolean p0, Landroidx/transition/ViewUtilsApi21;->sTryHiddenTransformMatrixToLocal:Z
+
+    if-eqz p0, :cond_b
+
+    .line 64
+    :try_start_4
+    invoke-virtual {p1, p2}, Landroid/view/View;->transformMatrixToLocal(Landroid/graphics/Matrix;)V
+    :try_end_7
+    .catch Ljava/lang/NoSuchMethodError; {:try_start_4 .. :try_end_7} :catch_8
+
+    goto :goto_b
+
+    :catch_8
+    const/4 p0, 0x0
+
+    .line 66
+    sput-boolean p0, Landroidx/transition/ViewUtilsApi21;->sTryHiddenTransformMatrixToLocal:Z
+
+    :cond_b
+    :goto_b
+    return-void
+.end method

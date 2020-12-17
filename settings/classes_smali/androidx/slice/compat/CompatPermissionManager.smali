@@ -1,0 +1,414 @@
+.class public Landroidx/slice/compat/CompatPermissionManager;
+.super Ljava/lang/Object;
+.source "CompatPermissionManager.java"
+
+
+# annotations
+.annotation build Landroidx/annotation/RequiresApi;
+    value = 0x13
+.end annotation
+
+.annotation build Landroidx/annotation/RestrictTo;
+    value = {
+        .enum Landroidx/annotation/RestrictTo$Scope;->LIBRARY:Landroidx/annotation/RestrictTo$Scope;
+    }
+.end annotation
+
+.annotation system Ldalvik/annotation/MemberClasses;
+    value = {
+        Landroidx/slice/compat/CompatPermissionManager$PermissionState;
+    }
+.end annotation
+
+
+# instance fields
+.field private final mAutoGrantPermissions:[Ljava/lang/String;
+
+.field private final mContext:Landroid/content/Context;
+
+.field private final mMyUid:I
+
+.field private final mPrefsName:Ljava/lang/String;
+
+
+# direct methods
+.method public constructor <init>(Landroid/content/Context;Ljava/lang/String;I[Ljava/lang/String;)V
+    .registers 5
+
+    .line 53
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 54
+    iput-object p1, p0, Landroidx/slice/compat/CompatPermissionManager;->mContext:Landroid/content/Context;
+
+    .line 55
+    iput-object p2, p0, Landroidx/slice/compat/CompatPermissionManager;->mPrefsName:Ljava/lang/String;
+
+    .line 56
+    iput p3, p0, Landroidx/slice/compat/CompatPermissionManager;->mMyUid:I
+
+    .line 57
+    iput-object p4, p0, Landroidx/slice/compat/CompatPermissionManager;->mAutoGrantPermissions:[Ljava/lang/String;
+
+    return-void
+.end method
+
+.method private checkSlicePermission(Landroid/net/Uri;Ljava/lang/String;)I
+    .registers 4
+
+    .line 87
+    invoke-virtual {p1}, Landroid/net/Uri;->getAuthority()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-direct {p0, p2, v0}, Landroidx/slice/compat/CompatPermissionManager;->getPermissionState(Ljava/lang/String;Ljava/lang/String;)Landroidx/slice/compat/CompatPermissionManager$PermissionState;
+
+    move-result-object p0
+
+    .line 88
+    invoke-virtual {p1}, Landroid/net/Uri;->getPathSegments()Ljava/util/List;
+
+    move-result-object p1
+
+    invoke-virtual {p0, p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->hasAccess(Ljava/util/List;)Z
+
+    move-result p0
+
+    if-eqz p0, :cond_14
+
+    const/4 p0, 0x0
+
+    goto :goto_15
+
+    :cond_14
+    const/4 p0, -0x1
+
+    :goto_15
+    return p0
+.end method
+
+.method private getPermissionState(Ljava/lang/String;Ljava/lang/String;)Landroidx/slice/compat/CompatPermissionManager$PermissionState;
+    .registers 5
+
+    .line 113
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string p1, "_"
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object p1
+
+    .line 114
+    invoke-direct {p0}, Landroidx/slice/compat/CompatPermissionManager;->getPrefs()Landroid/content/SharedPreferences;
+
+    move-result-object p2
+
+    invoke-static {}, Ljava/util/Collections;->emptySet()Ljava/util/Set;
+
+    move-result-object v0
+
+    invoke-interface {p2, p1, v0}, Landroid/content/SharedPreferences;->getStringSet(Ljava/lang/String;Ljava/util/Set;)Ljava/util/Set;
+
+    move-result-object p2
+
+    .line 115
+    invoke-direct {p0}, Landroidx/slice/compat/CompatPermissionManager;->getPrefs()Landroid/content/SharedPreferences;
+
+    move-result-object p0
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v1, "_all"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    const/4 v1, 0x0
+
+    invoke-interface {p0, v0, v1}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z
+
+    move-result p0
+
+    .line 116
+    new-instance v0, Landroidx/slice/compat/CompatPermissionManager$PermissionState;
+
+    invoke-direct {v0, p2, p1, p0}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;-><init>(Ljava/util/Set;Ljava/lang/String;Z)V
+
+    return-object v0
+.end method
+
+.method private getPrefs()Landroid/content/SharedPreferences;
+    .registers 3
+
+    .line 61
+    iget-object v0, p0, Landroidx/slice/compat/CompatPermissionManager;->mContext:Landroid/content/Context;
+
+    iget-object p0, p0, Landroidx/slice/compat/CompatPermissionManager;->mPrefsName:Ljava/lang/String;
+
+    const/4 v1, 0x0
+
+    invoke-virtual {v0, p0, v1}, Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method private declared-synchronized persist(Landroidx/slice/compat/CompatPermissionManager$PermissionState;)V
+    .registers 5
+
+    monitor-enter p0
+
+    .line 106
+    :try_start_1
+    invoke-direct {p0}, Landroidx/slice/compat/CompatPermissionManager;->getPrefs()Landroid/content/SharedPreferences;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
+
+    move-result-object v0
+
+    .line 107
+    invoke-virtual {p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->getKey()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->toPersistable()Ljava/util/Set;
+
+    move-result-object v2
+
+    invoke-interface {v0, v1, v2}, Landroid/content/SharedPreferences$Editor;->putStringSet(Ljava/lang/String;Ljava/util/Set;)Landroid/content/SharedPreferences$Editor;
+
+    move-result-object v0
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    .line 108
+    invoke-virtual {p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->getKey()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, "_all"
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->hasAllPermissions()Z
+
+    move-result p1
+
+    invoke-interface {v0, v1, p1}, Landroid/content/SharedPreferences$Editor;->putBoolean(Ljava/lang/String;Z)Landroid/content/SharedPreferences$Editor;
+
+    move-result-object p1
+
+    .line 109
+    invoke-interface {p1}, Landroid/content/SharedPreferences$Editor;->apply()V
+    :try_end_35
+    .catchall {:try_start_1 .. :try_end_35} :catchall_37
+
+    .line 110
+    monitor-exit p0
+
+    return-void
+
+    :catchall_37
+    move-exception p1
+
+    monitor-exit p0
+
+    throw p1
+.end method
+
+
+# virtual methods
+.method public checkSlicePermission(Landroid/net/Uri;II)I
+    .registers 11
+
+    .line 65
+    iget v0, p0, Landroidx/slice/compat/CompatPermissionManager;->mMyUid:I
+
+    const/4 v1, 0x0
+
+    if-ne p3, v0, :cond_6
+
+    return v1
+
+    .line 68
+    :cond_6
+    iget-object v0, p0, Landroidx/slice/compat/CompatPermissionManager;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p3}, Landroid/content/pm/PackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 69
+    array-length v2, v0
+
+    move v3, v1
+
+    :goto_12
+    if-ge v3, v2, :cond_20
+
+    aget-object v4, v0, v3
+
+    .line 70
+    invoke-direct {p0, p1, v4}, Landroidx/slice/compat/CompatPermissionManager;->checkSlicePermission(Landroid/net/Uri;Ljava/lang/String;)I
+
+    move-result v4
+
+    if-nez v4, :cond_1d
+
+    return v1
+
+    :cond_1d
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_12
+
+    .line 74
+    :cond_20
+    iget-object v2, p0, Landroidx/slice/compat/CompatPermissionManager;->mAutoGrantPermissions:[Ljava/lang/String;
+
+    array-length v3, v2
+
+    move v4, v1
+
+    :goto_24
+    if-ge v4, v3, :cond_40
+
+    aget-object v5, v2, v4
+
+    .line 75
+    iget-object v6, p0, Landroidx/slice/compat/CompatPermissionManager;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v6, v5, p2, p3}, Landroid/content/Context;->checkPermission(Ljava/lang/String;II)I
+
+    move-result v5
+
+    if-nez v5, :cond_3d
+
+    .line 76
+    array-length p2, v0
+
+    move p3, v1
+
+    :goto_32
+    if-ge p3, p2, :cond_3c
+
+    aget-object v2, v0, p3
+
+    .line 77
+    invoke-virtual {p0, p1, v2}, Landroidx/slice/compat/CompatPermissionManager;->grantSlicePermission(Landroid/net/Uri;Ljava/lang/String;)V
+
+    add-int/lit8 p3, p3, 0x1
+
+    goto :goto_32
+
+    :cond_3c
+    return v1
+
+    :cond_3d
+    add-int/lit8 v4, v4, 0x1
+
+    goto :goto_24
+
+    .line 83
+    :cond_40
+    iget-object p0, p0, Landroidx/slice/compat/CompatPermissionManager;->mContext:Landroid/content/Context;
+
+    const/4 v0, 0x2
+
+    invoke-virtual {p0, p1, p2, p3, v0}, Landroid/content/Context;->checkUriPermission(Landroid/net/Uri;III)I
+
+    move-result p0
+
+    return p0
+.end method
+
+.method public grantSlicePermission(Landroid/net/Uri;Ljava/lang/String;)V
+    .registers 4
+
+    .line 92
+    invoke-virtual {p1}, Landroid/net/Uri;->getAuthority()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-direct {p0, p2, v0}, Landroidx/slice/compat/CompatPermissionManager;->getPermissionState(Ljava/lang/String;Ljava/lang/String;)Landroidx/slice/compat/CompatPermissionManager$PermissionState;
+
+    move-result-object p2
+
+    .line 93
+    invoke-virtual {p1}, Landroid/net/Uri;->getPathSegments()Ljava/util/List;
+
+    move-result-object p1
+
+    invoke-virtual {p2, p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->addPath(Ljava/util/List;)Z
+
+    move-result p1
+
+    if-eqz p1, :cond_15
+
+    .line 94
+    invoke-direct {p0, p2}, Landroidx/slice/compat/CompatPermissionManager;->persist(Landroidx/slice/compat/CompatPermissionManager$PermissionState;)V
+
+    :cond_15
+    return-void
+.end method
+
+.method public revokeSlicePermission(Landroid/net/Uri;Ljava/lang/String;)V
+    .registers 4
+
+    .line 99
+    invoke-virtual {p1}, Landroid/net/Uri;->getAuthority()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-direct {p0, p2, v0}, Landroidx/slice/compat/CompatPermissionManager;->getPermissionState(Ljava/lang/String;Ljava/lang/String;)Landroidx/slice/compat/CompatPermissionManager$PermissionState;
+
+    move-result-object p2
+
+    .line 100
+    invoke-virtual {p1}, Landroid/net/Uri;->getPathSegments()Ljava/util/List;
+
+    move-result-object p1
+
+    invoke-virtual {p2, p1}, Landroidx/slice/compat/CompatPermissionManager$PermissionState;->removePath(Ljava/util/List;)Z
+
+    move-result p1
+
+    if-eqz p1, :cond_15
+
+    .line 101
+    invoke-direct {p0, p2}, Landroidx/slice/compat/CompatPermissionManager;->persist(Landroidx/slice/compat/CompatPermissionManager$PermissionState;)V
+
+    :cond_15
+    return-void
+.end method
