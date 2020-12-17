@@ -782,6 +782,7 @@
 
     if-nez v1, :cond_c
 
+    .line 208
     .line 210
     :cond_c
     iget-object v1, p0, Lcom/flyme/systemui/statusbar/policy/MzFlashlightControllerImpl;->mMeizuCamera:Lcom/meizu/camera/MeizuCamera;

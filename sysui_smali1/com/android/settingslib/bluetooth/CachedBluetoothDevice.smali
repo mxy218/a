@@ -70,6 +70,10 @@
 
 .field private mMeizuDeviceInfo:Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
 
+.field public mMeizuLeftBatteryLevel:I
+
+.field public mMeizuRightBatteryLevel:I
+
 .field private final mProfileLock:Ljava/lang/Object;
 
 .field private final mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
@@ -136,7 +140,7 @@
 .method constructor <init>(Landroid/content/Context;Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;Landroid/bluetooth/BluetoothDevice;)V
     .registers 6
 
-    .line 139
+    .line 142
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     .line 74
@@ -172,76 +176,82 @@
     .line 96
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsPairingBySettings:Z
 
-    .line 108
+    const/4 v1, -0x1
+
+    .line 99
+    iput v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuLeftBatteryLevel:I
+
+    .line 100
+    iput v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuRightBatteryLevel:I
+
+    .line 111
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
-    .line 109
+    .line 112
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
-    .line 110
+    .line 113
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHearingAid:Z
 
-    .line 129
+    .line 132
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
-    const/4 v0, -0x1
+    .line 133
+    iput v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuAuthState:I
 
-    .line 130
-    iput v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuAuthState:I
+    const/4 v0, 0x0
 
-    const/4 v1, 0x0
+    .line 134
+    iput-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
 
-    .line 131
-    iput-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
+    .line 135
+    iput-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuDeviceInfo:Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
 
-    .line 132
-    iput-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuDeviceInfo:Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
+    .line 144
+    invoke-static {p1, v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothManager;->getInstance(Landroid/content/Context;Lcom/android/settingslib/bluetooth/LocalBluetoothManager$BluetoothManagerCallback;)Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
 
-    .line 141
-    invoke-static {p1, v1}, Lcom/android/settingslib/bluetooth/LocalBluetoothManager;->getInstance(Landroid/content/Context;Lcom/android/settingslib/bluetooth/LocalBluetoothManager$BluetoothManagerCallback;)Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
+    move-result-object v0
 
-    move-result-object v1
-
-    iput-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalManager:Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
-
-    .line 145
-    iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalManager:Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
-
-    invoke-virtual {v1}, Lcom/android/settingslib/bluetooth/LocalBluetoothManager;->getDevicesXml()Lcom/android/settingslib/bluetooth/XmlReader;
-
-    move-result-object v1
-
-    iput-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
-
-    .line 147
-    iput-object p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
+    iput-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalManager:Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
 
     .line 148
+    iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalManager:Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
+
+    invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothManager;->getDevicesXml()Lcom/android/settingslib/bluetooth/XmlReader;
+
+    move-result-object v0
+
+    iput-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
+
+    .line 150
+    iput-object p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
+
+    .line 151
     invoke-static {}, Landroid/bluetooth/BluetoothAdapter;->getDefaultAdapter()Landroid/bluetooth/BluetoothAdapter;
 
     move-result-object p1
 
     iput-object p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalAdapter:Landroid/bluetooth/BluetoothAdapter;
 
-    .line 149
+    .line 152
     iput-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
-    .line 150
+    .line 153
     iput-object p3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 151
+    .line 154
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->fillData()V
 
     const-wide/16 p1, 0x0
 
-    .line 152
+    .line 155
     iput-wide p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mHiSyncId:J
 
-    .line 153
-    iput v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mTwspBatteryState:I
+    .line 156
+    iput v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mTwspBatteryState:I
 
-    .line 154
-    iput v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mTwspBatteryLevel:I
+    .line 157
+    iput v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mTwspBatteryLevel:I
 
     return-void
 .end method
@@ -249,7 +259,7 @@
 .method private connectAutoConnectableProfiles()V
     .registers 6
 
-    .line 360
+    .line 363
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->ensurePaired()Z
 
     move-result v0
@@ -258,13 +268,13 @@
 
     return-void
 
-    .line 364
+    .line 367
     :cond_7
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 365
+    .line 368
     :try_start_a
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -286,26 +296,26 @@
 
     check-cast v2, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;
 
-    .line 366
+    .line 369
     invoke-interface {v2}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->isAutoConnectable()Z
 
     move-result v3
 
     if-eqz v3, :cond_2c
 
-    .line 367
+    .line 370
     iget-object v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     const/4 v4, 0x1
 
     invoke-interface {v2, v3, v4}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->setPreferred(Landroid/bluetooth/BluetoothDevice;Z)V
 
-    .line 368
+    .line 371
     invoke-virtual {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connectInt(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)V
 
     goto :goto_10
 
-    .line 372
+    .line 375
     :cond_2c
     iget-boolean v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mUserConnect:Z
 
@@ -319,20 +329,20 @@
 
     const-string/jumbo v4, "user connect pan"
 
-    .line 373
+    .line 376
     invoke-static {v3, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 374
+    .line 377
     invoke-virtual {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connectInt(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)V
 
     const/4 v2, 0x0
 
-    .line 375
+    .line 378
     iput-boolean v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mUserConnect:Z
 
     goto :goto_10
 
-    .line 379
+    .line 382
     :cond_43
     monitor-exit v0
 
@@ -351,12 +361,12 @@
 .method private connectWithoutResettingTimer(Z)V
     .registers 7
 
-    .line 324
+    .line 327
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 326
+    .line 329
     :try_start_3
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -366,7 +376,7 @@
 
     if-eqz v1, :cond_2b
 
-    .line 335
+    .line 338
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v1
@@ -375,7 +385,7 @@
 
     const-string p1, "CachedBluetoothDevice"
 
-    .line 337
+    .line 340
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -394,7 +404,7 @@
 
     invoke-static {p1, p0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 338
+    .line 341
     monitor-exit v0
 
     return-void
@@ -402,7 +412,7 @@
     :cond_2b
     const/4 v1, 0x0
 
-    .line 342
+    .line 345
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
     invoke-interface {v2}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -425,7 +435,7 @@
 
     if-eqz p1, :cond_47
 
-    .line 343
+    .line 346
     invoke-interface {v3}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->accessProfileEnabled()Z
 
     move-result v4
@@ -434,7 +444,7 @@
 
     goto :goto_4d
 
-    .line 344
+    .line 347
     :cond_47
     invoke-interface {v3}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->isAutoConnectable()Z
 
@@ -442,7 +452,7 @@
 
     if-eqz v4, :cond_32
 
-    .line 345
+    .line 348
     :goto_4d
     iget-object v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
@@ -454,7 +464,7 @@
 
     add-int/lit8 v1, v1, 0x1
 
-    .line 347
+    .line 350
     invoke-virtual {p0, v3}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connectInt(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)V
 
     goto :goto_32
@@ -462,7 +472,7 @@
     :cond_5b
     const-string p1, "CachedBluetoothDevice"
 
-    .line 351
+    .line 354
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -481,10 +491,10 @@
 
     if-nez v1, :cond_76
 
-    .line 354
+    .line 357
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connectAutoConnectableProfiles()V
 
-    .line 356
+    .line 359
     :cond_76
     monitor-exit v0
 
@@ -503,7 +513,7 @@
 .method private debugLog(Ljava/lang/String;)V
     .registers 2
 
-    .line 1432
+    .line 1433
     sget-boolean p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->DBG:Z
 
     if-eqz p0, :cond_9
@@ -519,14 +529,14 @@
 .method private describe(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)Ljava/lang/String;
     .registers 4
 
-    .line 180
+    .line 183
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
     const-string v1, "Address:"
 
-    .line 181
+    .line 184
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
@@ -537,12 +547,12 @@
 
     const-string p0, " Profile:"
 
-    .line 183
+    .line 186
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 186
+    .line 189
     :cond_19
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -558,7 +568,7 @@
 
     return-void
 
-    .line 1536
+    .line 1537
     :cond_3
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -568,10 +578,10 @@
 
     if-eqz v0, :cond_e
 
-    .line 1538
+    .line 1539
     invoke-virtual {v0, p1}, Lcom/android/settingslib/bluetooth/A2dpProfile;->disconnect(Landroid/bluetooth/BluetoothDevice;)Z
 
-    .line 1540
+    .line 1541
     :cond_e
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -581,7 +591,7 @@
 
     if-eqz p0, :cond_19
 
-    .line 1542
+    .line 1543
     invoke-virtual {p0, p1}, Lcom/android/settingslib/bluetooth/HeadsetProfile;->disconnect(Landroid/bluetooth/BluetoothDevice;)Z
 
     :cond_19
@@ -591,7 +601,7 @@
 .method private ensurePaired()Z
     .registers 3
 
-    .line 408
+    .line 411
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getBondState()I
 
     move-result v0
@@ -600,7 +610,7 @@
 
     if-ne v0, v1, :cond_d
 
-    .line 409
+    .line 412
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->startPairing()Z
 
     const/4 p0, 0x0
@@ -616,7 +626,7 @@
 .method private fetchActiveDevices()V
     .registers 3
 
-    .line 757
+    .line 760
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->getA2dpProfile()Lcom/android/settingslib/bluetooth/A2dpProfile;
@@ -625,7 +635,7 @@
 
     if-eqz v0, :cond_14
 
-    .line 759
+    .line 762
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/A2dpProfile;->getActiveDevice()Landroid/bluetooth/BluetoothDevice;
@@ -638,7 +648,7 @@
 
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
-    .line 761
+    .line 764
     :cond_14
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -648,7 +658,7 @@
 
     if-eqz v0, :cond_28
 
-    .line 763
+    .line 766
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/HeadsetProfile;->getActiveDevice()Landroid/bluetooth/BluetoothDevice;
@@ -661,7 +671,7 @@
 
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
-    .line 765
+    .line 768
     :cond_28
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -671,7 +681,7 @@
 
     if-eqz v0, :cond_3c
 
-    .line 767
+    .line 770
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/HearingAidProfile;->getActiveDevices()Ljava/util/List;
 
     move-result-object v0
@@ -691,19 +701,19 @@
 .method private fillData()V
     .registers 1
 
-    .line 482
+    .line 485
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->updateProfiles()Z
 
-    .line 483
+    .line 486
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->fetchActiveDevices()V
 
-    .line 484
+    .line 487
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->migratePhonebookPermissionChoice()V
 
-    .line 485
+    .line 488
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->migrateMessagePermissionChoice()V
 
-    .line 487
+    .line 490
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
     return-void
@@ -712,7 +722,7 @@
 .method private getTwsPeerDevice()Landroid/bluetooth/BluetoothDevice;
     .registers 2
 
-    .line 165
+    .line 168
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothDevice;->isTwsPlusDevice()Z
@@ -721,19 +731,19 @@
 
     if-eqz v0, :cond_17
 
-    .line 166
+    .line 169
     invoke-static {}, Landroid/bluetooth/BluetoothAdapter;->getDefaultAdapter()Landroid/bluetooth/BluetoothAdapter;
 
     move-result-object v0
 
-    .line 167
+    .line 170
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getTwsPlusPeerAddress()Ljava/lang/String;
 
     move-result-object p0
 
-    .line 168
+    .line 171
     invoke-virtual {v0, p0}, Landroid/bluetooth/BluetoothAdapter;->getRemoteDevice(Ljava/lang/String;)Landroid/bluetooth/BluetoothDevice;
 
     move-result-object p0
@@ -747,40 +757,10 @@
     return-object p0
 .end method
 
-.method private isAudioDevice(Landroid/bluetooth/BluetoothClass;)Z
-    .registers 4
-
-    const/4 p0, 0x0
-
-    if-eqz p1, :cond_11
-
-    const/4 v0, 0x1
-
-    .line 1550
-    invoke-virtual {p1, v0}, Landroid/bluetooth/BluetoothClass;->doesClassMatch(I)Z
-
-    move-result v1
-
-    if-nez v1, :cond_10
-
-    .line 1551
-    invoke-virtual {p1, p0}, Landroid/bluetooth/BluetoothClass;->doesClassMatch(I)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_11
-
-    :cond_10
-    move p0, v0
-
-    :cond_11
-    return p0
-.end method
-
 .method private isRemoteSupportNAP()Z
     .registers 3
 
-    .line 191
+    .line 194
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getUuids()[Landroid/os/ParcelUuid;
@@ -793,7 +773,7 @@
 
     return v0
 
-    .line 193
+    .line 196
     :cond_a
     sget-object v1, Landroid/bluetooth/BluetoothUuid;->NAP:Landroid/os/ParcelUuid;
 
@@ -807,7 +787,7 @@
 
     const-string v0, "isRemoteSupportNAP = true"
 
-    .line 194
+    .line 197
     invoke-static {p0, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     const/4 p0, 0x1
@@ -821,7 +801,7 @@
 .method private migrateMessagePermissionChoice()V
     .registers 4
 
-    .line 1004
+    .line 1007
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
 
     const/4 v1, 0x0
@@ -832,7 +812,7 @@
 
     move-result-object v0
 
-    .line 1006
+    .line 1009
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v2}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -847,7 +827,7 @@
 
     return-void
 
-    .line 1010
+    .line 1013
     :cond_16
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
@@ -857,10 +837,10 @@
 
     if-nez v2, :cond_39
 
-    .line 1011
+    .line 1014
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 1012
+    .line 1015
     invoke-virtual {v2}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
 
     move-result-object v2
@@ -873,7 +853,7 @@
 
     if-ne v1, v2, :cond_31
 
-    .line 1014
+    .line 1017
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v2}, Landroid/bluetooth/BluetoothDevice;->setMessageAccessPermission(I)Z
@@ -885,19 +865,19 @@
 
     if-ne v1, v2, :cond_39
 
-    .line 1016
+    .line 1019
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v2}, Landroid/bluetooth/BluetoothDevice;->setMessageAccessPermission(I)Z
 
-    .line 1020
+    .line 1023
     :cond_39
     :goto_39
     invoke-interface {v0}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
 
     move-result-object v0
 
-    .line 1021
+    .line 1024
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -906,7 +886,7 @@
 
     invoke-interface {v0, p0}, Landroid/content/SharedPreferences$Editor;->remove(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;
 
-    .line 1022
+    .line 1025
     invoke-interface {v0}, Landroid/content/SharedPreferences$Editor;->commit()Z
 
     return-void
@@ -915,7 +895,7 @@
 .method private migratePhonebookPermissionChoice()V
     .registers 4
 
-    .line 969
+    .line 972
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
 
     const/4 v1, 0x0
@@ -926,7 +906,7 @@
 
     move-result-object v0
 
-    .line 971
+    .line 974
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v2}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -941,7 +921,7 @@
 
     return-void
 
-    .line 975
+    .line 978
     :cond_16
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
@@ -951,10 +931,10 @@
 
     if-nez v2, :cond_39
 
-    .line 976
+    .line 979
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 977
+    .line 980
     invoke-virtual {v2}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
 
     move-result-object v2
@@ -967,7 +947,7 @@
 
     if-ne v1, v2, :cond_31
 
-    .line 979
+    .line 982
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v2}, Landroid/bluetooth/BluetoothDevice;->setPhonebookAccessPermission(I)Z
@@ -979,19 +959,19 @@
 
     if-ne v1, v2, :cond_39
 
-    .line 981
+    .line 984
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v2}, Landroid/bluetooth/BluetoothDevice;->setPhonebookAccessPermission(I)Z
 
-    .line 985
+    .line 988
     :cond_39
     :goto_39
     invoke-interface {v0}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
 
     move-result-object v0
 
-    .line 986
+    .line 989
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -1000,7 +980,7 @@
 
     invoke-interface {v0, p0}, Landroid/content/SharedPreferences$Editor;->remove(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;
 
-    .line 987
+    .line 990
     invoke-interface {v0}, Landroid/content/SharedPreferences$Editor;->commit()Z
 
     return-void
@@ -1009,7 +989,7 @@
 .method private updateProfiles()Z
     .registers 11
 
-    .line 725
+    .line 728
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothDevice;->getUuids()[Landroid/os/ParcelUuid;
@@ -1022,7 +1002,7 @@
 
     return v8
 
-    .line 728
+    .line 731
     :cond_a
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalAdapter:Landroid/bluetooth/BluetoothAdapter;
 
@@ -1034,13 +1014,13 @@
 
     return v8
 
-    .line 738
+    .line 741
     :cond_13
     iget-object v9, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v9
 
-    .line 739
+    .line 742
     :try_start_16
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -1056,17 +1036,17 @@
 
     invoke-virtual/range {v1 .. v7}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->updateProfiles([Landroid/os/ParcelUuid;[Landroid/os/ParcelUuid;Ljava/util/Collection;Ljava/util/Collection;ZLandroid/bluetooth/BluetoothDevice;)V
 
-    .line 741
+    .line 744
     monitor-exit v9
     :try_end_25
     .catchall {:try_start_16 .. :try_end_25} :catchall_99
 
-    .line 743
+    .line 746
     sget-boolean v1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->DBG:Z
 
     if-eqz v1, :cond_97
 
-    .line 744
+    .line 747
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1099,7 +1079,7 @@
 
     invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 745
+    .line 748
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getBluetoothClass()Landroid/bluetooth/BluetoothClass;
@@ -1108,7 +1088,7 @@
 
     if-eqz p0, :cond_72
 
-    .line 747
+    .line 750
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1136,10 +1116,10 @@
 
     const-string v1, "UUID:"
 
-    .line 748
+    .line 751
     invoke-static {p0, v1}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 749
+    .line 752
     array-length p0, v0
 
     :goto_7a
@@ -1147,7 +1127,7 @@
 
     aget-object v1, v0, v8
 
-    .line 750
+    .line 753
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1178,7 +1158,7 @@
     :catchall_99
     move-exception p0
 
-    .line 741
+    .line 744
     :try_start_9a
     monitor-exit v9
     :try_end_9b
@@ -1192,7 +1172,7 @@
 .method public compareTo(Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;)I
     .registers 7
 
-    .line 923
+    .line 926
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
 
     invoke-static {v0}, Lcom/android/settingslib/Utils;->isAudioModeOngoingCall(Landroid/content/Context;)Z
@@ -1201,7 +1181,7 @@
 
     if-eqz v0, :cond_10
 
-    .line 924
+    .line 927
     iget-boolean v0, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
     iget-boolean v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
@@ -1212,7 +1192,7 @@
 
     return v0
 
-    .line 927
+    .line 930
     :cond_10
     iget-boolean v0, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
@@ -1224,7 +1204,7 @@
 
     return v0
 
-    .line 931
+    .line 934
     :cond_18
     invoke-virtual {p1}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isConnected()Z
 
@@ -1240,7 +1220,7 @@
 
     return v0
 
-    .line 936
+    .line 939
     :cond_24
     iget v0, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuAuthState:I
 
@@ -1257,7 +1237,7 @@
     :cond_2c
     move v0, v2
 
-    .line 937
+    .line 940
     :goto_2d
     iget v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuAuthState:I
 
@@ -1270,7 +1250,7 @@
     :cond_33
     move v3, v2
 
-    .line 938
+    .line 941
     :goto_34
     iget-boolean v4, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
@@ -1285,7 +1265,7 @@
     :cond_3c
     move v0, v2
 
-    .line 939
+    .line 942
     :goto_3d
     iget-boolean v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
@@ -1305,7 +1285,7 @@
 
     return v0
 
-    .line 951
+    .line 954
     :cond_49
     iget-boolean v0, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
@@ -1317,7 +1297,7 @@
 
     return v0
 
-    .line 955
+    .line 958
     :cond_51
     iget-short v0, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
@@ -1329,7 +1309,7 @@
 
     return v0
 
-    .line 959
+    .line 962
     :cond_59
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getName()Ljava/lang/String;
 
@@ -1362,7 +1342,7 @@
 .method public connect(Z)V
     .registers 4
 
-    .line 291
+    .line 294
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->ensurePaired()Z
 
     move-result v0
@@ -1371,18 +1351,18 @@
 
     return-void
 
-    .line 296
+    .line 299
     :cond_7
     iput-boolean p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mUserConnect:Z
 
-    .line 298
+    .line 301
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v0
 
     iput-wide v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mConnectAttempted:J
 
-    .line 299
+    .line 302
     invoke-direct {p0, p1}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connectWithoutResettingTimer(Z)V
 
     return-void
@@ -1393,7 +1373,7 @@
 
     monitor-enter p0
 
-    .line 395
+    .line 398
     :try_start_1
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->ensurePaired()Z
 
@@ -1403,12 +1383,12 @@
 
     if-nez v0, :cond_9
 
-    .line 396
+    .line 399
     monitor-exit p0
 
     return-void
 
-    .line 398
+    .line 401
     :cond_9
     :try_start_9
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
@@ -1421,7 +1401,7 @@
 
     const-string v0, "CachedBluetoothDevice"
 
-    .line 400
+    .line 403
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1444,7 +1424,7 @@
     :try_end_2b
     .catchall {:try_start_9 .. :try_end_2b} :catchall_55
 
-    .line 402
+    .line 405
     monitor-exit p0
 
     return-void
@@ -1453,7 +1433,7 @@
     :try_start_2d
     const-string v0, "CachedBluetoothDevice"
 
-    .line 404
+    .line 407
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1486,7 +1466,7 @@
     :try_end_53
     .catchall {:try_start_2d .. :try_end_53} :catchall_55
 
-    .line 405
+    .line 408
     monitor-exit p0
 
     return-void
@@ -1502,12 +1482,12 @@
 .method public disconnect()V
     .registers 5
 
-    .line 261
+    .line 264
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 262
+    .line 265
     :try_start_3
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -1528,7 +1508,7 @@
 
     check-cast v2, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;
 
-    .line 264
+    .line 267
     instance-of v3, v2, Lcom/android/settingslib/bluetooth/PanProfile;
 
     if-eqz v3, :cond_27
@@ -1543,24 +1523,24 @@
 
     const-string v3, "pan not connected, skip disconnect"
 
-    .line 265
+    .line 268
     invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_9
 
-    .line 267
+    .line 270
     :cond_27
     invoke-virtual {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->disconnect(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)V
 
     goto :goto_9
 
-    .line 271
+    .line 274
     :cond_2b
     monitor-exit v0
     :try_end_2c
     .catchall {:try_start_3 .. :try_end_2c} :catchall_40
 
-    .line 275
+    .line 278
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->getPbapProfile()Lcom/android/settingslib/bluetooth/PbapServerProfile;
@@ -1569,14 +1549,14 @@
 
     if-eqz v0, :cond_3f
 
-    .line 276
+    .line 279
     invoke-virtual {p0, v0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isConnectedProfile(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)Z
 
     move-result v1
 
     if-eqz v1, :cond_3f
 
-    .line 278
+    .line 281
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0, p0}, Lcom/android/settingslib/bluetooth/PbapServerProfile;->disconnect(Landroid/bluetooth/BluetoothDevice;)Z
@@ -1587,7 +1567,7 @@
     :catchall_40
     move-exception p0
 
-    .line 271
+    .line 274
     :try_start_41
     monitor-exit v0
     :try_end_42
@@ -1599,7 +1579,7 @@
 .method public disconnect(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)V
     .registers 4
 
-    .line 283
+    .line 286
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-interface {p1, v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->disconnect(Landroid/bluetooth/BluetoothDevice;)Z
@@ -1608,7 +1588,7 @@
 
     if-eqz v0, :cond_22
 
-    .line 285
+    .line 288
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1638,12 +1618,12 @@
 .method dispatchAttributesChanged()V
     .registers 3
 
-    .line 891
+    .line 894
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mCallbacks:Ljava/util/Collection;
 
     monitor-enter v0
 
-    .line 892
+    .line 895
     :try_start_3
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mCallbacks:Ljava/util/Collection;
 
@@ -1664,12 +1644,12 @@
 
     check-cast v1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice$Callback;
 
-    .line 893
+    .line 896
     invoke-interface {v1}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice$Callback;->onDeviceAttributesChanged()V
 
     goto :goto_9
 
-    .line 895
+    .line 898
     :cond_19
     monitor-exit v0
 
@@ -1690,14 +1670,14 @@
 
     if-eqz p1, :cond_12
 
-    .line 905
+    .line 908
     instance-of v0, p1, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;
 
     if-nez v0, :cond_7
 
     goto :goto_12
 
-    .line 908
+    .line 911
     :cond_7
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
@@ -1721,7 +1701,7 @@
 .method public getAddress()Ljava/lang/String;
     .registers 1
 
-    .line 500
+    .line 503
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -1734,7 +1714,7 @@
 .method public getBondState()I
     .registers 1
 
-    .line 612
+    .line 615
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getBondState()I
@@ -1747,7 +1727,7 @@
 .method public getBtClass()Landroid/bluetooth/BluetoothClass;
     .registers 1
 
-    .line 854
+    .line 857
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getBluetoothClass()Landroid/bluetooth/BluetoothClass;
@@ -1760,7 +1740,7 @@
 .method public getDevice()Landroid/bluetooth/BluetoothDevice;
     .registers 1
 
-    .line 491
+    .line 494
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     return-object p0
@@ -1769,7 +1749,7 @@
 .method public getHiSyncId()J
     .registers 3
 
-    .line 303
+    .line 306
     iget-wide v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mHiSyncId:J
 
     return-wide v0
@@ -1778,12 +1758,12 @@
 .method public getMaxConnectionState()I
     .registers 5
 
-    .line 1047
+    .line 1050
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 1048
+    .line 1051
     :try_start_3
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getProfiles()Ljava/util/List;
 
@@ -1809,7 +1789,7 @@
 
     check-cast v3, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;
 
-    .line 1049
+    .line 1052
     invoke-virtual {p0, v3}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getProfileConnectionState(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)I
 
     move-result v3
@@ -1820,7 +1800,7 @@
 
     goto :goto_c
 
-    .line 1054
+    .line 1057
     :cond_20
     monitor-exit v0
 
@@ -1839,14 +1819,14 @@
 .method public getMeizuAuthState()I
     .registers 2
 
-    .line 1502
+    .line 1503
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-static {v0}, Lcom/android/settingslib/bluetooth/BlacklistFileControl;->getBlacklistState(Landroid/bluetooth/BluetoothDevice;)I
 
     move-result v0
 
-    .line 1503
+    .line 1504
     iput v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuAuthState:I
 
     return v0
@@ -1855,7 +1835,7 @@
 .method public getMeizuDeviceInfo()Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
     .registers 4
 
-    .line 1512
+    .line 1513
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
 
     if-nez v0, :cond_6
@@ -1864,7 +1844,7 @@
 
     return-object p0
 
-    .line 1515
+    .line 1516
     :cond_6
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getAddress()Ljava/lang/String;
 
@@ -1874,28 +1854,17 @@
 
     move-result-object v1
 
-    if-eqz v1, :cond_1b
-
-    .line 1516
-    invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getBtClass()Landroid/bluetooth/BluetoothClass;
-
-    move-result-object v2
-
-    invoke-direct {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isAudioDevice(Landroid/bluetooth/BluetoothClass;)Z
-
-    move-result v2
-
-    if-eqz v2, :cond_1b
+    if-eqz v1, :cond_11
 
     move-object v0, v1
 
-    .line 1519
-    :cond_1b
+    .line 1520
+    :cond_11
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuDeviceInfo:Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
 
-    if-nez v1, :cond_28
+    if-nez v1, :cond_1e
 
-    .line 1520
+    .line 1521
     new-instance v1, Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
 
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
@@ -1904,8 +1873,8 @@
 
     iput-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuDeviceInfo:Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
 
-    .line 1523
-    :cond_28
+    .line 1524
+    :cond_1e
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mMeizuDeviceInfo:Lcom/android/settingslib/bluetooth/MeizuDeviceInfo;
 
     return-object p0
@@ -1914,14 +1883,14 @@
 .method public getName()Ljava/lang/String;
     .registers 3
 
-    .line 510
+    .line 513
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothDevice;->getAliasName()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 511
+    .line 514
     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v1
@@ -1941,7 +1910,7 @@
 
     if-eqz p1, :cond_9
 
-    .line 476
+    .line 479
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-interface {p1, p0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->getConnectionStatus(Landroid/bluetooth/BluetoothDevice;)I
@@ -1968,7 +1937,7 @@
         }
     .end annotation
 
-    .line 858
+    .line 861
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
     invoke-static {p0}, Ljava/util/Collections;->unmodifiableList(Ljava/util/List;)Ljava/util/List;
@@ -1981,7 +1950,7 @@
 .method public getSubDevice()Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;
     .registers 1
 
-    .line 1401
+    .line 1402
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mSubDevice:Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;
 
     return-object p0
@@ -1990,7 +1959,7 @@
 .method public hashCode()I
     .registers 1
 
-    .line 913
+    .line 916
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -2022,7 +1991,7 @@
 
     if-eq p1, v0, :cond_22
 
-    .line 668
+    .line 671
     new-instance p0, Ljava/lang/StringBuilder;
 
     invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2045,19 +2014,19 @@
 
     return p0
 
-    .line 666
+    .line 669
     :cond_22
     iget-boolean p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHearingAid:Z
 
     return p0
 
-    .line 662
+    .line 665
     :cond_25
     iget-boolean p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
     return p0
 
-    .line 664
+    .line 667
     :cond_28
     iget-boolean p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
@@ -2067,12 +2036,12 @@
 .method public isBusy()Z
     .registers 6
 
-    .line 712
+    .line 715
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 713
+    .line 716
     :try_start_3
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -2095,7 +2064,7 @@
 
     check-cast v2, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;
 
-    .line 714
+    .line 717
     invoke-virtual {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getProfileConnectionState(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)I
 
     move-result v2
@@ -2106,13 +2075,13 @@
 
     if-ne v2, v4, :cond_9
 
-    .line 717
+    .line 720
     :cond_1f
     monitor-exit v0
 
     return v3
 
-    .line 720
+    .line 723
     :cond_21
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getBondState()I
 
@@ -2135,7 +2104,7 @@
     :catchall_2d
     move-exception p0
 
-    .line 721
+    .line 724
     monitor-exit v0
     :try_end_2f
     .catchall {:try_start_3 .. :try_end_2f} :catchall_2d
@@ -2146,12 +2115,12 @@
 .method public isConnected()Z
     .registers 5
 
-    .line 693
+    .line 696
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v0
 
-    .line 694
+    .line 697
     :try_start_3
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -2172,7 +2141,7 @@
 
     check-cast v2, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;
 
-    .line 695
+    .line 698
     invoke-virtual {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getProfileConnectionState(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)I
 
     move-result v2
@@ -2183,7 +2152,7 @@
 
     const/4 p0, 0x1
 
-    .line 697
+    .line 700
     monitor-exit v0
 
     return p0
@@ -2191,7 +2160,7 @@
     :cond_1f
     const/4 p0, 0x0
 
-    .line 701
+    .line 704
     monitor-exit v0
 
     return p0
@@ -2199,7 +2168,7 @@
     :catchall_22
     move-exception p0
 
-    .line 702
+    .line 705
     monitor-exit v0
     :try_end_24
     .catchall {:try_start_3 .. :try_end_24} :catchall_22
@@ -2210,14 +2179,14 @@
 .method public isConnectedA2dpDevice()Z
     .registers 6
 
-    .line 1370
+    .line 1371
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->getA2dpProfile()Lcom/android/settingslib/bluetooth/A2dpProfile;
 
     move-result-object v0
 
-    .line 1371
+    .line 1372
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
     invoke-virtual {v1}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->getA2dpSinkProfile()Lcom/android/settingslib/bluetooth/A2dpSinkProfile;
@@ -2232,7 +2201,7 @@
 
     if-eqz v0, :cond_1c
 
-    .line 1373
+    .line 1374
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0, p0}, Lcom/android/settingslib/bluetooth/A2dpProfile;->getConnectionStatus(Landroid/bluetooth/BluetoothDevice;)I
@@ -2252,7 +2221,7 @@
     :cond_1c
     if-eqz v1, :cond_29
 
-    .line 1376
+    .line 1377
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, p0}, Lcom/android/settingslib/bluetooth/A2dpSinkProfile;->getConnectionStatus(Landroid/bluetooth/BluetoothDevice;)I
@@ -2276,7 +2245,7 @@
 .method public isConnectedHfpDevice()Z
     .registers 2
 
-    .line 1386
+    .line 1387
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->getHeadsetProfile()Lcom/android/settingslib/bluetooth/HeadsetProfile;
@@ -2285,7 +2254,7 @@
 
     if-eqz v0, :cond_13
 
-    .line 1387
+    .line 1388
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0, p0}, Lcom/android/settingslib/bluetooth/HeadsetProfile;->getConnectionStatus(Landroid/bluetooth/BluetoothDevice;)I
@@ -2310,7 +2279,7 @@
 .method public isConnectedProfile(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)Z
     .registers 2
 
-    .line 706
+    .line 709
     invoke-virtual {p0, p1}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getProfileConnectionState(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)I
 
     move-result p0
@@ -2333,14 +2302,14 @@
 .method public isMeizuDevice()Z
     .registers 4
 
-    .line 1471
+    .line 1472
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
 
     const/4 v1, 0x0
 
     if-nez v0, :cond_12
 
-    .line 1472
+    .line 1473
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalManager:Lcom/android/settingslib/bluetooth/LocalBluetoothManager;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothManager;->getDevicesXml()Lcom/android/settingslib/bluetooth/XmlReader;
@@ -2349,29 +2318,29 @@
 
     iput-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
 
-    .line 1473
+    .line 1474
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
 
     if-nez v0, :cond_12
 
     return v1
 
-    .line 1479
+    .line 1480
     :cond_12
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
 
     if-nez v0, :cond_19
 
-    .line 1480
+    .line 1481
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->refreshMeizuDevice()V
 
-    .line 1483
+    .line 1484
     :cond_19
     iget-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
     if-eqz v0, :cond_35
 
-    .line 1484
+    .line 1485
     sget-object v0, Lcom/android/settingslib/bluetooth/XmlReader;->XML_FILE_PATH:Ljava/lang/String;
 
     const-string v2, "devices.xml"
@@ -2382,10 +2351,10 @@
 
     if-nez v0, :cond_35
 
-    .line 1487
+    .line 1488
     iput-boolean v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
-    .line 1488
+    .line 1489
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/XmlReader;->clearDevicesMap()V
@@ -2394,10 +2363,10 @@
 
     const-string v1, "reset mIsMeizuDevice to false"
 
-    .line 1489
+    .line 1490
     invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 1492
+    .line 1493
     :cond_35
     iget-boolean p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
@@ -2421,7 +2390,7 @@
 
     if-eq p2, v2, :cond_2a
 
-    .line 637
+    .line 640
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2448,7 +2417,7 @@
 
     goto :goto_41
 
-    .line 633
+    .line 636
     :cond_2a
     iget-boolean p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHearingAid:Z
 
@@ -2456,13 +2425,13 @@
 
     move v1, v0
 
-    .line 634
+    .line 637
     :cond_2f
     iput-boolean p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHearingAid:Z
 
     goto :goto_41
 
-    .line 625
+    .line 628
     :cond_32
     iget-boolean p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
@@ -2470,13 +2439,13 @@
 
     move v1, v0
 
-    .line 626
+    .line 629
     :cond_37
     iput-boolean p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
     goto :goto_41
 
-    .line 629
+    .line 632
     :cond_3a
     iget-boolean p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
@@ -2484,14 +2453,14 @@
 
     move v1, v0
 
-    .line 630
+    .line 633
     :cond_3f
     iput-boolean p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
     :goto_41
     if-eqz v1, :cond_46
 
-    .line 642
+    .line 645
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
     :cond_46
@@ -2501,7 +2470,7 @@
 .method onAudioModeChanged()V
     .registers 1
 
-    .line 650
+    .line 653
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
     return-void
@@ -2512,7 +2481,7 @@
 
     const/4 v0, 0x0
 
-    .line 320
+    .line 323
     invoke-virtual {p0, v0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connect(Z)V
 
     return-void
@@ -2527,38 +2496,38 @@
 
     if-ne p1, v1, :cond_23
 
-    .line 813
+    .line 816
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
     monitor-enter v1
 
-    .line 814
+    .line 817
     :try_start_8
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
     invoke-interface {v2}, Ljava/util/List;->clear()V
 
-    .line 815
+    .line 818
     monitor-exit v1
     :try_end_e
     .catchall {:try_start_8 .. :try_end_e} :catchall_20
 
-    .line 816
+    .line 819
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v0}, Landroid/bluetooth/BluetoothDevice;->setPhonebookAccessPermission(I)Z
 
-    .line 817
+    .line 820
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v0}, Landroid/bluetooth/BluetoothDevice;->setMessageAccessPermission(I)Z
 
-    .line 818
+    .line 821
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v0}, Landroid/bluetooth/BluetoothDevice;->setSimAccessPermission(I)Z
 
-    .line 820
+    .line 823
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsPairingBySettings:Z
 
     goto :goto_23
@@ -2566,7 +2535,7 @@
     :catchall_20
     move-exception p0
 
-    .line 815
+    .line 818
     :try_start_21
     monitor-exit v1
     :try_end_22
@@ -2574,7 +2543,7 @@
 
     throw p0
 
-    .line 824
+    .line 827
     :cond_23
     :goto_23
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->refresh()V
@@ -2583,7 +2552,7 @@
 
     if-ne p1, v1, :cond_32
 
-    .line 828
+    .line 831
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1}, Landroid/bluetooth/BluetoothDevice;->isBondingInitiatedLocally()Z
@@ -2597,14 +2566,14 @@
 
     if-ne p1, v1, :cond_6c
 
-    .line 832
+    .line 835
     iget-object p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p1}, Landroid/bluetooth/BluetoothDevice;->isBondingInitiatedLocally()Z
 
     move-result p1
 
-    .line 833
+    .line 836
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -2625,16 +2594,16 @@
 
     if-eqz p1, :cond_59
 
-    .line 835
+    .line 838
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1, v0}, Landroid/bluetooth/BluetoothDevice;->setBondingInitiatedLocally(Z)V
 
-    .line 838
+    .line 841
     :cond_59
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsPairingBySettings:Z
 
-    .line 840
+    .line 843
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1}, Landroid/bluetooth/BluetoothDevice;->isBluetoothDock()Z
@@ -2643,7 +2612,7 @@
 
     if-eqz v1, :cond_67
 
-    .line 841
+    .line 844
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->onBondingDockConnect()V
 
     goto :goto_6c
@@ -2651,7 +2620,7 @@
     :cond_67
     if-eqz p1, :cond_6c
 
-    .line 848
+    .line 851
     invoke-virtual {p0, v0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connect(Z)V
 
     :cond_6c
@@ -2662,7 +2631,7 @@
 .method onProfileStateChanged(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;I)V
     .registers 7
 
-    .line 203
+    .line 206
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2695,7 +2664,7 @@
 
     invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 206
+    .line 209
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalAdapter:Landroid/bluetooth/BluetoothAdapter;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothAdapter;->getState()I
@@ -2710,12 +2679,12 @@
 
     const-string p1, " BT Turninig Off...Profile conn state change ignored..."
 
-    .line 209
+    .line 212
     invoke-static {p0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
 
-    .line 214
+    .line 217
     :cond_3a
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileLock:Ljava/lang/Object;
 
@@ -2725,7 +2694,7 @@
 
     if-ne p2, v1, :cond_70
 
-    .line 216
+    .line 219
     :try_start_40
     instance-of p2, p1, Lcom/android/settingslib/bluetooth/MapProfile;
 
@@ -2733,12 +2702,12 @@
 
     if-eqz p2, :cond_4a
 
-    .line 217
+    .line 220
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-interface {p1, p2, v1}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->setPreferred(Landroid/bluetooth/BluetoothDevice;Z)V
 
-    .line 219
+    .line 222
     :cond_4a
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -2748,17 +2717,17 @@
 
     if-nez p2, :cond_6c
 
-    .line 220
+    .line 223
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRemovedProfiles:Ljava/util/List;
 
     invoke-interface {p2, p1}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
-    .line 221
+    .line 224
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
     invoke-interface {p2, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 222
+    .line 225
     instance-of p2, p1, Lcom/android/settingslib/bluetooth/PanProfile;
 
     if-eqz p2, :cond_6c
@@ -2767,23 +2736,23 @@
 
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 223
+    .line 226
     invoke-virtual {p1, p2}, Lcom/android/settingslib/bluetooth/PanProfile;->isLocalRoleNap(Landroid/bluetooth/BluetoothDevice;)Z
 
     move-result p1
 
     if-eqz p1, :cond_6c
 
-    .line 225
+    .line 228
     iput-boolean v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalNapRoleConnected:Z
 
-    .line 229
+    .line 232
     :cond_6c
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->refresh()V
 
     goto :goto_c8
 
-    .line 231
+    .line 234
     :cond_70
     instance-of v1, p1, Lcom/android/settingslib/bluetooth/MapProfile;
 
@@ -2793,14 +2762,14 @@
 
     if-nez p2, :cond_7d
 
-    .line 233
+    .line 236
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-interface {p1, p2, v2}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;->setPreferred(Landroid/bluetooth/BluetoothDevice;Z)V
 
     goto :goto_c8
 
-    .line 234
+    .line 237
     :cond_7d
     iget-boolean v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalNapRoleConnected:Z
 
@@ -2816,7 +2785,7 @@
 
     iget-object v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 235
+    .line 238
     invoke-virtual {v1, v3}, Lcom/android/settingslib/bluetooth/PanProfile;->isLocalRoleNap(Landroid/bluetooth/BluetoothDevice;)Z
 
     move-result v1
@@ -2825,7 +2794,7 @@
 
     if-nez p2, :cond_ac
 
-    .line 238
+    .line 241
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isRemoteSupportNAP()Z
 
     move-result v1
@@ -2836,25 +2805,25 @@
 
     const-string v1, "Removing PanProfile from device after NAP disconnect"
 
-    .line 240
+    .line 243
     invoke-static {p2, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 241
+    .line 244
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
     invoke-interface {p2, p1}, Ljava/util/List;->remove(Ljava/lang/Object;)Z
 
-    .line 242
+    .line 245
     iget-object p2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRemovedProfiles:Ljava/util/List;
 
     invoke-interface {p2, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 243
+    .line 246
     iput-boolean v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalNapRoleConnected:Z
 
     goto :goto_c8
 
-    .line 244
+    .line 247
     :cond_ac
     instance-of v1, p1, Lcom/android/settingslib/bluetooth/HeadsetProfile;
 
@@ -2864,15 +2833,15 @@
 
     const/4 p1, -0x1
 
-    .line 246
+    .line 249
     iput p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mTwspBatteryState:I
 
-    .line 247
+    .line 250
     iput p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mTwspBatteryLevel:I
 
     goto :goto_c8
 
-    .line 249
+    .line 252
     :cond_b8
     instance-of p1, p1, Lcom/android/settingslib/bluetooth/PanProfile;
 
@@ -2884,18 +2853,18 @@
 
     const-string p2, "force to refresh PAN disconnect state"
 
-    .line 251
+    .line 254
     invoke-static {p1, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 252
+    .line 255
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->refresh()V
 
-    .line 256
+    .line 259
     :cond_c8
     :goto_c8
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->fetchActiveDevices()V
 
-    .line 257
+    .line 260
     monitor-exit v0
 
     return-void
@@ -2913,17 +2882,17 @@
 .method onUuidChanged()V
     .registers 8
 
-    .line 775
+    .line 778
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->updateProfiles()Z
 
-    .line 776
+    .line 779
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothDevice;->getUuids()[Landroid/os/ParcelUuid;
 
     move-result-object v0
 
-    .line 779
+    .line 782
     sget-object v1, Landroid/bluetooth/BluetoothUuid;->Hogp:Landroid/os/ParcelUuid;
 
     invoke-static {v0, v1}, Landroid/bluetooth/BluetoothUuid;->isUuidPresent([Landroid/os/ParcelUuid;Landroid/os/ParcelUuid;)Z
@@ -2936,7 +2905,7 @@
 
     goto :goto_21
 
-    .line 781
+    .line 784
     :cond_14
     sget-object v1, Landroid/bluetooth/BluetoothUuid;->HearingAid:Landroid/os/ParcelUuid;
 
@@ -2953,13 +2922,13 @@
     :cond_1f
     const-wide/16 v0, 0x1388
 
-    .line 785
+    .line 788
     :goto_21
     sget-boolean v2, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->DBG:Z
 
     if-eqz v2, :cond_42
 
-    .line 786
+    .line 789
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -2968,7 +2937,7 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 787
+    .line 790
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v3
@@ -2985,10 +2954,10 @@
 
     const-string v3, "CachedBluetoothDevice"
 
-    .line 786
+    .line 789
     invoke-static {v3, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 794
+    .line 797
     :cond_42
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfiles:Ljava/util/List;
 
@@ -3002,7 +2971,7 @@
 
     add-long/2addr v2, v0
 
-    .line 795
+    .line 798
     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
 
     move-result-wide v0
@@ -3013,10 +2982,10 @@
 
     const/4 v0, 0x0
 
-    .line 796
+    .line 799
     invoke-direct {p0, v0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->connectWithoutResettingTimer(Z)V
 
-    .line 801
+    .line 804
     :cond_59
     new-instance v0, Landroid/os/Handler;
 
@@ -3034,7 +3003,7 @@
 .method refresh()V
     .registers 1
 
-    .line 601
+    .line 604
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
     return-void
@@ -3043,20 +3012,20 @@
 .method public refreshMeizuDevice()V
     .registers 5
 
-    .line 1441
+    .line 1442
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getMeizuAuthState()I
 
     const/4 v0, 0x0
 
-    .line 1444
+    .line 1445
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
-    .line 1446
+    .line 1447
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
 
     if-nez v1, :cond_12
 
-    .line 1447
+    .line 1448
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1}, Landroid/bluetooth/BluetoothDevice;->getName()Ljava/lang/String;
@@ -3065,11 +3034,11 @@
 
     iput-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
 
-    .line 1450
+    .line 1451
     :cond_12
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRealDeviceName:Ljava/lang/String;
 
-    .line 1451
+    .line 1452
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getAddress()Ljava/lang/String;
 
     move-result-object v2
@@ -3078,41 +3047,30 @@
 
     move-result-object v2
 
-    if-eqz v2, :cond_29
-
-    .line 1452
-    invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getBtClass()Landroid/bluetooth/BluetoothClass;
-
-    move-result-object v3
-
-    invoke-direct {p0, v3}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isAudioDevice(Landroid/bluetooth/BluetoothClass;)Z
-
-    move-result v3
-
-    if-eqz v3, :cond_29
+    if-eqz v2, :cond_1f
 
     move-object v1, v2
 
-    .line 1455
-    :cond_29
+    .line 1456
+    :cond_1f
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mXmlReader:Lcom/android/settingslib/bluetooth/XmlReader;
 
     invoke-virtual {v2, v1}, Lcom/android/settingslib/bluetooth/XmlReader;->getDevicePropertiesMap(Ljava/lang/String;)Ljava/util/HashMap;
 
     move-result-object v1
 
-    if-eqz v1, :cond_4e
+    if-eqz v1, :cond_44
 
     const-string v2, "address"
 
-    .line 1458
+    .line 1459
     invoke-virtual {v1, v2}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
 
     move-result-object v1
 
     check-cast v1, Ljava/lang/String;
 
-    .line 1459
+    .line 1460
     iget-object v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v2}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
@@ -3125,26 +3083,26 @@
 
     move-result-object v0
 
-    .line 1460
+    .line 1461
     invoke-virtual {v0, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
 
     move-result v0
 
-    if-eqz v0, :cond_4e
+    if-eqz v0, :cond_44
 
     const/4 v0, 0x1
 
-    .line 1461
+    .line 1462
     iput-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsMeizuDevice:Z
 
-    :cond_4e
+    :cond_44
     return-void
 .end method
 
 .method refreshName()V
     .registers 3
 
-    .line 579
+    .line 582
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -3167,7 +3125,7 @@
 
     invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 581
+    .line 584
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
     return-void
@@ -3176,18 +3134,18 @@
 .method public registerCallback(Lcom/android/settingslib/bluetooth/CachedBluetoothDevice$Callback;)V
     .registers 3
 
-    .line 879
+    .line 882
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mCallbacks:Ljava/util/Collection;
 
     monitor-enter v0
 
-    .line 880
+    .line 883
     :try_start_3
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mCallbacks:Ljava/util/Collection;
 
     invoke-interface {p0, p1}, Ljava/util/Collection;->add(Ljava/lang/Object;)Z
 
-    .line 881
+    .line 884
     monitor-exit v0
 
     return-void
@@ -3205,7 +3163,7 @@
 .method public setActive()Z
     .registers 6
 
-    .line 551
+    .line 554
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
     invoke-virtual {v0}, Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;->getA2dpProfile()Lcom/android/settingslib/bluetooth/A2dpProfile;
@@ -3218,14 +3176,14 @@
 
     if-eqz v0, :cond_35
 
-    .line 553
+    .line 556
     invoke-virtual {p0, v0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isConnectedProfile(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)Z
 
     move-result v3
 
     if-eqz v3, :cond_35
 
-    .line 554
+    .line 557
     iget-boolean v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceA2dp:Z
 
     if-nez v3, :cond_35
@@ -3240,7 +3198,7 @@
 
     if-eqz v0, :cond_35
 
-    .line 555
+    .line 558
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -3264,7 +3222,7 @@
     :cond_35
     const/4 v0, 0x0
 
-    .line 559
+    .line 562
     :goto_36
     iget-object v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -3274,14 +3232,14 @@
 
     if-eqz v3, :cond_67
 
-    .line 560
+    .line 563
     invoke-virtual {p0, v3}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isConnectedProfile(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)Z
 
     move-result v4
 
     if-eqz v4, :cond_67
 
-    .line 561
+    .line 564
     iget-boolean v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHeadset:Z
 
     if-nez v4, :cond_67
@@ -3296,7 +3254,7 @@
 
     if-eqz v3, :cond_67
 
-    .line 562
+    .line 565
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -3315,7 +3273,7 @@
 
     move v0, v1
 
-    .line 566
+    .line 569
     :cond_67
     iget-object v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mProfileManager:Lcom/android/settingslib/bluetooth/LocalBluetoothProfileManager;
 
@@ -3325,14 +3283,14 @@
 
     if-eqz v3, :cond_98
 
-    .line 567
+    .line 570
     invoke-virtual {p0, v3}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->isConnectedProfile(Lcom/android/settingslib/bluetooth/LocalBluetoothProfile;)Z
 
     move-result v4
 
     if-eqz v4, :cond_98
 
-    .line 568
+    .line 571
     iget-boolean v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mIsActiveDeviceHearingAid:Z
 
     if-nez v4, :cond_98
@@ -3347,7 +3305,7 @@
 
     if-eqz v3, :cond_98
 
-    .line 569
+    .line 572
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -3373,7 +3331,7 @@
 .method public setHiSyncId(J)V
     .registers 5
 
-    .line 308
+    .line 311
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -3400,7 +3358,7 @@
 
     invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 310
+    .line 313
     iput-wide p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mHiSyncId:J
 
     return-void
@@ -3409,15 +3367,15 @@
 .method public setJustDiscovered(Z)V
     .registers 3
 
-    .line 605
+    .line 608
     iget-boolean v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
     if-eq v0, p1, :cond_9
 
-    .line 606
+    .line 609
     iput-boolean p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
-    .line 607
+    .line 610
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
     :cond_9
@@ -3427,21 +3385,21 @@
 .method setRssi(S)V
     .registers 6
 
-    .line 675
+    .line 678
     iget-short v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
     if-eq v0, p1, :cond_39
 
     sub-int/2addr v0, p1
 
-    .line 677
+    .line 680
     invoke-static {v0}, Ljava/lang/Math;->abs(I)I
 
     move-result v0
 
     const/4 v1, 0x5
 
-    .line 679
+    .line 682
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -3472,14 +3430,14 @@
 
     invoke-direct {p0, v2}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->debugLog(Ljava/lang/String;)V
 
-    .line 680
+    .line 683
     iput-short p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
     if-gt v0, v1, :cond_36
 
     return-void
 
-    .line 683
+    .line 686
     :cond_36
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->dispatchAttributesChanged()V
 
@@ -3490,7 +3448,7 @@
 .method public setSubDevice(Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;)V
     .registers 2
 
-    .line 1405
+    .line 1406
     iput-object p1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mSubDevice:Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;
 
     return-void
@@ -3499,7 +3457,7 @@
 .method public startPairing()Z
     .registers 2
 
-    .line 418
+    .line 421
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalAdapter:Landroid/bluetooth/BluetoothAdapter;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothAdapter;->isDiscovering()Z
@@ -3508,12 +3466,12 @@
 
     if-eqz v0, :cond_d
 
-    .line 419
+    .line 422
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mLocalAdapter:Landroid/bluetooth/BluetoothAdapter;
 
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothAdapter;->cancelDiscovery()Z
 
-    .line 422
+    .line 425
     :cond_d
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
@@ -3527,7 +3485,7 @@
 
     return p0
 
-    .line 427
+    .line 430
     :cond_17
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mContext:Landroid/content/Context;
 
@@ -3545,42 +3503,42 @@
 .method public switchSubDeviceContent()V
     .registers 6
 
-    .line 1410
+    .line 1411
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 1411
+    .line 1412
     iget-short v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
-    .line 1412
+    .line 1413
     iget-boolean v2, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
-    .line 1414
+    .line 1415
     iget-object v3, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mSubDevice:Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;
 
     iget-object v4, v3, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     iput-object v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 1415
+    .line 1416
     iget-short v4, v3, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
     iput-short v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
-    .line 1416
+    .line 1417
     iget-boolean v4, v3, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
     iput-boolean v4, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
-    .line 1418
+    .line 1419
     iput-object v0, v3, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 1419
+    .line 1420
     iput-short v1, v3, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mRssi:S
 
-    .line 1420
+    .line 1421
     iput-boolean v2, v3, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mJustDiscovered:Z
 
-    .line 1421
+    .line 1422
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->fetchActiveDevices()V
 
     return-void
@@ -3589,7 +3547,7 @@
 .method public toString()Ljava/lang/String;
     .registers 1
 
-    .line 900
+    .line 903
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {p0}, Landroid/bluetooth/BluetoothDevice;->toString()Ljava/lang/String;
@@ -3602,7 +3560,7 @@
 .method public unpair()V
     .registers 6
 
-    .line 435
+    .line 438
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getBondState()I
 
     move-result v0
@@ -3611,7 +3569,7 @@
 
     if-ne v0, v1, :cond_d
 
-    .line 438
+    .line 441
     iget-object v1, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
     invoke-virtual {v1}, Landroid/bluetooth/BluetoothDevice;->cancelBondProcess()Z
@@ -3621,10 +3579,10 @@
 
     if-eq v0, v1, :cond_64
 
-    .line 442
+    .line 445
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->mDevice:Landroid/bluetooth/BluetoothDevice;
 
-    .line 443
+    .line 446
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothDevice;->isTwsPlusDevice()Z
 
     move-result v1
@@ -3635,24 +3593,24 @@
 
     if-eqz v1, :cond_42
 
-    .line 444
+    .line 447
     invoke-direct {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->getTwsPeerDevice()Landroid/bluetooth/BluetoothDevice;
 
     move-result-object v1
 
     if-eqz v1, :cond_42
 
-    .line 447
+    .line 450
     invoke-direct {p0, v1}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->disconnectTWS(Landroid/bluetooth/BluetoothDevice;)V
 
-    .line 449
+    .line 452
     invoke-virtual {v1}, Landroid/bluetooth/BluetoothDevice;->removeBond()Z
 
     move-result v4
 
     if-eqz v4, :cond_42
 
-    .line 452
+    .line 455
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -3674,17 +3632,17 @@
     :cond_42
     if-eqz v0, :cond_64
 
-    .line 459
+    .line 462
     invoke-virtual {p0}, Lcom/android/settingslib/bluetooth/CachedBluetoothDevice;->disconnect()V
 
-    .line 461
+    .line 464
     invoke-virtual {v0}, Landroid/bluetooth/BluetoothDevice;->removeBond()Z
 
     move-result v0
 
     if-eqz v0, :cond_64
 
-    .line 464
+    .line 467
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V

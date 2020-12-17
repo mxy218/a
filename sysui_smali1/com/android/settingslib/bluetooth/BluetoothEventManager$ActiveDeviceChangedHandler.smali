@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/settingslib/bluetooth/BluetoothEventManager;)V
     .registers 2
 
-    .line 509
+    .line 519
     iput-object p1, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$ActiveDeviceChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,7 +36,7 @@
 .method synthetic constructor <init>(Lcom/android/settingslib/bluetooth/BluetoothEventManager;Lcom/android/settingslib/bluetooth/BluetoothEventManager$1;)V
     .registers 3
 
-    .line 509
+    .line 519
     invoke-direct {p0, p1}, Lcom/android/settingslib/bluetooth/BluetoothEventManager$ActiveDeviceChangedHandler;-><init>(Lcom/android/settingslib/bluetooth/BluetoothEventManager;)V
 
     return-void
@@ -47,7 +47,7 @@
 .method public onReceive(Landroid/content/Context;Landroid/content/Intent;Landroid/bluetooth/BluetoothDevice;)V
     .registers 5
 
-    .line 512
+    .line 522
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
     move-result-object p1
@@ -58,12 +58,12 @@
 
     const-string p0, "ActiveDeviceChangedHandler: action is null"
 
-    .line 514
+    .line 524
     invoke-static {p2, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
 
-    .line 517
+    .line 527
     :cond_e
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$ActiveDeviceChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 
@@ -77,7 +77,7 @@
 
     const-string v0, "android.bluetooth.a2dp.profile.action.ACTIVE_DEVICE_CHANGED"
 
-    .line 519
+    .line 529
     invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
     move-result v0
@@ -91,7 +91,7 @@
     :cond_22
     const-string v0, "android.bluetooth.headset.profile.action.ACTIVE_DEVICE_CHANGED"
 
-    .line 521
+    .line 531
     invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
     move-result v0
@@ -105,7 +105,7 @@
     :cond_2c
     const-string v0, "android.bluetooth.hearingaid.profile.action.ACTIVE_DEVICE_CHANGED"
 
-    .line 523
+    .line 533
     invoke-static {p1, v0}, Ljava/util/Objects;->equals(Ljava/lang/Object;Ljava/lang/Object;)Z
 
     move-result v0
@@ -114,7 +114,7 @@
 
     const/16 p1, 0x15
 
-    .line 529
+    .line 539
     :goto_36
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$ActiveDeviceChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 
@@ -122,7 +122,7 @@
 
     return-void
 
-    .line 526
+    .line 536
     :cond_3c
     new-instance p0, Ljava/lang/StringBuilder;
 

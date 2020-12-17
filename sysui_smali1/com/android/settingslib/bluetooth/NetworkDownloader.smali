@@ -1232,70 +1232,10 @@
     return p0
 .end method
 
-.method private removeDirs(Ljava/lang/String;)V
-    .registers 3
-
-    .line 536
-    new-instance p0, Ljava/io/File;
-
-    invoke-direct {p0, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
-
-    .line 537
-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
-
-    move-result p1
-
-    if-nez p1, :cond_12
-
-    invoke-virtual {p0}, Ljava/io/File;->isDirectory()Z
-
-    move-result p1
-
-    if-nez p1, :cond_12
-
-    return-void
-
-    .line 540
-    :cond_12
-    invoke-virtual {p0}, Ljava/io/File;->listFiles()[Ljava/io/File;
-
-    move-result-object p0
-
-    const/4 p1, 0x0
-
-    .line 541
-    :goto_17
-    array-length v0, p0
-
-    if-ge p1, v0, :cond_2a
-
-    .line 542
-    aget-object v0, p0, p1
-
-    invoke-virtual {v0}, Ljava/io/File;->isDirectory()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_27
-
-    .line 543
-    aget-object v0, p0, p1
-
-    invoke-static {v0}, Lcom/android/settingslib/bluetooth/Util;->deleteDir(Ljava/io/File;)V
-
-    :cond_27
-    add-int/lit8 p1, p1, 0x1
-
-    goto :goto_17
-
-    :cond_2a
-    return-void
-.end method
-
 .method private removeFailVideo(Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
 
-    .line 626
+    .line 610
     invoke-static {p1}, Lcom/android/settingslib/bluetooth/XmlReader;->getVideoFilePath(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object p0
@@ -1304,14 +1244,14 @@
 
     return-void
 
-    .line 630
+    .line 614
     :cond_7
     :try_start_7
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 631
+    .line 615
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -1326,20 +1266,20 @@
 
     goto :goto_28
 
-    .line 634
+    .line 618
     :cond_19
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, p0, p2}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 635
+    .line 619
     invoke-virtual {v0}, Ljava/io/File;->canWrite()Z
 
     move-result p0
 
     if-eqz p0, :cond_48
 
-    .line 636
+    .line 620
     invoke-virtual {v0}, Ljava/io/File;->delete()Z
     :try_end_27
     .catch Ljava/lang/Exception; {:try_start_7 .. :try_end_27} :catch_29
@@ -1353,7 +1293,7 @@
     :catch_29
     move-exception p0
 
-    .line 640
+    .line 624
     new-instance p2, Ljava/lang/StringBuilder;
 
     invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1386,7 +1326,7 @@
 .method private renameVideoForDownloaded(Ljava/lang/String;Ljava/lang/String;)V
     .registers 5
 
-    .line 603
+    .line 587
     invoke-static {p1}, Lcom/android/settingslib/bluetooth/XmlReader;->getVideoFilePath(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object p0
@@ -1395,14 +1335,14 @@
 
     return-void
 
-    .line 607
+    .line 591
     :cond_7
     :try_start_7
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 608
+    .line 592
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v1
@@ -1417,13 +1357,13 @@
 
     goto :goto_3f
 
-    .line 611
+    .line 595
     :cond_19
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, p0, p2}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 612
+    .line 596
     invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result p0
@@ -1432,7 +1372,7 @@
 
     return-void
 
-    .line 615
+    .line 599
     :cond_25
     invoke-virtual {v0}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
@@ -1444,7 +1384,7 @@
 
     const-string v1, "."
 
-    .line 617
+    .line 601
     invoke-virtual {p0, v1}, Ljava/lang/String;->lastIndexOf(Ljava/lang/String;)I
 
     move-result v1
@@ -1453,7 +1393,7 @@
 
     move-result-object p0
 
-    .line 618
+    .line 602
     new-instance p2, Ljava/io/File;
 
     invoke-direct {p2, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
@@ -1471,7 +1411,7 @@
     :catch_40
     move-exception p0
 
-    .line 621
+    .line 605
     new-instance p2, Ljava/lang/StringBuilder;
 
     invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1880,100 +1820,94 @@
 .end method
 
 .method private writeToFileForVideo(Ljava/lang/String;Ljava/lang/String;Lokhttp3/Response;)Z
-    .registers 13
+    .registers 12
 
-    const-string v0, "close fileOutputStream failed!"
+    const-string p0, "close fileOutputStream failed!"
 
-    const-string v1, "close inputStream failed!"
+    const-string v0, "close inputStream failed!"
 
-    .line 551
+    .line 537
     invoke-virtual {p3}, Lokhttp3/Response;->code()I
 
-    move-result v2
+    move-result v1
 
-    const/4 v3, 0x0
+    const/4 v2, 0x0
 
-    const-string v4, "NetworkDownloader"
+    const-string v3, "NetworkDownloader"
 
-    const/16 v5, 0xc8
+    const/16 v4, 0xc8
 
-    if-ne v2, v5, :cond_eb
+    if-ne v1, v4, :cond_e3
 
-    const/16 v2, 0x400
+    const/16 v1, 0x400
 
-    new-array v2, v2, [B
+    new-array v1, v1, [B
 
-    .line 556
+    .line 542
     invoke-static {p1}, Lcom/android/settingslib/bluetooth/XmlReader;->getVideoFilePath(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object p1
 
     if-nez p1, :cond_1a
 
-    return v3
+    return v2
 
     :cond_1a
-    const/4 v5, 0x0
+    const/4 v4, 0x0
 
-    .line 560
+    .line 546
     :try_start_1b
-    new-instance v6, Ljava/io/File;
+    new-instance v5, Ljava/io/File;
 
-    invoke-direct {v6, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    invoke-direct {v5, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 561
-    invoke-virtual {v6}, Ljava/io/File;->exists()Z
+    .line 547
+    invoke-virtual {v5}, Ljava/io/File;->exists()Z
 
-    move-result v7
+    move-result v6
 
-    if-nez v7, :cond_30
+    if-nez v6, :cond_2f
 
-    invoke-virtual {v6}, Ljava/io/File;->isDirectory()Z
+    invoke-virtual {v5}, Ljava/io/File;->isDirectory()Z
 
-    move-result v7
+    move-result v6
 
-    if-nez v7, :cond_30
+    if-nez v6, :cond_2f
 
-    .line 562
-    invoke-virtual {v6}, Ljava/io/File;->mkdirs()Z
+    .line 548
+    invoke-virtual {v5}, Ljava/io/File;->mkdirs()Z
 
-    goto :goto_33
-
-    .line 564
-    :cond_30
-    invoke-direct {p0, p1}, Lcom/android/settingslib/bluetooth/NetworkDownloader;->removeDirs(Ljava/lang/String;)V
-
-    .line 566
-    :goto_33
+    .line 550
+    :cond_2f
     invoke-virtual {p3}, Lokhttp3/Response;->body()Lokhttp3/ResponseBody;
 
-    move-result-object p0
+    move-result-object v5
 
-    invoke-virtual {p0}, Lokhttp3/ResponseBody;->byteStream()Ljava/io/InputStream;
+    invoke-virtual {v5}, Lokhttp3/ResponseBody;->byteStream()Ljava/io/InputStream;
 
-    move-result-object p0
-    :try_end_3b
-    .catch Ljava/lang/Exception; {:try_start_1b .. :try_end_3b} :catch_aa
-    .catchall {:try_start_1b .. :try_end_3b} :catchall_a6
+    move-result-object v5
+    :try_end_37
+    .catch Ljava/lang/Exception; {:try_start_1b .. :try_end_37} :catch_a4
+    .catchall {:try_start_1b .. :try_end_37} :catchall_a1
 
-    .line 567
-    :try_start_3b
+    .line 551
+    :try_start_37
     new-instance v6, Ljava/io/File;
 
     invoke-direct {v6, p1, p2}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 568
+    .line 552
     invoke-virtual {v6}, Ljava/io/File;->exists()Z
 
     move-result v7
 
-    if-nez v7, :cond_49
+    if-nez v7, :cond_45
 
-    .line 569
+    .line 553
     invoke-virtual {v6}, Ljava/io/File;->createNewFile()Z
 
-    .line 571
-    :cond_49
+    .line 555
+    :cond_45
     invoke-virtual {v6}, Ljava/io/File;->toURI()Ljava/net/URI;
 
     move-result-object v6
@@ -1982,34 +1916,34 @@
 
     move-result-object v6
 
-    new-array v7, v3, [Ljava/nio/file/OpenOption;
+    new-array v7, v2, [Ljava/nio/file/OpenOption;
 
     invoke-static {v6, v7}, Ljava/nio/file/Files;->newOutputStream(Ljava/nio/file/Path;[Ljava/nio/file/OpenOption;)Ljava/io/OutputStream;
 
-    move-result-object v5
+    move-result-object v4
 
-    .line 572
-    :goto_57
-    invoke-virtual {p0, v2}, Ljava/io/InputStream;->read([B)I
+    .line 556
+    :goto_53
+    invoke-virtual {v5, v1}, Ljava/io/InputStream;->read([B)I
 
     move-result v6
 
     const/4 v7, -0x1
 
-    if-eq v6, v7, :cond_62
+    if-eq v6, v7, :cond_5e
 
-    .line 573
-    invoke-virtual {v5, v2, v3, v6}, Ljava/io/OutputStream;->write([BII)V
+    .line 557
+    invoke-virtual {v4, v1, v2, v6}, Ljava/io/OutputStream;->write([BII)V
 
-    goto :goto_57
+    goto :goto_53
 
-    .line 575
-    :cond_62
-    invoke-virtual {v5}, Ljava/io/OutputStream;->flush()V
+    .line 559
+    :cond_5e
+    invoke-virtual {v4}, Ljava/io/OutputStream;->flush()V
 
-    const/4 v2, 0x1
+    const/4 v1, 0x1
 
-    .line 577
+    .line 561
     new-instance v6, Ljava/lang/StringBuilder;
 
     invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
@@ -2030,7 +1964,7 @@
 
     move-result-object p1
 
-    .line 578
+    .line 562
     invoke-static {}, Ljava/lang/Runtime;->getRuntime()Ljava/lang/Runtime;
 
     move-result-object p2
@@ -2039,181 +1973,173 @@
 
     const-string p1, "download property file successfully!"
 
-    .line 579
-    invoke-static {v4, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_8b
-    .catch Ljava/lang/Exception; {:try_start_3b .. :try_end_8b} :catch_a1
-    .catchall {:try_start_3b .. :try_end_8b} :catchall_9f
+    .line 563
+    invoke-static {v3, p1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_87
+    .catch Ljava/lang/Exception; {:try_start_37 .. :try_end_87} :catch_9d
+    .catchall {:try_start_37 .. :try_end_87} :catchall_9b
 
-    if-eqz p0, :cond_94
+    if-eqz v5, :cond_90
 
-    .line 586
-    :try_start_8d
-    invoke-virtual {p0}, Ljava/io/InputStream;->close()V
-    :try_end_90
-    .catch Ljava/io/IOException; {:try_start_8d .. :try_end_90} :catch_91
+    .line 570
+    :try_start_89
+    invoke-virtual {v5}, Ljava/io/InputStream;->close()V
+    :try_end_8c
+    .catch Ljava/io/IOException; {:try_start_89 .. :try_end_8c} :catch_8d
 
-    goto :goto_94
+    goto :goto_90
 
-    .line 588
-    :catch_91
-    invoke-static {v4, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 572
+    :catch_8d
+    invoke-static {v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    :cond_94
-    :goto_94
-    if-eqz v5, :cond_9d
+    :cond_90
+    :goto_90
+    if-eqz v4, :cond_99
 
-    .line 592
-    :try_start_96
-    invoke-virtual {v5}, Ljava/io/OutputStream;->close()V
-    :try_end_99
-    .catch Ljava/io/IOException; {:try_start_96 .. :try_end_99} :catch_9a
+    .line 576
+    :try_start_92
+    invoke-virtual {v4}, Ljava/io/OutputStream;->close()V
+    :try_end_95
+    .catch Ljava/io/IOException; {:try_start_92 .. :try_end_95} :catch_96
 
-    goto :goto_9d
+    goto :goto_99
 
-    .line 594
-    :catch_9a
-    invoke-static {v4, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 578
+    :catch_96
+    invoke-static {v3, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    :cond_9d
-    :goto_9d
-    move v3, v2
+    :cond_99
+    :goto_99
+    move v2, v1
 
-    goto :goto_eb
+    goto :goto_e3
 
-    :catchall_9f
+    :catchall_9b
     move-exception p1
 
-    goto :goto_d8
+    goto :goto_d0
 
-    :catch_a1
+    :catch_9d
     move-exception p1
 
-    move-object v8, v5
+    move-object p2, v4
 
-    move-object v5, p0
+    move-object v4, v5
 
-    move-object p0, v8
+    goto :goto_a6
 
-    goto :goto_ad
+    :catchall_a1
+    move-exception p1
 
-    :catchall_a6
-    move-exception p0
+    move-object v5, v4
 
-    move-object p1, p0
+    goto :goto_d0
 
-    move-object p0, v5
+    :catch_a4
+    move-exception p1
 
-    goto :goto_d8
+    move-object p2, v4
 
-    :catch_aa
-    move-exception p0
+    .line 566
+    :goto_a6
+    :try_start_a6
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    move-object p1, p0
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-object p0, v5
+    const-string v5, "download property file failed! exception: "
 
-    .line 582
-    :goto_ad
-    :try_start_ad
-    new-instance p2, Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    const-string v2, "download property file failed! exception: "
-
-    invoke-virtual {p2, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {p2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object p1
 
-    invoke-static {v4, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_c1
-    .catchall {:try_start_ad .. :try_end_c1} :catchall_d4
+    invoke-static {v3, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :try_end_ba
+    .catchall {:try_start_a6 .. :try_end_ba} :catchall_cd
 
-    if-eqz v5, :cond_ca
+    if-eqz v4, :cond_c3
 
-    .line 586
-    :try_start_c3
-    invoke-virtual {v5}, Ljava/io/InputStream;->close()V
-    :try_end_c6
-    .catch Ljava/io/IOException; {:try_start_c3 .. :try_end_c6} :catch_c7
+    .line 570
+    :try_start_bc
+    invoke-virtual {v4}, Ljava/io/InputStream;->close()V
+    :try_end_bf
+    .catch Ljava/io/IOException; {:try_start_bc .. :try_end_bf} :catch_c0
 
-    goto :goto_ca
+    goto :goto_c3
 
-    .line 588
-    :catch_c7
-    invoke-static {v4, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 572
+    :catch_c0
+    invoke-static {v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    :cond_ca
-    :goto_ca
-    if-eqz p0, :cond_eb
+    :cond_c3
+    :goto_c3
+    if-eqz p2, :cond_e3
 
-    .line 592
-    :try_start_cc
-    invoke-virtual {p0}, Ljava/io/OutputStream;->close()V
-    :try_end_cf
-    .catch Ljava/io/IOException; {:try_start_cc .. :try_end_cf} :catch_d0
+    .line 576
+    :try_start_c5
+    invoke-virtual {p2}, Ljava/io/OutputStream;->close()V
+    :try_end_c8
+    .catch Ljava/io/IOException; {:try_start_c5 .. :try_end_c8} :catch_c9
 
-    goto :goto_eb
+    goto :goto_e3
 
-    .line 594
-    :catch_d0
-    invoke-static {v4, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    .line 578
+    :catch_c9
+    invoke-static {v3, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_eb
+    goto :goto_e3
 
-    :catchall_d4
+    :catchall_cd
     move-exception p1
 
-    move-object v8, v5
+    move-object v5, v4
 
-    move-object v5, p0
+    move-object v4, p2
 
-    move-object p0, v8
+    :goto_d0
+    if-eqz v5, :cond_d9
 
-    :goto_d8
-    if-eqz p0, :cond_e1
+    .line 570
+    :try_start_d2
+    invoke-virtual {v5}, Ljava/io/InputStream;->close()V
+    :try_end_d5
+    .catch Ljava/io/IOException; {:try_start_d2 .. :try_end_d5} :catch_d6
 
-    .line 586
-    :try_start_da
-    invoke-virtual {p0}, Ljava/io/InputStream;->close()V
-    :try_end_dd
-    .catch Ljava/io/IOException; {:try_start_da .. :try_end_dd} :catch_de
+    goto :goto_d9
 
-    goto :goto_e1
+    .line 572
+    :catch_d6
+    invoke-static {v3, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 588
-    :catch_de
-    invoke-static {v4, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    :cond_d9
+    :goto_d9
+    if-eqz v4, :cond_e2
 
-    :cond_e1
-    :goto_e1
-    if-eqz v5, :cond_ea
+    .line 576
+    :try_start_db
+    invoke-virtual {v4}, Ljava/io/OutputStream;->close()V
+    :try_end_de
+    .catch Ljava/io/IOException; {:try_start_db .. :try_end_de} :catch_df
 
-    .line 592
-    :try_start_e3
-    invoke-virtual {v5}, Ljava/io/OutputStream;->close()V
-    :try_end_e6
-    .catch Ljava/io/IOException; {:try_start_e3 .. :try_end_e6} :catch_e7
+    goto :goto_e2
 
-    goto :goto_ea
+    .line 578
+    :catch_df
+    invoke-static {v3, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 594
-    :catch_e7
-    invoke-static {v4, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 595
-    :cond_ea
-    :goto_ea
+    .line 579
+    :cond_e2
+    :goto_e2
     throw p1
 
-    .line 598
-    :cond_eb
-    :goto_eb
+    .line 582
+    :cond_e3
+    :goto_e3
     new-instance p0, Ljava/lang/StringBuilder;
 
     invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
@@ -2232,9 +2158,9 @@
 
     move-result-object p0
 
-    invoke-static {v4, p0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v3, p0}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    return v3
+    return v2
 .end method
 
 
@@ -2246,7 +2172,7 @@
 
     const-string v0, "finalize()"
 
-    .line 664
+    .line 648
     invoke-static {p0, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
