@@ -43,6 +43,8 @@
 
 .field private mFingerprintLockout:Z
 
+.field private mFingerprintPathInterpolator:Landroid/view/animation/PathInterpolator;
+
 .field private mFlymeIFaceRecognition:Lcom/meizu/settings/face/FlymeIFaceRecognition;
 
 .field private mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
@@ -60,8 +62,6 @@
 .field private mInputMethodManager:Landroid/view/inputmethod/InputMethodManager;
 
 .field private mInputPassword:Ljava/lang/String;
-
-.field private mInputShownChangeListener:Landroid/view/inputmethod/InputMethodManager$InputShownChangeListener;
 
 .field private mIsFaceRecognitionEnable:Z
 
@@ -204,6 +204,15 @@
     return p0
 .end method
 
+.method static synthetic access$1000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+    .registers 1
+
+    .line 82
+    invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->startDrawGrayLineAnimation()V
+
+    return-void
+.end method
+
 .method static synthetic access$102(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
     .registers 2
 
@@ -267,31 +276,31 @@
     return-void
 .end method
 
-.method static synthetic access$1700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+.method static synthetic access$1700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Z
     .registers 1
 
     .line 82
-    invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->hideInputMethod()V
+    iget-boolean p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyFromCreateFp:Z
 
-    return-void
+    return p0
 .end method
 
-.method static synthetic access$1800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Landroid/widget/EditText;
+.method static synthetic access$1800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
     .registers 1
 
     .line 82
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
 
     return-object p0
 .end method
 
-.method static synthetic access$1900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Z
-    .registers 1
+.method static synthetic access$1900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Ljava/lang/String;[B)V
+    .registers 3
 
     .line 82
-    iget-boolean p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerprintLockout:Z
+    invoke-direct {p0, p1, p2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->handleVerifyPasswordSuccess(Ljava/lang/String;[B)V
 
-    return p0
+    return-void
 .end method
 
 .method static synthetic access$200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Landroid/content/Context;
@@ -303,52 +312,7 @@
     return-object p0
 .end method
 
-.method static synthetic access$2000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-    .registers 1
-
-    .line 82
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    return-object p0
-.end method
-
-.method static synthetic access$2100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Landroid/widget/TextView;
-    .registers 1
-
-    .line 82
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mUserFingerprintTextView:Landroid/widget/TextView;
-
-    return-object p0
-.end method
-
-.method static synthetic access$2200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Z
-    .registers 1
-
-    .line 82
-    iget-boolean p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mIsOnPause:Z
-
-    return p0
-.end method
-
-.method static synthetic access$2300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Z
-    .registers 1
-
-    .line 82
-    iget-boolean p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyFromCreateFp:Z
-
-    return p0
-.end method
-
-.method static synthetic access$2400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Ljava/lang/String;[B)V
-    .registers 3
-
-    .line 82
-    invoke-direct {p0, p1, p2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->handleVerifyPasswordSuccess(Ljava/lang/String;[B)V
-
-    return-void
-.end method
-
-.method static synthetic access$2500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/security/FlymeLockPasswordUtils;
+.method static synthetic access$2000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/security/FlymeLockPasswordUtils;
     .registers 1
 
     .line 82
@@ -357,7 +321,7 @@
     return-object p0
 .end method
 
-.method static synthetic access$2600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
+.method static synthetic access$2100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
     .registers 1
 
     .line 82
@@ -366,7 +330,7 @@
     return p0
 .end method
 
-.method static synthetic access$2602(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)I
+.method static synthetic access$2102(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)I
     .registers 2
 
     .line 82
@@ -375,7 +339,7 @@
     return p1
 .end method
 
-.method static synthetic access$2702(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
+.method static synthetic access$2202(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
     .registers 2
 
     .line 82
@@ -384,7 +348,7 @@
     return p1
 .end method
 
-.method static synthetic access$2808(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
+.method static synthetic access$2308(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
     .registers 3
 
     .line 82
@@ -397,13 +361,58 @@
     return v0
 .end method
 
-.method static synthetic access$2900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+.method static synthetic access$2400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
     .registers 1
 
     .line 82
     invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->handleForgetPassword()V
 
     return-void
+.end method
+
+.method static synthetic access$2502(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
+    .registers 2
+
+    .line 82
+    iput-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mDelayShowFingerprintLockoutTip:Z
+
+    return p1
+.end method
+
+.method static synthetic access$2600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/widget/SystemLockView;
+    .registers 1
+
+    .line 82
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
+
+    return-object p0
+.end method
+
+.method static synthetic access$2700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Z
+    .registers 1
+
+    .line 82
+    iget-boolean p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerprintLockout:Z
+
+    return p0
+.end method
+
+.method static synthetic access$2800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Ljava/lang/String;
+    .registers 1
+
+    .line 82
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyTips:Ljava/lang/String;
+
+    return-object p0
+.end method
+
+.method static synthetic access$2900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Landroid/widget/EditText;
+    .registers 1
+
+    .line 82
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
+
+    return-object p0
 .end method
 
 .method static synthetic access$300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Ljava/lang/String;
@@ -415,34 +424,7 @@
     return-object p0
 .end method
 
-.method static synthetic access$3002(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
-    .registers 2
-
-    .line 82
-    iput-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mDelayShowFingerprintLockoutTip:Z
-
-    return p1
-.end method
-
-.method static synthetic access$3100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/widget/SystemLockView;
-    .registers 1
-
-    .line 82
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
-
-    return-object p0
-.end method
-
-.method static synthetic access$3200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Ljava/lang/String;
-    .registers 1
-
-    .line 82
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyTips:Ljava/lang/String;
-
-    return-object p0
-.end method
-
-.method static synthetic access$3300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+.method static synthetic access$3000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
     .registers 1
 
     .line 82
@@ -451,7 +433,7 @@
     return-void
 .end method
 
-.method static synthetic access$3400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+.method static synthetic access$3100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
     .registers 2
 
     .line 82
@@ -460,7 +442,7 @@
     return-void
 .end method
 
-.method static synthetic access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
+.method static synthetic access$3200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
     .registers 3
 
     .line 82
@@ -469,7 +451,7 @@
     return-void
 .end method
 
-.method static synthetic access$3600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
+.method static synthetic access$3300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
     .registers 3
 
     .line 82
@@ -478,7 +460,7 @@
     return-void
 .end method
 
-.method static synthetic access$3700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+.method static synthetic access$3400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
     .registers 2
 
     .line 82
@@ -487,7 +469,7 @@
     return-void
 .end method
 
-.method static synthetic access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+.method static synthetic access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
     .registers 1
 
     .line 82
@@ -496,13 +478,40 @@
     return-object p0
 .end method
 
-.method static synthetic access$3900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+.method static synthetic access$3600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
     .registers 2
 
     .line 82
     invoke-direct {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->reportUnlockEvent(I)V
 
     return-void
+.end method
+
+.method static synthetic access$3700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    .registers 2
+
+    .line 82
+    invoke-direct {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->updateScreenBrightnessWhileLowLuminance(I)V
+
+    return-void
+.end method
+
+.method static synthetic access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)V
+    .registers 2
+
+    .line 82
+    invoke-direct {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->verifySuccess(Z)V
+
+    return-void
+.end method
+
+.method static synthetic access$3900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FlymeIFaceRecognition;
+    .registers 1
+
+    .line 82
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFaceRecognition:Lcom/meizu/settings/face/FlymeIFaceRecognition;
+
+    return-object p0
 .end method
 
 .method static synthetic access$400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Z
@@ -514,15 +523,6 @@
     return p0
 .end method
 
-.method static synthetic access$4000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
-    .registers 2
-
-    .line 82
-    invoke-direct {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->updateScreenBrightnessWhileLowLuminance(I)V
-
-    return-void
-.end method
-
 .method static synthetic access$402(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
     .registers 2
 
@@ -530,24 +530,6 @@
     iput-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mIsPasswordVerifying:Z
 
     return p1
-.end method
-
-.method static synthetic access$4100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)V
-    .registers 2
-
-    .line 82
-    invoke-direct {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->verifySuccess(Z)V
-
-    return-void
-.end method
-
-.method static synthetic access$4200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FlymeIFaceRecognition;
-    .registers 1
-
-    .line 82
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFaceRecognition:Lcom/meizu/settings/face/FlymeIFaceRecognition;
-
-    return-object p0
 .end method
 
 .method static synthetic access$500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Ljava/lang/String;)V
@@ -619,6 +601,15 @@
     iget-boolean p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
 
     return p0
+.end method
+
+.method static synthetic access$900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+    .registers 1
+
+    .line 82
+    invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->startDrawRedLineAnimation()V
+
+    return-void
 .end method
 
 .method private checkForPendingIntent()V
@@ -708,24 +699,90 @@
     return-void
 .end method
 
+.method private drawLineAnimation(IIZ)V
+    .registers 10
+
+    .line 400
+    invoke-virtual {p0}, Landroid/preference/PreferenceFragment;->isAdded()Z
+
+    move-result v0
+
+    if-nez v0, :cond_7
+
+    return-void
+
+    .line 402
+    :cond_7
+    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
+
+    invoke-virtual {p0}, Landroid/preference/PreferenceFragment;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v1
+
+    invoke-virtual {v1, p1}, Landroid/content/res/Resources;->getColor(I)I
+
+    move-result p1
+
+    invoke-virtual {v0, p1}, Lcom/eftimoff/androipathview/PathView;->setPathColor(I)V
+
+    .line 403
+    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
+
+    const/high16 v0, 0x3f800000  # 1.0f
+
+    invoke-virtual {p1, v0}, Lcom/eftimoff/androipathview/PathView;->setPercentage(F)V
+
+    .line 405
+    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
+
+    invoke-virtual {p0}, Landroid/preference/PreferenceFragment;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p2}, Landroid/content/res/Resources;->getColor(I)I
+
+    move-result p2
+
+    invoke-virtual {p1, p2}, Lcom/eftimoff/androipathview/PathView;->setPathColor(I)V
+
+    .line 406
+    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
+
+    const/4 v1, 0x0
+
+    const/high16 v2, 0x3f800000  # 1.0f
+
+    const/16 v3, 0x3e8
+
+    const/4 v4, 0x0
+
+    iget-object v5, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerprintPathInterpolator:Landroid/view/animation/PathInterpolator;
+
+    invoke-static/range {v0 .. v5}, Lcom/meizu/settings/utils/MzUtils;->startPathViewAnimation(Lcom/eftimoff/androipathview/PathView;FFIILandroid/view/animation/PathInterpolator;)V
+
+    .line 408
+    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mHandler:Landroid/os/Handler;
+
+    new-instance p2, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$5;
+
+    invoke-direct {p2, p0, p3}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$5;-><init>(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)V
+
+    const-wide/16 v0, 0x488
+
+    invoke-virtual {p1, p2, v0, v1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+
+    return-void
+.end method
+
 .method private handlWindowFocusChange(Z)V
     .registers 4
 
-    if-eqz p1, :cond_38
+    if-eqz p1, :cond_30
 
     .line 704
     iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
 
-    if-eqz p1, :cond_1f
-
-    .line 705
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mUserFingerprintTextView:Landroid/widget/TextView;
-
-    invoke-virtual {p1}, Landroid/widget/TextView;->getVisibility()I
-
-    move-result p1
-
-    if-eqz p1, :cond_1f
+    if-eqz p1, :cond_17
 
     .line 706
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
@@ -745,10 +802,10 @@
     invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->hideInputMethod()V
 
     .line 711
-    :cond_1f
+    :cond_17
     iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mIsFaceRecognitionEnable:Z
 
-    if-eqz p1, :cond_4e
+    if-eqz p1, :cond_46
 
     .line 712
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFaceRecognition:Lcom/meizu/settings/face/FlymeIFaceRecognition;
@@ -773,13 +830,13 @@
 
     invoke-virtual {p0, p1}, Lcom/meizu/settings/face/FaceRecognitionAnimationView;->setVisible(Z)V
 
-    goto :goto_4e
+    goto :goto_46
 
     .line 717
-    :cond_38
+    :cond_30
     iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
 
-    if-eqz p1, :cond_41
+    if-eqz p1, :cond_39
 
     .line 718
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
@@ -787,10 +844,10 @@
     invoke-interface {p1}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->endVerify()V
 
     .line 720
-    :cond_41
+    :cond_39
     iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mIsFaceRecognitionEnable:Z
 
-    if-eqz p1, :cond_4e
+    if-eqz p1, :cond_46
 
     const/4 p1, -0x1
 
@@ -802,8 +859,8 @@
 
     invoke-interface {p0}, Lcom/meizu/settings/face/FlymeIFaceRecognition;->endVerify()V
 
-    :cond_4e
-    :goto_4e
+    :cond_46
+    :goto_46
     return-void
 .end method
 
@@ -1176,100 +1233,171 @@
 .end method
 
 .method private initBottomLayout(Landroid/view/View;)V
-    .registers 6
+    .registers 9
+
+    .line 462
+    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
+
+    const/4 v1, 0x0
+
+    if-eqz v0, :cond_f
+
+    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPSupported:Z
+
+    if-eqz v0, :cond_f
+
+    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mNeedShowFingerprintIcon:Z
+
+    if-eqz v0, :cond_f
+
+    const/4 v0, 0x1
+
+    goto :goto_10
+
+    :cond_f
+    move v0, v1
 
     .line 463
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
+    :goto_10
+    iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
 
-    const/16 v1, 0x8
+    const/16 v3, 0x8
 
-    if-nez v0, :cond_26
+    if-nez v2, :cond_53
 
-    const v0, 0x7f0a02b3
+    const v2, 0x7f0a02b3
 
     .line 464
-    invoke-virtual {p1, v0}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/eftimoff/androipathview/PathView;
+    check-cast v2, Lcom/eftimoff/androipathview/PathView;
 
-    iput-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
+    iput-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
 
-    const v0, 0x7f0a02b2
+    const v2, 0x7f0a02b2
 
     .line 465
-    invoke-virtual {p1, v0}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
-    move-result-object v0
+    move-result-object v2
 
-    check-cast v0, Lcom/eftimoff/androipathview/PathView;
+    check-cast v2, Lcom/eftimoff/androipathview/PathView;
 
-    iput-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
+    iput-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
+
+    if-eqz v0, :cond_49
+
+    .line 467
+    new-instance v2, Landroid/view/animation/PathInterpolator;
+
+    const/4 v4, 0x0
+
+    const/high16 v5, 0x3f800000  # 1.0f
+
+    const v6, 0x3ea8f5c3  # 0.33f
+
+    invoke-direct {v2, v6, v4, v6, v5}, Landroid/view/animation/PathInterpolator;-><init>(FFFF)V
+
+    iput-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerprintPathInterpolator:Landroid/view/animation/PathInterpolator;
+
+    .line 468
+    iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
+
+    invoke-virtual {v2, v1}, Landroid/view/View;->setVisibility(I)V
+
+    .line 469
+    iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
+
+    invoke-virtual {v2, v1}, Landroid/view/View;->setVisibility(I)V
+
+    .line 470
+    invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->startDrawRedLineAnimation()V
+
+    goto :goto_53
 
     .line 472
+    :cond_49
+    iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
+
+    invoke-virtual {v2, v3}, Landroid/view/View;->setVisibility(I)V
+
+    .line 473
+    iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
+
+    invoke-virtual {v2, v3}, Landroid/view/View;->setVisibility(I)V
+
+    :cond_53
+    :goto_53
+    if-eqz v0, :cond_60
+
+    .line 477
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
 
     invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
 
-    .line 473
+    .line 478
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
 
     invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
 
+    goto :goto_6a
+
     .line 480
-    :cond_26
+    :cond_60
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintDefaultPathView:Lcom/eftimoff/androipathview/PathView;
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
+    invoke-virtual {v0, v3}, Landroid/view/View;->setVisibility(I)V
 
     .line 481
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerPrintPathView:Lcom/eftimoff/androipathview/PathView;
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
+    invoke-virtual {v0, v3}, Landroid/view/View;->setVisibility(I)V
 
     .line 484
+    :goto_6a
     iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFromSetupwizard:Z
 
-    const v2, 0x7f0a0145
+    const v1, 0x7f0a0145
 
-    const v3, 0x7f0a00e0
+    const v2, 0x7f0a00e0
 
-    if-nez v0, :cond_48
+    if-nez v0, :cond_82
 
     .line 485
-    invoke-virtual {p1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p1, v1}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mCancelView:Landroid/view/View;
 
     .line 486
-    invoke-virtual {p1, v3}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
+    invoke-virtual {v0, v3}, Landroid/view/View;->setVisibility(I)V
 
-    goto :goto_55
+    goto :goto_8f
 
     .line 488
-    :cond_48
-    invoke-virtual {p1, v3}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    :cond_82
+    invoke-virtual {p1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
     iput-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mCancelView:Landroid/view/View;
 
     .line 489
-    invoke-virtual {p1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+    invoke-virtual {p1, v1}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
     move-result-object v0
 
-    invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
+    invoke-virtual {v0, v3}, Landroid/view/View;->setVisibility(I)V
 
     .line 491
-    :goto_55
+    :goto_8f
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mCancelView:Landroid/view/View;
 
     new-instance v1, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$6;
@@ -1692,7 +1820,50 @@
 
     invoke-static {p1}, Lcom/meizu/settings/utils/MzUtils;->hasNavigationBar(Landroid/content/Context;)Z
 
+    move-result p1
+
+    if-nez p1, :cond_38
+
+    .line 805
+    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
+
+    invoke-virtual {p1}, Landroid/widget/LinearLayout;->getPaddingStart()I
+
+    move-result v0
+
+    iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mContext:Landroid/content/Context;
+
+    .line 806
+    invoke-virtual {v1}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v1
+
+    const v2, 0x7f07071a
+
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getDimensionPixelSize(I)I
+
+    move-result v1
+
+    iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
+
+    .line 807
+    invoke-virtual {v2}, Landroid/widget/LinearLayout;->getPaddingEnd()I
+
+    move-result v2
+
+    iget-object v3, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
+
+    invoke-virtual {v3}, Landroid/widget/LinearLayout;->getPaddingBottom()I
+
+    move-result v3
+
+    .line 805
+    invoke-virtual {p1, v0, v1, v2, v3}, Landroid/widget/LinearLayout;->setPadding(IIII)V
+
+    goto :goto_5a
+
     .line 801
+    :cond_38
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
 
     invoke-virtual {p1}, Landroid/widget/LinearLayout;->getPaddingStart()I
@@ -1729,6 +1900,7 @@
     invoke-virtual {p1, v0, v1, v2, v3}, Landroid/widget/LinearLayout;->setPadding(IIII)V
 
     .line 810
+    :goto_5a
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
 
     const v0, 0x7f0a0388
@@ -1784,7 +1956,7 @@
     .line 817
     iget p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyState:I
 
-    if-nez p1, :cond_70
+    if-nez p1, :cond_96
 
     .line 818
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
@@ -1794,7 +1966,7 @@
     invoke-virtual {p1, v2}, Lcom/meizu/settings/widget/SystemLockView;->setTip(Ljava/lang/String;)V
 
     .line 822
-    :cond_70
+    :cond_96
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
 
     invoke-virtual {p1, v1}, Landroid/widget/LinearLayout;->setFocusable(Z)V
@@ -1819,38 +1991,14 @@
 
     move-result p1
 
-    .line 832
-    iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
-
-    if-eqz p1, :cond_9e
-
-    iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPSupported:Z
-
-    if-eqz p1, :cond_9e
-
-    .line 833
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
-
-    const/16 v2, 0xb
-
-    invoke-virtual {p1, v2}, Lcom/meizu/settings/widget/SystemLockView;->setDisplaySpace(I)V
-
-    .line 834
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
-
-    const/16 v2, 0x5dc
-
-    invoke-virtual {p1, v2, v2}, Lcom/meizu/settings/widget/SystemLockView;->setDigitKeyBoardSize(II)V
-
     .line 837
-    :cond_9e
     iget p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyState:I
 
-    if-nez p1, :cond_d5
+    if-nez p1, :cond_e5
 
     iget p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComfirmPasswordFrom:I
 
-    if-nez p1, :cond_d5
+    if-nez p1, :cond_e5
 
     .line 839
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mMZLockUtils:Lcom/meizu/settings/security/FlymeLockPasswordUtils;
@@ -1875,7 +2023,7 @@
 
     cmp-long p1, v1, v3
 
-    if-lez p1, :cond_d5
+    if-lez p1, :cond_e5
 
     .line 843
     iput v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyState:I
@@ -1907,7 +2055,7 @@
     .line 847
     invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->handleForgetPassword()V
 
-    :cond_d5
+    :cond_e5
     return-void
 .end method
 
@@ -2620,12 +2768,7 @@
 
     const/4 v1, 0x1
 
-    if-ne v0, v1, :cond_24
-
-    .line 861
-    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
-
-    if-nez v0, :cond_24
+    if-ne v0, v1, :cond_20
 
     .line 862
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
@@ -2633,7 +2776,7 @@
     invoke-static {v0}, Lcom/meizu/settings/utils/MzUtils;->forceShowInputMethod(Landroid/app/Activity;)V
 
     .line 865
-    :cond_24
+    :cond_20
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mMZLockUtils:Lcom/meizu/settings/security/FlymeLockPasswordUtils;
 
     iget v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComfirmPasswordFrom:I
@@ -2665,7 +2808,7 @@
     .line 870
     iget v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mPasswordType:I
 
-    if-ne v2, v1, :cond_58
+    if-ne v2, v1, :cond_54
 
     .line 871
     iget-object v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
@@ -2680,92 +2823,31 @@
     .line 873
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSimplePasswordView:Lcom/meizu/settings/widget/LockDigitView;
 
-    if-eqz v0, :cond_5d
+    if-eqz v0, :cond_59
 
     const/16 v2, 0x8
 
     .line 874
     invoke-virtual {v0, v2}, Landroid/view/View;->setVisibility(I)V
 
-    goto :goto_5d
+    goto :goto_59
 
     .line 877
-    :cond_58
+    :cond_54
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
 
     invoke-virtual {v0, v1}, Lcom/meizu/settings/widget/SystemLockView;->setHollowVisible(Z)V
 
     .line 880
-    :cond_5d
-    :goto_5d
+    :cond_59
+    :goto_59
     invoke-direct {p0, v1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->setPaswordViewEnable(Z)V
 
-    .line 882
-    iget v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mPasswordType:I
-
-    if-ne v0, v1, :cond_9b
-
-    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
-
-    if-eqz v0, :cond_9b
-
-    .line 885
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
-
-    invoke-virtual {v0, v1}, Landroid/widget/LinearLayout;->setFocusable(Z)V
-
-    .line 886
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
-
-    invoke-virtual {v0, v1}, Landroid/widget/LinearLayout;->setFocusableInTouchMode(Z)V
-
-    .line 888
-    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mIsInputMethodActive:Z
-
-    if-nez v0, :cond_7b
-
-    .line 890
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
-
-    invoke-virtual {v0}, Landroid/widget/EditText;->clearFocus()V
-
-    .line 893
-    :cond_7b
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
-
-    const v1, 0x7f121638
-
-    invoke-virtual {v0, v1}, Landroid/widget/EditText;->setHint(I)V
-
-    .line 895
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mUserFingerprintTextView:Landroid/widget/TextView;
-
-    new-instance v1, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$12;
-
-    invoke-direct {v1, p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$12;-><init>(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
-
-    .line 903
-    new-instance v0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$13;
-
-    invoke-direct {v0, p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$13;-><init>(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
-
-    iput-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mInputShownChangeListener:Landroid/view/inputmethod/InputMethodManager$InputShownChangeListener;
-
-    .line 931
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mInputMethodManager:Landroid/view/inputmethod/InputMethodManager;
-
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mInputShownChangeListener:Landroid/view/inputmethod/InputMethodManager$InputShownChangeListener;
-
-    invoke-virtual {v0, p0}, Landroid/view/inputmethod/InputMethodManager;->addInputShownChangeListener(Landroid/view/inputmethod/InputMethodManager$InputShownChangeListener;)V
-
-    :cond_9b
     return-void
 .end method
 
 .method private setBlackBackgroundInUnderglassFP(Landroid/view/View;)V
-    .registers 8
+    .registers 5
 
     .line 421
     iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mTestDimlayerAlphaValue:Z
@@ -2774,182 +2856,24 @@
 
     return-void
 
-    .line 425
-    :cond_5
-    iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
-
-    const/4 v0, 0x1
-
-    const/4 v1, 0x0
-
-    if-eqz p1, :cond_11
-
-    iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPSupported:Z
-
-    if-eqz p1, :cond_11
-
-    move p1, v0
-
-    goto :goto_12
-
-    :cond_11
-    move p1, v1
-
-    :goto_12
-    const/4 v2, 0x2
-
-    const v3, 0x7f080105
-
-    const/high16 v4, -0x1000000
-
-    const/4 v5, -0x1
-
-    if-eqz p1, :cond_a1
-
-    .line 427
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-virtual {p1}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
-
-    move-result-object p1
-
-    invoke-virtual {p1, v4}, Landroid/view/Window;->setStatusBarColor(I)V
-
-    .line 428
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-static {p1, v1}, Lcom/meizu/settings/utils/StatusbarColorUtils;->setStatusBarDarkIcon(Landroid/app/Activity;Z)V
-
-    .line 429
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-virtual {p1}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
-
-    move-result-object p1
-
-    invoke-static {p1, v4, v0}, Lcom/meizu/common/util/NavigationBarUtils;->setNavigationBarColor(Landroid/view/Window;IZ)V
-
-    .line 430
-    invoke-virtual {p0}, Landroid/preference/PreferenceFragment;->getActivity()Landroid/app/Activity;
-
-    move-result-object p1
-
-    invoke-static {p1, v1}, Lcom/meizu/settings/utils/MzUtils;->setNavigationBarDarIcon(Landroid/app/Activity;Z)V
-
-    .line 432
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mMainRelativeLayout:Landroid/widget/RelativeLayout;
-
-    invoke-virtual {p1, v4}, Landroid/widget/RelativeLayout;->setBackgroundColor(I)V
-
-    .line 433
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mTipTextView:Landroid/widget/TextView;
-
-    invoke-virtual {p1, v5}, Landroid/widget/TextView;->setTextColor(I)V
-
-    .line 434
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mTipTextView2:Landroid/widget/TextView;
-
-    invoke-virtual {p1, v5}, Landroid/widget/TextView;->setTextColor(I)V
-
-    .line 435
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSpecialLockPasswordView:Lcom/meizu/settings/widget/LockPasswordView;
-
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v0
-
-    const v1, 0x7f08028f
-
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Lcom/meizu/settings/widget/LockPasswordView;->setCircleSolidDrawable(Landroid/graphics/drawable/Drawable;)V
-
-    .line 436
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSpecialLockPasswordView:Lcom/meizu/settings/widget/LockPasswordView;
-
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v0
-
-    const v1, 0x7f080290
-
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Lcom/meizu/settings/widget/LockPasswordView;->setCircleHollowDrawable(Landroid/graphics/drawable/Drawable;)V
-
-    .line 437
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSimplePasswordView:Lcom/meizu/settings/widget/LockDigitView;
-
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v0
-
-    const v1, 0x7f080348
-
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Lcom/meizu/settings/widget/LockDigitView;->setCellBackgroundDrawable(Landroid/graphics/drawable/Drawable;)V
-
-    .line 438
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFaceRecognitionAnimationView:Lcom/meizu/settings/face/FaceRecognitionAnimationView;
-
-    invoke-virtual {p1, v5}, Lcom/meizu/settings/face/FaceRecognitionAnimationView;->setFaceColorFilter(I)V
-
-    .line 439
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
-
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
-
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v0
-
-    invoke-virtual {v0, v3}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
-
-    move-result-object v0
-
-    invoke-virtual {p1, v0}, Landroid/widget/EditText;->setBackground(Landroid/graphics/drawable/Drawable;)V
-
-    .line 440
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
-
-    invoke-virtual {p1, v5}, Landroid/widget/EditText;->setTextColor(I)V
-
-    .line 441
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
-
-    const p1, 0x7f0800c5
-
-    invoke-virtual {p0, v2, p1}, Lcom/meizu/settings/widget/SystemLockView;->setInputTextButtonStat(II)V
-
-    goto/16 :goto_125
-
     .line 443
-    :cond_a1
+    :cond_5
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
     invoke-virtual {p1}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
 
     move-result-object p1
 
-    invoke-virtual {p1, v5}, Landroid/view/Window;->setStatusBarColor(I)V
+    const/4 v0, -0x1
+
+    invoke-virtual {p1, v0}, Landroid/view/Window;->setStatusBarColor(I)V
 
     .line 444
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
-    invoke-static {p1, v0}, Lcom/meizu/settings/utils/StatusbarColorUtils;->setStatusBarDarkIcon(Landroid/app/Activity;Z)V
+    const/4 v1, 0x1
+
+    invoke-static {p1, v1}, Lcom/meizu/settings/utils/StatusbarColorUtils;->setStatusBarDarkIcon(Landroid/app/Activity;Z)V
 
     .line 445
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
@@ -2958,114 +2882,121 @@
 
     move-result-object p1
 
-    invoke-static {p1, v5, v1}, Lcom/meizu/common/util/NavigationBarUtils;->setNavigationBarColor(Landroid/view/Window;IZ)V
+    const/4 v2, 0x0
+
+    invoke-static {p1, v0, v2}, Lcom/meizu/common/util/NavigationBarUtils;->setNavigationBarColor(Landroid/view/Window;IZ)V
 
     .line 446
     invoke-virtual {p0}, Landroid/preference/PreferenceFragment;->getActivity()Landroid/app/Activity;
 
     move-result-object p1
 
-    invoke-static {p1, v0}, Lcom/meizu/settings/utils/MzUtils;->setNavigationBarDarIcon(Landroid/app/Activity;Z)V
+    invoke-static {p1, v1}, Lcom/meizu/settings/utils/MzUtils;->setNavigationBarDarIcon(Landroid/app/Activity;Z)V
 
     .line 448
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mMainRelativeLayout:Landroid/widget/RelativeLayout;
 
-    invoke-virtual {p1, v5}, Landroid/widget/RelativeLayout;->setBackgroundColor(I)V
+    invoke-virtual {p1, v0}, Landroid/widget/RelativeLayout;->setBackgroundColor(I)V
 
     .line 449
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mTipTextView:Landroid/widget/TextView;
 
-    invoke-virtual {p1, v4}, Landroid/widget/TextView;->setTextColor(I)V
+    const/high16 v0, -0x1000000
+
+    invoke-virtual {p1, v0}, Landroid/widget/TextView;->setTextColor(I)V
 
     .line 450
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mTipTextView2:Landroid/widget/TextView;
 
-    invoke-virtual {p1, v4}, Landroid/widget/TextView;->setTextColor(I)V
+    invoke-virtual {p1, v0}, Landroid/widget/TextView;->setTextColor(I)V
 
     .line 451
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSpecialLockPasswordView:Lcom/meizu/settings/widget/LockPasswordView;
 
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
+    iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v1}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v1
 
-    const v1, 0x7f080292
+    const v2, 0x7f080292
 
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Lcom/meizu/settings/widget/LockPasswordView;->setCircleSolidDrawable(Landroid/graphics/drawable/Drawable;)V
+    invoke-virtual {p1, v1}, Lcom/meizu/settings/widget/LockPasswordView;->setCircleSolidDrawable(Landroid/graphics/drawable/Drawable;)V
 
     .line 452
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSpecialLockPasswordView:Lcom/meizu/settings/widget/LockPasswordView;
 
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
+    iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v1}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v1
 
-    const v1, 0x7f080294
+    const v2, 0x7f080294
 
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Lcom/meizu/settings/widget/LockPasswordView;->setCircleHollowDrawable(Landroid/graphics/drawable/Drawable;)V
+    invoke-virtual {p1, v1}, Lcom/meizu/settings/widget/LockPasswordView;->setCircleHollowDrawable(Landroid/graphics/drawable/Drawable;)V
 
     .line 453
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mSimplePasswordView:Lcom/meizu/settings/widget/LockDigitView;
 
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
+    iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v1}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v1
 
-    const v1, 0x7f080343
+    const v2, 0x7f080343
 
-    invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {p1, v0}, Lcom/meizu/settings/widget/LockDigitView;->setCellBackgroundDrawable(Landroid/graphics/drawable/Drawable;)V
+    invoke-virtual {p1, v1}, Lcom/meizu/settings/widget/LockDigitView;->setCellBackgroundDrawable(Landroid/graphics/drawable/Drawable;)V
 
     .line 454
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFaceRecognitionAnimationView:Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
-    invoke-virtual {p1, v4}, Lcom/meizu/settings/face/FaceRecognitionAnimationView;->setFaceColorFilter(I)V
+    invoke-virtual {p1, v0}, Lcom/meizu/settings/face/FaceRecognitionAnimationView;->setFaceColorFilter(I)V
 
     .line 455
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
 
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
+    iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
-    invoke-virtual {v0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
+    invoke-virtual {v1}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, v3}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
+    const v2, 0x7f080105
 
-    move-result-object v0
+    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getDrawable(I)Landroid/graphics/drawable/Drawable;
 
-    invoke-virtual {p1, v0}, Landroid/widget/EditText;->setBackground(Landroid/graphics/drawable/Drawable;)V
+    move-result-object v1
+
+    invoke-virtual {p1, v1}, Landroid/widget/EditText;->setBackground(Landroid/graphics/drawable/Drawable;)V
 
     .line 456
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
 
-    invoke-virtual {p1, v4}, Landroid/widget/EditText;->setTextColor(I)V
+    invoke-virtual {p1, v0}, Landroid/widget/EditText;->setTextColor(I)V
 
     .line 457
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
 
-    const p1, 0x7f08034c
+    const/4 p1, 0x2
 
-    invoke-virtual {p0, v2, p1}, Lcom/meizu/settings/widget/SystemLockView;->setInputTextButtonStat(II)V
+    const v0, 0x7f08034c
 
-    :goto_125
+    invoke-virtual {p0, p1, v0}, Lcom/meizu/settings/widget/SystemLockView;->setInputTextButtonStat(II)V
+
     return-void
 .end method
 
@@ -3118,37 +3049,17 @@
 
     invoke-virtual {p0, p1}, Landroid/view/View;->setEnabled(Z)V
 
-    goto :goto_41
+    goto :goto_30
 
     :cond_10
-    if-ne v0, v1, :cond_41
-
-    .line 1321
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    invoke-interface {v0}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->isVerifying()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_23
-
-    .line 1322
-    invoke-direct {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->hideInputMethod()V
-
-    .line 1323
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
-
-    invoke-virtual {p0}, Landroid/widget/EditText;->clearFocus()V
-
-    goto :goto_41
+    if-ne v0, v1, :cond_30
 
     .line 1325
-    :cond_23
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
 
     invoke-virtual {v0, p1}, Landroid/widget/EditText;->setEnabled(Z)V
 
-    if-eqz p1, :cond_3c
+    if-eqz p1, :cond_2b
 
     .line 1327
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
@@ -3166,16 +3077,16 @@
 
     invoke-virtual {p1, v0, v1, v2}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
-    goto :goto_41
+    goto :goto_30
 
     .line 1335
-    :cond_3c
+    :cond_2b
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;
 
     invoke-virtual {p0}, Landroid/widget/EditText;->clearFocus()V
 
-    :cond_41
-    :goto_41
+    :cond_30
+    :goto_30
     return-void
 .end method
 
@@ -3620,6 +3531,36 @@
     return-void
 .end method
 
+.method private startDrawGrayLineAnimation()V
+    .registers 4
+
+    const v0, 0x7f0602ce
+
+    const v1, 0x7f0602cf
+
+    const/4 v2, 0x1
+
+    .line 396
+    invoke-direct {p0, v0, v1, v2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->drawLineAnimation(IIZ)V
+
+    return-void
+.end method
+
+.method private startDrawRedLineAnimation()V
+    .registers 4
+
+    const v0, 0x7f06003f
+
+    const v1, 0x7f0602ce
+
+    const/4 v2, 0x0
+
+    .line 392
+    invoke-direct {p0, v0, v1, v2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->drawLineAnimation(IIZ)V
+
+    return-void
+.end method
+
 .method private testAlpha()V
     .registers 5
 
@@ -3746,7 +3687,7 @@
 
     const/4 v0, 0x0
 
-    if-gtz p2, :cond_3f
+    if-gtz p2, :cond_32
 
     .line 1444
     iput-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFingerprintLockout:Z
@@ -3768,7 +3709,7 @@
 
     invoke-direct {p0, p1, p2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->setTip(II)V
 
-    if-nez p2, :cond_31
+    if-nez p2, :cond_5a
 
     .line 1449
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
@@ -3778,45 +3719,29 @@
     .line 1450
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
 
-    iget-object p2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mHandler:Landroid/os/Handler;
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mHandler:Landroid/os/Handler;
 
-    invoke-interface {p1, p2}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->startVerify(Landroid/os/Handler;)V
+    invoke-interface {p1, p0}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->startVerify(Landroid/os/Handler;)V
 
-    goto :goto_31
+    goto :goto_5a
 
     .line 1453
     :cond_23
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mLockDigitPanel:Lcom/meizu/settings/widget/SystemLockView;
 
-    iget-object p2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
+    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mActivity:Landroid/app/Activity;
 
-    const v0, 0x7f120556
+    const p2, 0x7f120556
 
-    invoke-virtual {p2, v0}, Landroid/app/Activity;->getString(I)Ljava/lang/String;
+    invoke-virtual {p0, p2}, Landroid/app/Activity;->getString(I)Ljava/lang/String;
 
-    move-result-object p2
+    move-result-object p0
 
-    invoke-virtual {p1, p2}, Lcom/meizu/settings/widget/SystemLockView;->setTip(Ljava/lang/String;)V
+    invoke-virtual {p1, p0}, Lcom/meizu/settings/widget/SystemLockView;->setTip(Ljava/lang/String;)V
 
-    .line 1456
-    :cond_31
-    :goto_31
-    iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mUserFingerprintTextView:Landroid/widget/TextView;
+    goto :goto_5a
 
-    invoke-virtual {p1}, Landroid/widget/TextView;->getVisibility()I
-
-    move-result p1
-
-    if-nez p1, :cond_67
-
-    .line 1457
-    iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    invoke-interface {p0}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->endVerify()V
-
-    goto :goto_67
-
-    :cond_3f
+    :cond_32
     const/4 v1, 0x1
 
     .line 1460
@@ -3826,7 +3751,7 @@
 
     const/4 v2, 0x2
 
-    if-ne p1, v1, :cond_4b
+    if-ne p1, v1, :cond_3e
 
     .line 1462
     iput v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyState:I
@@ -3835,10 +3760,10 @@
     iput-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mCanVerifyPassword:Z
 
     .line 1465
-    :cond_4b
+    :cond_3e
     iget-boolean p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mDelayShowFingerprintLockoutTip:Z
 
-    if-eqz p1, :cond_5c
+    if-eqz p1, :cond_4f
 
     .line 1466
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mHandler:Landroid/os/Handler;
@@ -3851,23 +3776,23 @@
 
     invoke-virtual {p1, v0, v1, v2}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 
-    goto :goto_67
+    goto :goto_5a
 
     .line 1478
-    :cond_5c
+    :cond_4f
     iget p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mVerifyState:I
 
-    if-ne p1, v2, :cond_67
+    if-ne p1, v2, :cond_5a
 
     iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mCanVerifyPassword:Z
 
-    if-nez v0, :cond_67
+    if-nez v0, :cond_5a
 
     .line 1479
     invoke-direct {p0, p1, p2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->setTip(II)V
 
-    :cond_67
-    :goto_67
+    :cond_5a
+    :goto_5a
     return-void
 .end method
 
@@ -4093,7 +4018,7 @@
 .method private verifyFPSuccess()V
     .registers 2
 
-    const/4 v0, 0x5
+    const/4 v0, 0x2
 
     .line 1096
     invoke-direct {p0, v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->reportUnlockEvent(I)V
@@ -4801,26 +4726,7 @@
     .line 963
     invoke-super {p0}, Lcom/meizu/settings/SettingsPreferenceFragment;->onStop()V
 
-    .line 965
-    iget v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mPasswordType:I
-
-    const/4 v1, 0x1
-
-    if-ne v0, v1, :cond_13
-
-    iget-boolean v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->isFPEnabled:Z
-
-    if-eqz v0, :cond_13
-
-    .line 968
-    iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mInputMethodManager:Landroid/view/inputmethod/InputMethodManager;
-
-    iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mInputShownChangeListener:Landroid/view/inputmethod/InputMethodManager$InputShownChangeListener;
-
-    invoke-virtual {v0, v1}, Landroid/view/inputmethod/InputMethodManager;->removeInputShownChangeListener(Landroid/view/inputmethod/InputMethodManager$InputShownChangeListener;)V
-
     .line 971
-    :cond_13
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mInputMethodManager:Landroid/view/inputmethod/InputMethodManager;
 
     iget-object v1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->mComplexPasswordView:Landroid/widget/EditText;

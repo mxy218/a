@@ -658,7 +658,7 @@
 
     return p0
 
-    .line 619
+    .line 629
     :cond_4
     invoke-virtual {p1}, Landroid/bluetooth/BluetoothDevice;->getType()I
 
@@ -677,7 +677,7 @@
     :cond_f
     move v0, p0
 
-    .line 623
+    .line 633
     :goto_10
     sget-object v2, Lcom/android/settingslib/bluetooth/BluetoothEventManager;->bleBlackListedAddr:[Ljava/lang/String;
 
@@ -685,10 +685,10 @@
 
     if-ge v0, v3, :cond_43
 
-    .line 624
+    .line 634
     aget-object v2, v2, v0
 
-    .line 625
+    .line 635
     invoke-virtual {p1}, Landroid/bluetooth/BluetoothDevice;->getAddress()Ljava/lang/String;
 
     move-result-object v3
@@ -707,7 +707,7 @@
 
     if-eqz v3, :cond_40
 
-    .line 626
+    .line 636
     new-instance p0, Ljava/lang/StringBuilder;
 
     invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V

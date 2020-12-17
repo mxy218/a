@@ -907,14 +907,14 @@
     return-object p0
 
     :cond_49
-    if-nez p0, :cond_4f
+    if-nez p0, :cond_4e
 
-    const-string/jumbo v0, "null"
+    const-string v0, "null"
 
-    goto :goto_57
+    goto :goto_56
 
     .line 147
-    :cond_4f
+    :cond_4e
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object v0
@@ -924,7 +924,7 @@
     move-result-object v0
 
     .line 148
-    :goto_57
+    :goto_56
     new-instance v1, Ljava/lang/IllegalArgumentException;
 
     new-instance v2, Ljava/lang/StringBuilder;

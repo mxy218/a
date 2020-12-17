@@ -50,7 +50,7 @@
     .line 1470
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$18;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
+    invoke-static {v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
 
     move-result v0
 
@@ -61,13 +61,13 @@
     .line 1471
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$18;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
+    invoke-static {v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
 
     move-result v1
 
     iget v2, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$18;->val$countDownTime:I
 
-    invoke-static {v0, v1, v2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
+    invoke-static {v0, v1, v2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
 
     .line 1474
     :cond_18
@@ -75,7 +75,7 @@
 
     const/4 v0, 0x0
 
-    invoke-static {p0, v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3002(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
+    invoke-static {p0, v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2502(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Z)Z
 
     return-void
 .end method

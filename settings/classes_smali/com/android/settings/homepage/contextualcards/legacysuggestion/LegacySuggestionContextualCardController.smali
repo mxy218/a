@@ -119,13 +119,13 @@
     .line 127
     iget-object v0, p0, Lcom/android/settings/homepage/contextualcards/legacysuggestion/LegacySuggestionContextualCardController;->mSuggestionController:Lcom/android/settingslib/suggestions/SuggestionController;
 
-    if-eqz v0, :cond_a8
+    if-eqz v0, :cond_a7
 
     iget-object v1, p0, Lcom/android/settings/homepage/contextualcards/legacysuggestion/LegacySuggestionContextualCardController;->mCardUpdateListener:Lcom/android/settings/homepage/contextualcards/ContextualCardUpdateListener;
 
     if-nez v1, :cond_a
 
-    goto/16 :goto_a8
+    goto/16 :goto_a7
 
     .line 130
     :cond_a
@@ -133,14 +133,14 @@
 
     move-result-object v0
 
-    if-nez v0, :cond_14
+    if-nez v0, :cond_13
 
-    const-string/jumbo v1, "null"
+    const-string v1, "null"
 
-    goto :goto_1c
+    goto :goto_1b
 
     .line 133
-    :cond_14
+    :cond_13
     invoke-interface {v0}, Ljava/util/List;->size()I
 
     move-result v1
@@ -150,7 +150,7 @@
     move-result-object v1
 
     .line 134
-    :goto_1c
+    :goto_1b
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -174,19 +174,19 @@
 
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
-    if-eqz v0, :cond_93
+    if-eqz v0, :cond_92
 
     .line 139
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
 
     move-result-object v0
 
-    :goto_3d
+    :goto_3c
     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
 
     move-result v2
 
-    if-eqz v2, :cond_93
+    if-eqz v2, :cond_92
 
     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
 
@@ -204,7 +204,7 @@
 
     move-result-object v4
 
-    if-eqz v4, :cond_61
+    if-eqz v4, :cond_60
 
     .line 143
     invoke-virtual {v2}, Landroid/service/settings/suggestions/Suggestion;->getIcon()Landroid/graphics/drawable/Icon;
@@ -220,7 +220,7 @@
     invoke-virtual {v3, v4}, Lcom/android/settings/homepage/contextualcards/ContextualCard$Builder;->setIconDrawable(Landroid/graphics/drawable/Drawable;)Lcom/android/settings/homepage/contextualcards/ContextualCard$Builder;
 
     .line 146
-    :cond_61
+    :cond_60
     invoke-virtual {v2}, Landroid/service/settings/suggestions/Suggestion;->getPendingIntent()Landroid/app/PendingIntent;
 
     move-result-object v4
@@ -268,10 +268,10 @@
 
     invoke-interface {v1, v2}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    goto :goto_3d
+    goto :goto_3c
 
     .line 157
-    :cond_93
+    :cond_92
     new-instance v0, Landroid/util/ArrayMap;
 
     invoke-direct {v0}, Landroid/util/ArrayMap;-><init>()V
@@ -292,8 +292,8 @@
 
     invoke-static {v1}, Lcom/android/settingslib/utils/ThreadUtils;->postOnMainThread(Ljava/lang/Runnable;)V
 
-    :cond_a8
-    :goto_a8
+    :cond_a7
+    :goto_a7
     return-void
 .end method
 

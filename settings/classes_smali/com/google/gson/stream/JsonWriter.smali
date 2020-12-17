@@ -1045,7 +1045,7 @@
     .line 455
     iget-object v0, p0, Lcom/google/gson/stream/JsonWriter;->out:Ljava/io/Writer;
 
-    const-string/jumbo v1, "null"
+    const-string v1, "null"
 
     invoke-virtual {v0, v1}, Ljava/io/Writer;->write(Ljava/lang/String;)V
 

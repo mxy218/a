@@ -969,14 +969,14 @@
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_4a
+    if-eqz v0, :cond_49
 
     const/4 v0, 0x0
 
     .line 641
     iget-object v2, p0, Landroidx/core/view/accessibility/AccessibilityNodeInfoCompat$AccessibilityActionCompat;->mViewCommandArgumentClass:Ljava/lang/Class;
 
-    if-eqz v2, :cond_43
+    if-eqz v2, :cond_42
 
     :try_start_a
     new-array v3, v1, [Ljava/lang/Class;
@@ -1004,7 +1004,7 @@
 
     move-object v0, v1
 
-    goto :goto_43
+    goto :goto_42
 
     :catch_1d
     move-exception p2
@@ -1020,20 +1020,20 @@
     :goto_21
     iget-object v1, p0, Landroidx/core/view/accessibility/AccessibilityNodeInfoCompat$AccessibilityActionCompat;->mViewCommandArgumentClass:Ljava/lang/Class;
 
-    if-nez v1, :cond_29
+    if-nez v1, :cond_28
 
-    const-string/jumbo v1, "null"
+    const-string v1, "null"
 
-    goto :goto_2d
+    goto :goto_2c
 
     .line 648
-    :cond_29
+    :cond_28
     invoke-virtual {v1}, Ljava/lang/Class;->getName()Ljava/lang/String;
 
     move-result-object v1
 
     .line 649
-    :goto_2d
+    :goto_2c
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1053,8 +1053,8 @@
     invoke-static {v2, v1, p2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
     .line 653
-    :cond_43
-    :goto_43
+    :cond_42
+    :goto_42
     iget-object p0, p0, Landroidx/core/view/accessibility/AccessibilityNodeInfoCompat$AccessibilityActionCompat;->mCommand:Landroidx/core/view/accessibility/AccessibilityViewCommand;
 
     invoke-interface {p0, p1, v0}, Landroidx/core/view/accessibility/AccessibilityViewCommand;->perform(Landroid/view/View;Landroidx/core/view/accessibility/AccessibilityViewCommand$CommandArguments;)Z
@@ -1063,6 +1063,6 @@
 
     return p0
 
-    :cond_4a
+    :cond_49
     return v1
 .end method

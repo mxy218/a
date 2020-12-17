@@ -186,14 +186,14 @@
 
     move-result p0
 
-    if-eqz p0, :cond_43
+    if-eqz p0, :cond_42
 
-    const-string/jumbo p0, "null"
+    const-string p0, "null"
 
     return-object p0
 
     .line 260
-    :cond_43
+    :cond_42
     new-instance p0, Ljava/lang/AssertionError;
 
     invoke-direct {p0}, Ljava/lang/AssertionError;-><init>()V

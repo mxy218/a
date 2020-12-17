@@ -49,7 +49,7 @@
 
     const/4 p1, 0x1
 
-    if-le p3, p1, :cond_191
+    if-le p3, p1, :cond_190
 
     .line 66
     invoke-virtual {p2}, Landroid/view/View;->getTag()Ljava/lang/Object;
@@ -58,7 +58,7 @@
 
     check-cast p2, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppAdapter$AppViewHolder;
 
-    if-eqz p2, :cond_191
+    if-eqz p2, :cond_190
 
     .line 67
     iget-object p4, p2, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppAdapter$AppViewHolder;->appChecked:Landroid/widget/CheckedTextView;
@@ -69,7 +69,7 @@
 
     if-eqz p4, :cond_15
 
-    goto/16 :goto_191
+    goto/16 :goto_190
 
     .line 70
     :cond_15
@@ -213,11 +213,11 @@
 
     move-result p3
 
-    const-string/jumbo p4, "null"
+    const-string p4, "null"
 
     const-string/jumbo v0, "|"
 
-    if-eqz p3, :cond_d8
+    if-eqz p3, :cond_d7
 
     .line 88
     iget-object p1, p0, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment$1;->this$0:Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;
@@ -226,7 +226,7 @@
 
     move-result p1
 
-    if-eqz p1, :cond_be
+    if-eqz p1, :cond_bd
 
     .line 89
     new-instance p1, Ljava/lang/StringBuilder;
@@ -249,10 +249,10 @@
 
     move-result-object p1
 
-    goto/16 :goto_14d
+    goto/16 :goto_14c
 
     .line 91
-    :cond_be
+    :cond_bd
     new-instance p1, Ljava/lang/StringBuilder;
 
     invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
@@ -273,15 +273,15 @@
 
     move-result-object p1
 
-    goto/16 :goto_14d
+    goto/16 :goto_14c
 
     .line 94
-    :cond_d8
+    :cond_d7
     invoke-virtual {p2, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
 
     move-result p3
 
-    if-eqz p3, :cond_114
+    if-eqz p3, :cond_113
 
     const-string p3, "\\|"
 
@@ -297,7 +297,7 @@
 
     move-result p3
 
-    if-eqz p3, :cond_f5
+    if-eqz p3, :cond_f4
 
     .line 97
     iget-object p3, p0, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment$1;->this$0:Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;
@@ -308,10 +308,10 @@
 
     aput-object p3, p2, p1
 
-    goto :goto_fd
+    goto :goto_fc
 
     .line 99
-    :cond_f5
+    :cond_f4
     iget-object p3, p0, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment$1;->this$0:Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;
 
     invoke-static {p3}, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;->access$200(Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;)Ljava/lang/String;
@@ -321,7 +321,7 @@
     aput-object p3, p2, p5
 
     .line 101
-    :goto_fd
+    :goto_fc
     new-instance p3, Ljava/lang/StringBuilder;
 
     invoke-direct {p3}, Ljava/lang/StringBuilder;-><init>()V
@@ -340,17 +340,17 @@
 
     move-result-object p1
 
-    goto :goto_14d
+    goto :goto_14c
 
     .line 103
-    :cond_114
+    :cond_113
     iget-object p1, p0, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment$1;->this$0:Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;
 
     invoke-static {p1}, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;->access$400(Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;)Z
 
     move-result p1
 
-    if-eqz p1, :cond_135
+    if-eqz p1, :cond_134
 
     .line 104
     new-instance p1, Ljava/lang/StringBuilder;
@@ -373,10 +373,10 @@
 
     move-result-object p1
 
-    goto :goto_14d
+    goto :goto_14c
 
     .line 106
-    :cond_135
+    :cond_134
     new-instance p1, Ljava/lang/StringBuilder;
 
     invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
@@ -398,7 +398,7 @@
     move-result-object p1
 
     .line 111
-    :goto_14d
+    :goto_14c
     iget-object p2, p0, Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment$1;->this$0:Lcom/meizu/settings/accessibility/FlymeQuickWakeupSelectAppFragment;
 
     invoke-virtual {p2}, Landroid/preference/PreferenceFragment;->getActivity()Landroid/app/Activity;
@@ -466,7 +466,7 @@
 
     nop
 
-    :cond_191
-    :goto_191
+    :cond_190
+    :goto_190
     return-void
 .end method

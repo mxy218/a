@@ -80,23 +80,23 @@
 
     move-result-object p0
 
-    const-string/jumbo p1, "null"
+    const-string p1, "null"
 
     .line 508
     invoke-virtual {p1, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result p1
 
-    if-eqz p1, :cond_1b
+    if-eqz p1, :cond_1a
 
-    goto :goto_20
+    goto :goto_1f
 
-    :cond_1b
+    :cond_1a
     new-instance v1, Ljava/net/URL;
 
     invoke-direct {v1, p0}, Ljava/net/URL;-><init>(Ljava/lang/String;)V
 
-    :goto_20
+    :goto_1f
     return-object v1
 .end method
 

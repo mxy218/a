@@ -341,7 +341,7 @@
 
     invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
     :try_end_3c
-    .catch Lorg/json/JSONException; {:try_start_c .. :try_end_3c} :catch_7e
+    .catch Lorg/json/JSONException; {:try_start_c .. :try_end_3c} :catch_7d
 
     :cond_3c
     :goto_3c
@@ -355,15 +355,15 @@
 
     move-result p1
 
-    if-eqz p1, :cond_4b
+    if-eqz p1, :cond_4a
 
-    const-string/jumbo p1, "null"
+    const-string p1, "null"
 
     .line 149
     invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 151
-    :cond_4b
+    :cond_4a
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object p1
@@ -388,17 +388,17 @@
     .line 153
     iget-object v0, p0, Lcom/meizu/settings/applications/IntegrationAppPkgFetcher;->mContentResolver:Landroid/content/ContentResolver;
 
-    if-nez v0, :cond_6e
+    if-nez v0, :cond_6d
 
     const-string p0, "mContentResolver    has released"
 
     .line 154
     invoke-static {v1, v3, p0}, Lcom/meizu/settings/utils/LogUtils;->e(Ljava/lang/String;ZLjava/lang/String;)V
 
-    goto :goto_7d
+    goto :goto_7c
 
     .line 156
-    :cond_6e
+    :cond_6d
     invoke-static {v0, p2}, Landroid/provider/Settings$Secure;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
@@ -408,18 +408,18 @@
 
     move-result v0
 
-    if-nez v0, :cond_7d
+    if-nez v0, :cond_7c
 
     .line 158
     iget-object p0, p0, Lcom/meizu/settings/applications/IntegrationAppPkgFetcher;->mContentResolver:Landroid/content/ContentResolver;
 
     invoke-static {p0, p2, p1}, Landroid/provider/Settings$Secure;->putString(Landroid/content/ContentResolver;Ljava/lang/String;Ljava/lang/String;)Z
 
-    :cond_7d
-    :goto_7d
+    :cond_7c
+    :goto_7c
     return-void
 
-    :catch_7e
+    :catch_7d
     move-exception p0
 
     .line 144

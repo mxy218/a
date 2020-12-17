@@ -72,21 +72,21 @@
 
     const v0, 0x1020019
 
-    if-lez p3, :cond_77
+    if-lez p3, :cond_76
 
     invoke-static {p2}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result p3
 
-    if-nez p3, :cond_77
+    if-nez p3, :cond_76
 
-    const-string/jumbo p3, "null"
+    const-string p3, "null"
 
     invoke-virtual {p3, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result p2
 
-    if-nez p2, :cond_77
+    if-nez p2, :cond_76
 
     .line 319
     iget-object p2, p0, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings$4;->this$0:Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;
@@ -103,7 +103,7 @@
 
     move-result p1
 
-    if-eqz p1, :cond_49
+    if-eqz p1, :cond_48
 
     .line 320
     iget-object p1, p0, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings$4;->this$0:Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;
@@ -131,10 +131,10 @@
 
     invoke-static {p1, p0}, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;->access$800(Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;Lcom/meizu/textinputlayout/TextInputLayout;)V
 
-    goto :goto_8d
+    goto :goto_8c
 
     .line 325
-    :cond_49
+    :cond_48
     iget-object p1, p0, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings$4;->this$0:Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;
 
     invoke-static {p1}, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;->access$700(Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;)Landroid/app/AlertDialog;
@@ -162,7 +162,7 @@
 
     move-result p1
 
-    if-eqz p1, :cond_8d
+    if-eqz p1, :cond_8c
 
     .line 329
     iget-object p1, p0, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings$4;->val$inputLayout:Lcom/meizu/textinputlayout/TextInputLayout;
@@ -181,10 +181,10 @@
 
     invoke-virtual {p1, p0}, Lcom/meizu/textinputlayout/TextInputLayout;->setError(Ljava/lang/CharSequence;)V
 
-    goto :goto_8d
+    goto :goto_8c
 
     .line 333
-    :cond_77
+    :cond_76
     iget-object p1, p0, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings$4;->this$0:Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;
 
     invoke-static {p1}, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;->access$700(Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;)Landroid/app/AlertDialog;
@@ -208,7 +208,7 @@
 
     invoke-static {p1, p0}, Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;->access$800(Lcom/meizu/settings/deviceinfo/FlymeDeviceInfoSettings;Lcom/meizu/textinputlayout/TextInputLayout;)V
 
-    :cond_8d
-    :goto_8d
+    :cond_8c
+    :goto_8c
     return-void
 .end method

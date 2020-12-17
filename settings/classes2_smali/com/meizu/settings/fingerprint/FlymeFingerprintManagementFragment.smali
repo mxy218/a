@@ -3039,5 +3039,17 @@
 
     invoke-virtual {p1, p2}, Landroid/widget/LinearLayout;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
+    .line 565
+    iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerprintManagementFragment;->mFpAnimationLayout:Landroid/widget/LinearLayout;
+
+    const/16 p2, 0x8
+
+    invoke-virtual {p1, p2}, Landroid/widget/LinearLayout;->setVisibility(I)V
+
+    .line 566
+    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerprintManagementFragment;->mFpAnimationLine:Landroid/widget/LinearLayout;
+
+    invoke-virtual {p0, p2}, Landroid/widget/LinearLayout;->setVisibility(I)V
+
     return-void
 .end method

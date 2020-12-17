@@ -30,7 +30,7 @@
     goto :goto_16
 
     :pswitch_9  #0x6
-    const/4 p0, 0x7
+    const/4 p0, 0x6
 
     goto :goto_16
 
@@ -40,7 +40,7 @@
     goto :goto_16
 
     :pswitch_d  #0x4
-    const/4 p0, 0x6
+    const/4 p0, 0x7
 
     goto :goto_16
 

@@ -48,9 +48,6 @@
 .method public abstract isScreenUnlockWithFingerprintEnabled()Z
 .end method
 
-.method public abstract isVerifying()Z
-.end method
-
 .method public abstract modifyFingerPrintName(ILjava/lang/String;)Z
 .end method
 

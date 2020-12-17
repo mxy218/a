@@ -1376,9 +1376,9 @@
 
     sget-object v1, Lcom/google/gson/stream/JsonToken;->NAME:Lcom/google/gson/stream/JsonToken;
 
-    const-string/jumbo v2, "null"
+    const-string v2, "null"
 
-    if-ne v0, v1, :cond_17
+    if-ne v0, v1, :cond_16
 
     .line 258
     invoke-virtual {p0}, Lcom/google/gson/internal/bind/JsonTreeReader;->nextName()Ljava/lang/String;
@@ -1392,10 +1392,10 @@
 
     aput-object v2, v0, v1
 
-    goto :goto_22
+    goto :goto_21
 
     .line 261
-    :cond_17
+    :cond_16
     invoke-direct {p0}, Lcom/google/gson/internal/bind/JsonTreeReader;->popStack()Ljava/lang/Object;
 
     .line 262
@@ -1408,7 +1408,7 @@
     aput-object v2, v0, v1
 
     .line 264
-    :goto_22
+    :goto_21
     iget-object v0, p0, Lcom/google/gson/internal/bind/JsonTreeReader;->pathIndices:[I
 
     iget p0, p0, Lcom/google/gson/internal/bind/JsonTreeReader;->stackSize:I

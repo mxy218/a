@@ -182,12 +182,12 @@
 
     iput-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerprintView;->mFingerprintPathInterpolator:Landroid/view/animation/PathInterpolator;
 
-    .line 52
+    .line 53
     invoke-virtual {p0}, Landroid/widget/RelativeLayout;->getResources()Landroid/content/res/Resources;
 
     move-result-object p1
 
-    const v0, 0x7f0602c9
+    const v0, 0x7f0600ba
 
     invoke-virtual {p1, v0}, Landroid/content/res/Resources;->getColor(I)I
 

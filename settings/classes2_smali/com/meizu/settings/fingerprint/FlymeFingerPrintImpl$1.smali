@@ -146,7 +146,7 @@
     const/4 p2, 0x4
 
     .line 292
-    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result p0
 
@@ -217,7 +217,7 @@
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mHandler:Landroid/os/Handler;
 
     .line 307
-    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result p0
 
@@ -241,7 +241,7 @@
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mHandler:Landroid/os/Handler;
 
     .line 311
-    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result p0
 
@@ -276,7 +276,7 @@
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mHandler:Landroid/os/Handler;
 
     .line 320
-    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result p0
 
@@ -297,7 +297,7 @@
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mHandler:Landroid/os/Handler;
 
     .line 316
-    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {p0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result p0
 
@@ -333,7 +333,7 @@
 
     const/4 v1, 0x0
 
-    if-eqz v0, :cond_28
+    if-eqz v0, :cond_1a
 
     .line 257
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
@@ -342,30 +342,13 @@
 
     invoke-static {v0, v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$102(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;I)I
 
-    .line 259
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
-
-    invoke-static {v0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$100(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
-
-    move-result v2
-
-    int-to-double v2, v2
-
-    const-wide/high16 v4, 0x3fe8000000000000L  # 0.75
-
-    mul-double/2addr v2, v4
-
-    double-to-int v2, v2
-
-    invoke-static {v0, v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$202(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;I)I
-
     .line 261
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
 
     invoke-static {v0, v1}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$002(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;Z)Z
 
     .line 264
-    :cond_28
+    :cond_1a
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
 
     invoke-static {v0}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$100(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
@@ -396,7 +379,7 @@
 
     double-to-int v2, v2
 
-    invoke-static {v0, v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$302(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;I)I
+    invoke-static {v0, v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$202(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;I)I
 
     .line 266
     new-instance v0, Ljava/lang/StringBuilder;
@@ -415,7 +398,7 @@
 
     iget-object v2, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
 
-    invoke-static {v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result v2
 
@@ -427,7 +410,7 @@
 
     iget-object v2, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
 
-    invoke-static {v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {v2}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result v2
 
@@ -448,16 +431,16 @@
 
     const/4 v3, 0x1
 
-    if-nez p1, :cond_7d
+    if-nez p1, :cond_6f
 
     move v4, v3
 
-    goto :goto_7e
+    goto :goto_70
 
-    :cond_7d
+    :cond_6f
     move v4, v1
 
-    :goto_7e
+    :goto_70
     invoke-static {v2, v4}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$402(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;Z)Z
 
     .line 270
@@ -467,7 +450,7 @@
 
     move-result v2
 
-    if-eqz v2, :cond_a7
+    if-eqz v2, :cond_99
 
     .line 271
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
@@ -478,12 +461,12 @@
 
     const/4 v0, -0x1
 
-    if-eqz p1, :cond_99
+    if-eqz p1, :cond_8b
 
     .line 273
     array-length v2, p1
 
-    if-lez v2, :cond_99
+    if-lez v2, :cond_8b
 
     .line 274
     array-length v0, p1
@@ -493,7 +476,7 @@
     aget v0, p1, v0
 
     .line 276
-    :cond_99
+    :cond_8b
     iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
 
     iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mHandler:Landroid/os/Handler;
@@ -506,10 +489,10 @@
 
     invoke-virtual {p0, p1}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
-    goto :goto_c3
+    goto :goto_b5
 
     .line 279
-    :cond_a7
+    :cond_99
     iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl$1;->this$0:Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;
 
     iget-object v2, v1, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mHandler:Landroid/os/Handler;
@@ -517,7 +500,7 @@
     const/16 v3, 0x21
 
     .line 281
-    invoke-static {v1}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$300(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
+    invoke-static {v1}, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->access$200(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)I
 
     move-result v1
 
@@ -540,6 +523,6 @@
 
     invoke-virtual {v2, p0}, Landroid/os/Handler;->sendMessage(Landroid/os/Message;)Z
 
-    :goto_c3
+    :goto_b5
     return-void
 .end method

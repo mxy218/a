@@ -81,28 +81,28 @@
 
     move-result-object p0
 
-    const-string/jumbo p1, "null"
+    const-string p1, "null"
 
     .line 527
     invoke-virtual {p1, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
     move-result p1
 
-    if-eqz p1, :cond_1b
+    if-eqz p1, :cond_1a
 
-    goto :goto_20
+    goto :goto_1f
 
-    :cond_1b
+    :cond_1a
     new-instance v1, Ljava/net/URI;
 
     invoke-direct {v1, p0}, Ljava/net/URI;-><init>(Ljava/lang/String;)V
-    :try_end_20
-    .catch Ljava/net/URISyntaxException; {:try_start_d .. :try_end_20} :catch_21
+    :try_end_1f
+    .catch Ljava/net/URISyntaxException; {:try_start_d .. :try_end_1f} :catch_20
 
-    :goto_20
+    :goto_1f
     return-object v1
 
-    :catch_21
+    :catch_20
     move-exception p0
 
     .line 529

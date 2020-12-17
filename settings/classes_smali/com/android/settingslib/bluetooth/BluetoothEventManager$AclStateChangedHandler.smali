@@ -25,7 +25,7 @@
 .method private constructor <init>(Lcom/android/settingslib/bluetooth/BluetoothEventManager;)V
     .registers 2
 
-    .line 533
+    .line 543
     iput-object p1, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$AclStateChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -36,7 +36,7 @@
 .method synthetic constructor <init>(Lcom/android/settingslib/bluetooth/BluetoothEventManager;Lcom/android/settingslib/bluetooth/BluetoothEventManager$1;)V
     .registers 3
 
-    .line 533
+    .line 543
     invoke-direct {p0, p1}, Lcom/android/settingslib/bluetooth/BluetoothEventManager$AclStateChangedHandler;-><init>(Lcom/android/settingslib/bluetooth/BluetoothEventManager;)V
 
     return-void
@@ -53,12 +53,12 @@
 
     const-string p0, "AclStateChangedHandler: device is null"
 
-    .line 537
+    .line 547
     invoke-static {p1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
 
-    .line 542
+    .line 552
     :cond_a
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$AclStateChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 
@@ -74,7 +74,7 @@
 
     return-void
 
-    .line 546
+    .line 556
     :cond_17
     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
 
@@ -84,12 +84,12 @@
 
     const-string p0, "AclStateChangedHandler: action is null"
 
-    .line 548
+    .line 558
     invoke-static {p1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
 
-    .line 551
+    .line 561
     :cond_23
     iget-object v0, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$AclStateChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 
@@ -105,7 +105,7 @@
 
     const-string p0, "AclStateChangedHandler: activeDevice is null"
 
-    .line 553
+    .line 563
     invoke-static {p1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
@@ -113,7 +113,7 @@
     :cond_35
     const/4 v0, -0x1
 
-    .line 557
+    .line 567
     invoke-virtual {p2}, Ljava/lang/String;->hashCode()I
 
     move-result v1
@@ -162,7 +162,7 @@
 
     if-eq v0, v4, :cond_74
 
-    .line 565
+    .line 575
     new-instance p0, Ljava/lang/StringBuilder;
 
     invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
@@ -184,7 +184,7 @@
     :cond_73
     const/4 v3, 0x2
 
-    .line 569
+    .line 579
     :cond_74
     iget-object p0, p0, Lcom/android/settingslib/bluetooth/BluetoothEventManager$AclStateChangedHandler;->this$0:Lcom/android/settingslib/bluetooth/BluetoothEventManager;
 

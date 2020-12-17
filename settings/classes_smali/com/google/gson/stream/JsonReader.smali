@@ -1130,24 +1130,24 @@
 
     const/16 v2, 0x74
 
-    if-eq v0, v2, :cond_30
+    if-eq v0, v2, :cond_2f
 
     const/16 v2, 0x54
 
     if-ne v0, v2, :cond_10
 
-    goto :goto_30
+    goto :goto_2f
 
     :cond_10
     const/16 v2, 0x66
 
-    if-eq v0, v2, :cond_2a
+    if-eq v0, v2, :cond_29
 
     const/16 v2, 0x46
 
     if-ne v0, v2, :cond_19
 
-    goto :goto_2a
+    goto :goto_29
 
     :cond_19
     const/16 v2, 0x6e
@@ -1167,24 +1167,24 @@
     :goto_23
     const/4 v0, 0x7
 
-    const-string/jumbo v2, "null"
+    const-string v2, "null"
 
     const-string v3, "NULL"
 
-    goto :goto_36
+    goto :goto_35
 
-    :cond_2a
-    :goto_2a
+    :cond_29
+    :goto_29
     const/4 v0, 0x6
 
     const-string v2, "false"
 
     const-string v3, "FALSE"
 
-    goto :goto_36
+    goto :goto_35
 
-    :cond_30
-    :goto_30
+    :cond_2f
+    :goto_2f
     const/4 v0, 0x5
 
     const-string/jumbo v2, "true"
@@ -1192,15 +1192,15 @@
     const-string v3, "TRUE"
 
     .line 620
-    :goto_36
+    :goto_35
     invoke-virtual {v2}, Ljava/lang/String;->length()I
 
     move-result v4
 
     const/4 v5, 0x1
 
-    :goto_3b
-    if-ge v5, v4, :cond_64
+    :goto_3a
+    if-ge v5, v4, :cond_63
 
     .line 622
     iget v6, p0, Lcom/google/gson/stream/JsonReader;->pos:I
@@ -1209,7 +1209,7 @@
 
     iget v7, p0, Lcom/google/gson/stream/JsonReader;->limit:I
 
-    if-lt v6, v7, :cond_4d
+    if-lt v6, v7, :cond_4c
 
     add-int/lit8 v6, v5, 0x1
 
@@ -1217,12 +1217,12 @@
 
     move-result v6
 
-    if-nez v6, :cond_4d
+    if-nez v6, :cond_4c
 
     return v1
 
     .line 625
-    :cond_4d
+    :cond_4c
     iget-object v6, p0, Lcom/google/gson/stream/JsonReader;->buffer:[C
 
     iget v7, p0, Lcom/google/gson/stream/JsonReader;->pos:I
@@ -1236,30 +1236,30 @@
 
     move-result v7
 
-    if-eq v6, v7, :cond_61
+    if-eq v6, v7, :cond_60
 
     invoke-virtual {v3, v5}, Ljava/lang/String;->charAt(I)C
 
     move-result v7
 
-    if-eq v6, v7, :cond_61
+    if-eq v6, v7, :cond_60
 
     return v1
 
-    :cond_61
+    :cond_60
     add-int/lit8 v5, v5, 0x1
 
-    goto :goto_3b
+    goto :goto_3a
 
     .line 631
-    :cond_64
+    :cond_63
     iget v2, p0, Lcom/google/gson/stream/JsonReader;->pos:I
 
     add-int/2addr v2, v4
 
     iget v3, p0, Lcom/google/gson/stream/JsonReader;->limit:I
 
-    if-lt v2, v3, :cond_73
+    if-lt v2, v3, :cond_72
 
     add-int/lit8 v2, v4, 0x1
 
@@ -1267,9 +1267,9 @@
 
     move-result v2
 
-    if-eqz v2, :cond_81
+    if-eqz v2, :cond_80
 
-    :cond_73
+    :cond_72
     iget-object v2, p0, Lcom/google/gson/stream/JsonReader;->buffer:[C
 
     iget v3, p0, Lcom/google/gson/stream/JsonReader;->pos:I
@@ -1283,12 +1283,12 @@
 
     move-result v2
 
-    if-eqz v2, :cond_81
+    if-eqz v2, :cond_80
 
     return v1
 
     .line 637
-    :cond_81
+    :cond_80
     iget v1, p0, Lcom/google/gson/stream/JsonReader;->pos:I
 
     add-int/2addr v1, v4
@@ -5000,7 +5000,7 @@
 
     sub-int/2addr v1, v4
 
-    const-string/jumbo v0, "null"
+    const-string v0, "null"
 
     aput-object v0, p0, v1
 

@@ -287,7 +287,7 @@
     .registers 1
 
     .line 26
-    iget p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mTipsFingerSideCount:I
+    iget p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mPercent:I
 
     return p0
 .end method
@@ -296,7 +296,7 @@
     .registers 2
 
     .line 26
-    iput p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mTipsFingerSideCount:I
+    iput p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mPercent:I
 
     return p1
 .end method
@@ -305,18 +305,9 @@
     .registers 1
 
     .line 26
-    iget p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mPercent:I
+    iget p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mTipsFingerSideCount:I
 
     return p0
-.end method
-
-.method static synthetic access$302(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;I)I
-    .registers 2
-
-    .line 26
-    iput p1, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mPercent:I
-
-    return p1
 .end method
 
 .method static synthetic access$400(Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;)Z
@@ -1159,15 +1150,6 @@
     return v0
 .end method
 
-.method public isVerifying()Z
-    .registers 1
-
-    .line 524
-    iget-boolean p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mIsVerifying:Z
-
-    return p0
-.end method
-
 .method public modifyFingerPrintName(ILjava/lang/String;)Z
     .registers 4
 
@@ -1280,11 +1262,6 @@
 .method public setFODIconVisiable(Z)V
     .registers 2
 
-    .line 245
-    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeFingerPrintImpl;->mFingerprintManager:Landroid/hardware/fingerprint/FingerprintManager;
-
-    invoke-virtual {p0, p1}, Landroid/hardware/fingerprint/FingerprintManager;->setFingerprintIconVisible(Z)V
-
     return-void
 .end method
 
@@ -1321,24 +1298,9 @@
 
     move-result-object p0
 
-    const-string v0, "FlymeFingerPrintImpl"
+    const-string p1, "FlymeFingerPrintImpl"
 
-    invoke-static {v0, p0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
-
-    if-eqz p1, :cond_28
-
-    const-string p0, "1"
-
-    goto :goto_2a
-
-    :cond_28
-    const-string p0, "0"
-
-    :goto_2a
-    const-string p1, "persist.sys.meizu.fingerprint"
-
-    .line 95
-    invoke-static {p1, p0}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {p1, p0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     return-void
 .end method

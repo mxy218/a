@@ -428,15 +428,6 @@
     return-object p0
 .end method
 
-.method static synthetic access$3602(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;Landroid/app/AlertDialog;)Landroid/app/AlertDialog;
-    .registers 2
-
-    .line 56
-    iput-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFodWarmTipsDialog:Landroid/app/AlertDialog;
-
-    return-object p1
-.end method
-
 .method static synthetic access$400(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;Ljava/lang/String;)V
     .registers 2
 
@@ -498,33 +489,6 @@
     iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mHandler:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$UiHandler;
 
     return-object p0
-.end method
-
-.method private canShowEnrollFodTipsDialog()Z
-    .registers 3
-
-    .line 1016
-    invoke-virtual {p0}, Landroid/app/Activity;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object p0
-
-    const/4 v0, 0x1
-
-    const-string v1, "can_show_enroll_fod_tips_dlg"
-
-    invoke-static {p0, v1, v0}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-
-    move-result p0
-
-    if-ne p0, v0, :cond_e
-
-    goto :goto_f
-
-    :cond_e
-    const/4 v0, 0x0
-
-    :goto_f
-    return v0
 .end method
 
 .method private checkPasswordConfirm()V
@@ -969,7 +933,7 @@
 .end method
 
 .method private handleShopDemoFeature()V
-    .registers 5
+    .registers 4
 
     .line 962
     iget-boolean v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mIsShopDemoVersion:Z
@@ -1007,14 +971,14 @@
     move v0, v2
 
     :goto_17
-    if-eqz v0, :cond_54
+    if-eqz v0, :cond_38
 
     .line 970
     invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->isEnrollFingerprintFinished()Z
 
     move-result v0
 
-    if-eqz v0, :cond_54
+    if-eqz v0, :cond_38
 
     .line 971
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
@@ -1033,33 +997,6 @@
     .line 973
     invoke-virtual {v0, v2}, Landroid/view/View;->setVisibility(I)V
 
-    const/high16 v1, -0x1000000
-
-    .line 975
-    invoke-virtual {v0, v1}, Landroid/view/View;->setBackgroundColor(I)V
-
-    const v1, 0x7f0a02b7
-
-    .line 976
-    invoke-virtual {p0, v1}, Lflyme/support/v7/app/AppCompatActivity;->findViewById(I)Landroid/view/View;
-
-    move-result-object v1
-
-    check-cast v1, Landroid/widget/TextView;
-
-    .line 977
-    invoke-virtual {p0}, Lflyme/support/v7/app/AppCompatActivity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v2
-
-    const v3, 0x7f0602c9
-
-    invoke-virtual {v2, v3}, Landroid/content/res/Resources;->getColor(I)I
-
-    move-result v2
-
-    invoke-virtual {v1, v2}, Landroid/widget/TextView;->setTextColor(I)V
-
     .line 979
     new-instance v1, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$15;
 
@@ -1067,7 +1004,7 @@
 
     invoke-virtual {v0, v1}, Landroid/view/View;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
-    :cond_54
+    :cond_38
     return-void
 .end method
 
@@ -1123,7 +1060,7 @@
 .end method
 
 .method private initFingerPrintTipsViews()V
-    .registers 3
+    .registers 2
 
     const v0, 0x7f0a0679
 
@@ -1218,15 +1155,12 @@
     .line 153
     invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->initContinueButton()V
 
-    .line 156
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mDefalutFpImageView:Landroid/widget/ImageView;
+    .line 159
+    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFingerprintSideImageView:Landroid/widget/ImageView;
 
-    const/4 v1, 0x4
+    const/4 v0, 0x0
 
-    invoke-virtual {v0, v1}, Landroid/widget/ImageView;->setVisibility(I)V
-
-    .line 157
-    invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->setForUnderGlassFP()V
+    invoke-virtual {p0, v0}, Landroid/widget/ImageView;->setVisibility(I)V
 
     return-void
 .end method
@@ -1603,7 +1537,7 @@
 .end method
 
 .method private resetFingerprintEnrolled()V
-    .registers 5
+    .registers 6
 
     .line 670
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
@@ -1633,53 +1567,42 @@
 
     invoke-virtual {v1, v2}, Lcom/meizu/settings/fingerprint/FlymeFingerprintView;->setPercentage(I)V
 
-    .line 676
-    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mHeadView:Landroid/widget/TextView;
+    .line 685
+    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFistStepLayout:Landroid/view/View;
 
-    const v3, 0x7f120d8a
+    invoke-virtual {v1, v2}, Landroid/view/View;->setVisibility(I)V
 
-    invoke-virtual {v1, v3}, Landroid/widget/TextView;->setText(I)V
-
-    .line 677
-    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mContentView:Landroid/widget/TextView;
-
-    const v3, 0x7f121637
-
-    invoke-virtual {v1, v3}, Landroid/widget/TextView;->setText(I)V
-
-    .line 678
-    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFingerprintSideImageView:Landroid/widget/ImageView;
+    .line 686
+    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mSecondStepLayout:Landroid/view/View;
 
     const/4 v3, 0x4
 
-    invoke-virtual {v1, v3}, Landroid/widget/ImageView;->setVisibility(I)V
+    invoke-virtual {v1, v3}, Landroid/view/View;->setVisibility(I)V
 
-    .line 679
-    invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->canShowEnrollFodTipsDialog()Z
+    .line 687
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result v1
+    move-result-wide v3
 
-    if-eqz v1, :cond_3d
+    iput-wide v3, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrollStartTime:J
 
-    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFodWarmTipsDialog:Landroid/app/AlertDialog;
+    .line 688
+    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFistStepLayout:Landroid/view/View;
 
-    if-eqz v1, :cond_3d
+    const v3, 0x7f0a025d
 
-    .line 680
-    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
+    invoke-virtual {v1, v3}, Landroid/view/View;->findViewById(I)Landroid/view/View;
 
-    invoke-interface {v1, v2}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
+    move-result-object v1
 
-    goto :goto_42
+    check-cast v1, Landroid/widget/TextView;
 
-    .line 682
-    :cond_3d
-    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
+    const v3, 0x7f120d95
 
-    invoke-interface {v1, v0}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
+    .line 689
+    invoke-virtual {v1, v3}, Landroid/widget/TextView;->setText(I)V
 
     .line 692
-    :goto_42
     iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
 
     const/16 v3, 0x8
@@ -1700,154 +1623,6 @@
     iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mContentView:Landroid/widget/TextView;
 
     invoke-virtual {p0, v2}, Landroid/widget/TextView;->setVisibility(I)V
-
-    return-void
-.end method
-
-.method private setForUnderGlassFP()V
-    .registers 5
-
-    .line 990
-    invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
-
-    move-result-object v0
-
-    const/high16 v1, -0x1000000
-
-    invoke-virtual {v0, v1}, Landroid/view/Window;->setStatusBarColor(I)V
-
-    const/4 v0, 0x0
-
-    .line 991
-    invoke-static {p0, v0}, Lcom/meizu/settings/utils/StatusbarColorUtils;->setStatusBarDarkIcon(Landroid/app/Activity;Z)V
-
-    .line 992
-    invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
-
-    move-result-object v2
-
-    const/4 v3, 0x1
-
-    invoke-static {v2, v1, v3}, Lcom/meizu/common/util/NavigationBarUtils;->setNavigationBarColor(Landroid/view/Window;IZ)V
-
-    .line 993
-    invoke-static {p0, v0}, Lcom/meizu/settings/utils/MzUtils;->setNavigationBarDarIcon(Landroid/app/Activity;Z)V
-
-    const v2, 0x7f0a00fd
-
-    .line 995
-    invoke-virtual {p0, v2}, Lflyme/support/v7/app/AppCompatActivity;->findViewById(I)Landroid/view/View;
-
-    move-result-object v2
-
-    invoke-virtual {v2, v0}, Landroid/view/View;->setVisibility(I)V
-
-    .line 996
-    iget-object v2, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mDefalutFpImageView:Landroid/widget/ImageView;
-
-    const v3, 0x7f08011e
-
-    invoke-virtual {v2, v3}, Landroid/widget/ImageView;->setImageResource(I)V
-
-    .line 997
-    iget-object v2, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFistStepLayout:Landroid/view/View;
-
-    const/16 v3, 0x8
-
-    invoke-virtual {v2, v3}, Landroid/view/View;->setVisibility(I)V
-
-    .line 998
-    iget-object v2, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mSecondStepLayout:Landroid/view/View;
-
-    invoke-virtual {v2, v0}, Landroid/view/View;->setVisibility(I)V
-
-    .line 999
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mSecondStepLayout:Landroid/view/View;
-
-    invoke-virtual {v0, v1}, Landroid/view/View;->setBackgroundColor(I)V
-
-    .line 1000
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mHeadView:Landroid/widget/TextView;
-
-    const v1, 0x7f120d8a
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(I)V
-
-    .line 1001
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mContentView:Landroid/widget/TextView;
-
-    const v1, 0x7f121637
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(I)V
-
-    .line 1002
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mHeadView:Landroid/widget/TextView;
-
-    invoke-virtual {p0}, Lflyme/support/v7/app/AppCompatActivity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v1
-
-    const v2, 0x7f0602d1
-
-    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getColor(I)I
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setTextColor(I)V
-
-    .line 1003
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mContentView:Landroid/widget/TextView;
-
-    invoke-virtual {p0}, Lflyme/support/v7/app/AppCompatActivity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v1
-
-    const v2, 0x7f0602d2
-
-    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getColor(I)I
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setTextColor(I)V
-
-    .line 1005
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
-
-    const/4 v1, -0x1
-
-    invoke-virtual {v0, v1}, Landroid/widget/Button;->setTextColor(I)V
-
-    .line 1006
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
-
-    const v1, 0x7f080405
-
-    invoke-virtual {v0, v1}, Landroid/widget/Button;->setBackgroundResource(I)V
-
-    .line 1007
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mCancelButton:Lcom/meizu/settings/widget/TextAlphaAnimView;
-
-    invoke-virtual {p0}, Lflyme/support/v7/app/AppCompatActivity;->getResources()Landroid/content/res/Resources;
-
-    move-result-object v1
-
-    const v2, 0x7f0602c9
-
-    invoke-virtual {v1, v2}, Landroid/content/res/Resources;->getColor(I)I
-
-    move-result v1
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setTextColor(I)V
-
-    .line 1009
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFingerprintSideImageView:Landroid/widget/ImageView;
-
-    const v1, 0x7f080124
-
-    invoke-virtual {v0, v1}, Landroid/widget/ImageView;->setImageResource(I)V
-
-    .line 1011
-    invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->showEnrolledUnderGlassFpTipsDialog()V
 
     return-void
 .end method
@@ -1985,86 +1760,6 @@
 
     .line 666
     iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFailedDialog:Landroid/app/AlertDialog;
-
-    invoke-virtual {p0}, Landroid/app/AlertDialog;->show()V
-
-    return-void
-.end method
-
-.method private showEnrolledUnderGlassFpTipsDialog()V
-    .registers 4
-
-    .line 1020
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFodWarmTipsDialog:Landroid/app/AlertDialog;
-
-    if-eqz v0, :cond_a
-
-    invoke-virtual {v0}, Landroid/app/AlertDialog;->isShowing()Z
-
-    move-result v0
-
-    if-nez v0, :cond_10
-
-    :cond_a
-    invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->canShowEnrollFodTipsDialog()Z
-
-    move-result v0
-
-    if-nez v0, :cond_11
-
-    :cond_10
-    return-void
-
-    .line 1024
-    :cond_11
-    iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    const/4 v1, 0x0
-
-    invoke-interface {v0, v1}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
-
-    .line 1026
-    new-instance v0, Landroid/app/AlertDialog$Builder;
-
-    const/4 v1, 0x5
-
-    invoke-direct {v0, p0, v1}, Landroid/app/AlertDialog$Builder;-><init>(Landroid/content/Context;I)V
-
-    const v1, 0x7f1207fc
-
-    .line 1028
-    invoke-virtual {v0, v1}, Landroid/app/AlertDialog$Builder;->setMessage(I)Landroid/app/AlertDialog$Builder;
-
-    const v1, 0x7f1207fd
-
-    .line 1029
-    invoke-virtual {v0, v1}, Landroid/app/AlertDialog$Builder;->setTitle(I)Landroid/app/AlertDialog$Builder;
-
-    const v1, 0x7f1207fb
-
-    .line 1030
-    new-instance v2, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$16;
-
-    invoke-direct {v2, p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$16;-><init>(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)V
-
-    invoke-virtual {v0, v1, v2}, Landroid/app/AlertDialog$Builder;->setPositiveButton(ILandroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
-
-    .line 1039
-    new-instance v1, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$17;
-
-    invoke-direct {v1, p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$17;-><init>(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)V
-
-    invoke-virtual {v0, v1}, Landroid/app/AlertDialog$Builder;->setOnDismissListener(Landroid/content/DialogInterface$OnDismissListener;)Landroid/app/AlertDialog$Builder;
-
-    .line 1047
-    invoke-virtual {v0}, Landroid/app/AlertDialog$Builder;->create()Landroid/app/AlertDialog;
-
-    move-result-object v0
-
-    iput-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFodWarmTipsDialog:Landroid/app/AlertDialog;
-
-    .line 1048
-    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFodWarmTipsDialog:Landroid/app/AlertDialog;
 
     invoke-virtual {p0}, Landroid/app/AlertDialog;->show()V
 
@@ -2436,16 +2131,16 @@
     .line 865
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
 
-    const/4 v3, 0x1
+    const/4 v1, 0x1
 
-    invoke-virtual {v0, v3}, Landroid/widget/Button;->setEnabled(Z)V
+    invoke-virtual {v0, v1}, Landroid/widget/Button;->setEnabled(Z)V
 
     .line 866
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
 
-    const v3, 0x7f1207f8
+    const v1, 0x7f1207f8
 
-    invoke-virtual {v0, v3}, Landroid/widget/Button;->setText(I)V
+    invoke-virtual {v0, v1}, Landroid/widget/Button;->setText(I)V
 
     .line 867
     iget-object v0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mOkayButton:Landroid/widget/Button;
@@ -2462,28 +2157,23 @@
 
     move-result-object v0
 
-    iget-object v2, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mTipsEnrollFingerSideInterpolator:Landroid/view/animation/PathInterpolator;
+    iget-object v1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mTipsEnrollFingerSideInterpolator:Landroid/view/animation/PathInterpolator;
 
-    invoke-virtual {v0, v2}, Landroid/view/ViewPropertyAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)Landroid/view/ViewPropertyAnimator;
+    invoke-virtual {v0, v1}, Landroid/view/ViewPropertyAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)Landroid/view/ViewPropertyAnimator;
 
     move-result-object v0
 
-    new-instance v2, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;
+    new-instance v1, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;
 
-    invoke-direct {v2, p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;-><init>(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)V
+    invoke-direct {v1, p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;-><init>(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)V
 
     .line 868
-    invoke-virtual {v0, v2}, Landroid/view/ViewPropertyAnimator;->withStartAction(Ljava/lang/Runnable;)Landroid/view/ViewPropertyAnimator;
+    invoke-virtual {v0, v1}, Landroid/view/ViewPropertyAnimator;->withStartAction(Ljava/lang/Runnable;)Landroid/view/ViewPropertyAnimator;
 
-    move-result-object v0
+    move-result-object p0
 
     .line 896
-    invoke-virtual {v0}, Landroid/view/ViewPropertyAnimator;->start()V
-
-    .line 899
-    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    invoke-interface {p0, v1}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
+    invoke-virtual {p0}, Landroid/view/ViewPropertyAnimator;->start()V
 
     return-void
 .end method
@@ -2828,54 +2518,10 @@
 .end method
 
 .method public onWindowFocusChanged(Z)V
-    .registers 3
+    .registers 2
 
     .line 202
     invoke-super {p0, p1}, Landroid/app/Activity;->onWindowFocusChanged(Z)V
 
-    if-eqz p1, :cond_1e
-
-    .line 205
-    iget p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrollFingerprintState:I
-
-    const/4 v0, 0x4
-
-    if-eq p1, v0, :cond_24
-
-    const/4 v0, 0x3
-
-    if-eq p1, v0, :cond_24
-
-    .line 207
-    invoke-direct {p0}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->canShowEnrollFodTipsDialog()Z
-
-    move-result p1
-
-    if-eqz p1, :cond_17
-
-    iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mEnrolledFodWarmTipsDialog:Landroid/app/AlertDialog;
-
-    if-nez p1, :cond_24
-
-    .line 208
-    :cond_17
-    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    const/4 p1, 0x1
-
-    invoke-interface {p0, p1}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
-
-    goto :goto_24
-
-    .line 211
-    :cond_1e
-    iget-object p0, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->mFlymeIFingerPrint:Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    const/4 p1, 0x0
-
-    invoke-interface {p0, p1}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
-
-    :cond_24
-    :goto_24
     return-void
 .end method

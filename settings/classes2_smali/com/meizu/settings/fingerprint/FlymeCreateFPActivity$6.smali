@@ -68,7 +68,7 @@
 .method public onAnimationStart(Landroid/view/animation/Animation;)V
     .registers 4
 
-    .line 729
+    .line 732
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$6;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
 
     invoke-static {p1}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->access$1700(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)Landroid/widget/TextView;
@@ -81,7 +81,7 @@
 
     move-result-object v0
 
-    const v1, 0x7f0602d1
+    const v1, 0x7f060032
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getColor(I)I
 
@@ -89,7 +89,7 @@
 
     invoke-virtual {p1, v0}, Landroid/widget/TextView;->setTextColor(I)V
 
-    .line 730
+    .line 733
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$6;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
 
     invoke-static {p1}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->access$1800(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)Landroid/widget/TextView;
@@ -102,9 +102,7 @@
 
     move-result-object p0
 
-    const v0, 0x7f0602d2
-
-    invoke-virtual {p0, v0}, Landroid/content/res/Resources;->getColor(I)I
+    invoke-virtual {p0, v1}, Landroid/content/res/Resources;->getColor(I)I
 
     move-result p0
 

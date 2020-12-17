@@ -23,7 +23,7 @@
 
     move-result-object v0
 
-    const-string/jumbo v1, "null"
+    const-string v1, "null"
 
     invoke-virtual {v0, v1}, Lcom/google/common/base/Joiner;->useForNull(Ljava/lang/String;)Lcom/google/common/base/Joiner;
 

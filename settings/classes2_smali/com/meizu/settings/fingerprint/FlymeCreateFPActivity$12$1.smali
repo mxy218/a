@@ -38,19 +38,6 @@
 .method public onClick(Landroid/view/View;)V
     .registers 4
 
-    .line 875
-    iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12$1;->this$1:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;
-
-    iget-object p1, p1, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
-
-    invoke-static {p1}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->access$200(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
-
-    move-result-object p1
-
-    const/4 v0, 0x1
-
-    invoke-interface {p1, v0}, Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;->setFODIconVisiable(Z)V
-
     .line 878
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12$1;->this$1:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$12;
 

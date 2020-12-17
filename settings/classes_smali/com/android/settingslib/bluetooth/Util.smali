@@ -16,85 +16,18 @@
 
 
 # direct methods
-.method public static deleteDir(Ljava/io/File;)V
-    .registers 4
-
-    .line 261
-    :try_start_0
-    invoke-virtual {p0}, Ljava/io/File;->isDirectory()Z
-
-    move-result v0
-
-    if-eqz v0, :cond_16
-
-    .line 262
-    invoke-virtual {p0}, Ljava/io/File;->listFiles()[Ljava/io/File;
-
-    move-result-object v0
-
-    const/4 v1, 0x0
-
-    .line 263
-    :goto_b
-    array-length v2, v0
-
-    if-ge v1, v2, :cond_16
-
-    .line 264
-    aget-object v2, v0, v1
-
-    invoke-static {v2}, Lcom/android/settingslib/bluetooth/Util;->deleteDir(Ljava/io/File;)V
-
-    add-int/lit8 v1, v1, 0x1
-
-    goto :goto_b
-
-    .line 267
-    :cond_16
-    invoke-virtual {p0}, Ljava/io/File;->delete()Z
-    :try_end_19
-    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_19} :catch_1a
-
-    goto :goto_31
-
-    :catch_1a
-    move-exception p0
-
-    .line 269
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "deleteDir exception: "
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object p0
-
-    const-string v0, "Util"
-
-    invoke-static {v0, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    :goto_31
-    return-void
-.end method
-
 .method public static deleteFile(Ljava/lang/String;Ljava/lang/String;)Z
     .registers 5
 
     const/4 v0, 0x0
 
-    .line 157
+    .line 155
     :try_start_1
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 158
+    .line 156
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result v2
@@ -109,27 +42,27 @@
 
     goto :goto_29
 
-    .line 161
+    .line 159
     :cond_13
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, p0, p1}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 162
+    .line 160
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result p0
 
     if-eqz p0, :cond_29
 
-    .line 163
+    .line 161
     invoke-virtual {v1}, Ljava/io/File;->canWrite()Z
 
     move-result p0
 
     if-eqz p0, :cond_29
 
-    .line 164
+    .line 162
     invoke-virtual {v1}, Ljava/io/File;->delete()Z
     :try_end_27
     .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_27} :catch_29
@@ -147,7 +80,7 @@
 .method public static isErrorListenerInited()Z
     .registers 1
 
-    .line 211
+    .line 209
     sget-object v0, Lcom/android/settingslib/bluetooth/Util;->sErrorListener:Lcom/android/settingslib/bluetooth/Util$ErrorListener;
 
     if-eqz v0, :cond_6
@@ -168,13 +101,13 @@
 
     const/4 v0, 0x0
 
-    .line 141
+    .line 139
     :try_start_1
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 142
+    .line 140
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result v2
@@ -189,13 +122,13 @@
 
     goto :goto_21
 
-    .line 145
+    .line 143
     :cond_13
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, p0, p1}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 146
+    .line 144
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result p0
@@ -220,7 +153,7 @@
 .method public static isProcessBySettings(Landroid/content/Context;)Z
     .registers 4
 
-    .line 176
+    .line 174
     invoke-static {}, Landroid/os/Binder;->getCallingUid()I
 
     move-result v0
@@ -231,7 +164,7 @@
 
     const/4 v1, 0x0
 
-    .line 180
+    .line 178
     :try_start_9
     invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
@@ -266,13 +199,13 @@
 
     const/4 v0, 0x0
 
-    .line 218
+    .line 216
     :try_start_1
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 220
+    .line 218
     invoke-virtual {v1}, Ljava/io/File;->exists()Z
 
     move-result p0
@@ -287,7 +220,7 @@
 
     goto/16 :goto_75
 
-    .line 223
+    .line 221
     :cond_14
     invoke-virtual {v1}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
@@ -295,7 +228,7 @@
 
     if-eqz p0, :cond_75
 
-    .line 224
+    .line 222
     array-length v1, p0
 
     const/4 v2, 0x1
@@ -304,7 +237,7 @@
 
     goto :goto_75
 
-    .line 227
+    .line 225
     :cond_1f
     array-length v1, p0
 
@@ -315,7 +248,7 @@
 
     aget-object v4, p0, v3
 
-    .line 229
+    .line 227
     invoke-virtual {v4}, Ljava/io/File;->exists()Z
 
     move-result v5
@@ -330,7 +263,7 @@
 
     goto :goto_73
 
-    .line 232
+    .line 230
     :cond_32
     invoke-virtual {v4}, Ljava/io/File;->listFiles()[Ljava/io/File;
 
@@ -338,14 +271,14 @@
 
     if-eqz v4, :cond_73
 
-    .line 233
+    .line 231
     array-length v5, v4
 
     if-ge v5, v2, :cond_3c
 
     goto :goto_73
 
-    .line 236
+    .line 234
     :cond_3c
     array-length v5, v4
 
@@ -356,7 +289,7 @@
 
     aget-object v7, v4, v6
 
-    .line 238
+    .line 236
     invoke-virtual {v7}, Ljava/io/File;->exists()Z
 
     move-result v8
@@ -371,13 +304,13 @@
 
     goto :goto_6f
 
-    .line 241
+    .line 239
     :cond_4f
     invoke-virtual {v7}, Ljava/io/File;->list()[Ljava/lang/String;
 
     move-result-object v7
 
-    .line 243
+    .line 241
     array-length v8, v7
 
     move v9, v0
@@ -391,7 +324,7 @@
 
     const-string/jumbo v12, "zz"
 
-    .line 244
+    .line 242
     invoke-virtual {v11, v12}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
 
     move-result v11

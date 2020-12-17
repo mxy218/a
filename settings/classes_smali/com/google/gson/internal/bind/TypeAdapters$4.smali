@@ -95,19 +95,19 @@
         }
     .end annotation
 
-    if-nez p2, :cond_6
+    if-nez p2, :cond_5
 
-    const-string/jumbo p0, "null"
+    const-string p0, "null"
 
-    goto :goto_a
+    goto :goto_9
 
     .line 183
-    :cond_6
+    :cond_5
     invoke-virtual {p2}, Ljava/lang/Boolean;->toString()Ljava/lang/String;
 
     move-result-object p0
 
-    :goto_a
+    :goto_9
     invoke-virtual {p1, p0}, Lcom/google/gson/stream/JsonWriter;->value(Ljava/lang/String;)Lcom/google/gson/stream/JsonWriter;
 
     return-void

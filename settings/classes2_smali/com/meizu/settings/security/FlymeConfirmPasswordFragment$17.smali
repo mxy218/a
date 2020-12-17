@@ -58,7 +58,7 @@
     :pswitch_10  #0x1f47
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$4200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FlymeIFaceRecognition;
+    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FlymeIFaceRecognition;
 
     move-result-object p1
 
@@ -67,12 +67,12 @@
     .line 1406
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1, v1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$4000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    invoke-static {p1, v1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
 
     .line 1407
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
     move-result-object p0
 
@@ -107,7 +107,7 @@
 
     iget p1, p1, Landroid/os/Message;->arg1:I
 
-    invoke-static {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$4000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    invoke-static {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
 
     goto/16 :goto_12e
 
@@ -115,7 +115,7 @@
     :pswitch_4a  #0x1f45
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
     move-result-object p1
 
@@ -124,12 +124,12 @@
     .line 1394
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1, v1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$4000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    invoke-static {p1, v1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
 
     .line 1395
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$4200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FlymeIFaceRecognition;
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FlymeIFaceRecognition;
 
     move-result-object p0
 
@@ -141,7 +141,7 @@
     :pswitch_63  #0x1f44
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
     move-result-object p0
 
@@ -153,7 +153,7 @@
     :pswitch_6e  #0x1f43
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
     move-result-object p0
 
@@ -165,7 +165,7 @@
     :pswitch_79  #0x1f42
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
     move-result-object p1
 
@@ -192,7 +192,7 @@
     :pswitch_94  #0x1f41
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/face/FaceRecognitionAnimationView;
 
     move-result-object p0
 
@@ -218,7 +218,7 @@
 
     move-result p1
 
-    invoke-static {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3700(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    invoke-static {p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
 
     goto/16 :goto_12e
 
@@ -253,7 +253,7 @@
     iget-object v0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
     .line 1349
-    invoke-static {v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/security/FlymeLockPasswordUtils;
+    invoke-static {v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/security/FlymeLockPasswordUtils;
 
     move-result-object v0
 
@@ -270,7 +270,7 @@
     .line 1350
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
 
     goto :goto_12e
 
@@ -278,12 +278,12 @@
     :cond_e2
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1, v3}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    invoke-static {p1, v3}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
 
     .line 1353
     iget-object p1, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
+    invoke-static {p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$1800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
 
     move-result-object p1
 
@@ -301,7 +301,7 @@
     :cond_f7
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)V
 
     goto :goto_12e
 
@@ -326,16 +326,16 @@
 
     const/4 v0, 0x3
 
-    invoke-static {p1, v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2602(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)I
+    invoke-static {p1, v0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2102(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)I
 
     .line 1363
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)I
 
     move-result p1
 
-    invoke-static {p0, p1, v2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3600(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
+    invoke-static {p0, p1, v2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3300(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
 
     goto :goto_12e
 
@@ -350,7 +350,7 @@
     :cond_11f
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$17;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0, v3}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
+    invoke-static {p0, v3}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3100(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;I)V
 
     goto :goto_12e
 
@@ -363,7 +363,7 @@
 
     iget p1, p1, Landroid/os/Message;->arg2:I
 
-    invoke-static {p0, v0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3500(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
+    invoke-static {p0, v0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$3200(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;II)V
 
     :goto_12e
     return-void

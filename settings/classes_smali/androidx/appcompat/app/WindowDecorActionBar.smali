@@ -370,12 +370,12 @@
 
     move-result-object p1
 
-    goto :goto_2c
+    goto :goto_2b
 
     :cond_29
-    const-string/jumbo p1, "null"
+    const-string p1, "null"
 
-    :goto_2c
+    :goto_2b
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;

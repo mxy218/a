@@ -43,7 +43,7 @@
 
     iget-object p2, p2, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$14;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2000(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
+    invoke-static {p2}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$1800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Lcom/meizu/settings/fingerprint/FlymeIFingerPrint;
 
     move-result-object p2
 
@@ -56,7 +56,7 @@
 
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$14;->val$password:Ljava/lang/String;
 
-    invoke-static {p2, p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2400(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Ljava/lang/String;[B)V
+    invoke-static {p2, p0, p1}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$1900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;Ljava/lang/String;[B)V
 
     return-void
 .end method

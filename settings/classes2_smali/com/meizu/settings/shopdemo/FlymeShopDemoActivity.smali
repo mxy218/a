@@ -327,9 +327,9 @@
     goto :goto_9d
 
     :cond_87
-    const v4, 0x7f1206b1
+    const v4, 0x7f1206a7
 
-    const v2, 0x7f0807b1
+    const v2, 0x7f080123
 
     .line 126
     new-instance v10, Lcom/meizu/settings/shopdemo/FlymeShopDemoActivity$DemoItem;

@@ -2736,19 +2736,19 @@
 
     if-eqz v3, :cond_1b5
 
-    if-eq v3, v7, :cond_39f
+    if-eq v3, v7, :cond_39e
 
     const/4 v2, 0x3
 
     if-eq v3, v2, :cond_27
 
-    goto/16 :goto_39f
+    goto/16 :goto_39e
 
     .line 636
     :cond_27
     iget-object v2, v0, Lcom/meizu/forcetouch/PeekAndPop/AbsPeekAndPopLayout;->mPeekView:Ljava/lang/ref/WeakReference;
 
-    if-eqz v2, :cond_39f
+    if-eqz v2, :cond_39e
 
     invoke-virtual {v2}, Ljava/lang/ref/WeakReference;->get()Ljava/lang/Object;
 
@@ -2756,7 +2756,7 @@
 
     if-nez v2, :cond_33
 
-    goto/16 :goto_39f
+    goto/16 :goto_39e
 
     .line 639
     :cond_33
@@ -3227,7 +3227,7 @@
     :goto_1b0
     invoke-virtual/range {p0 .. p0}, Landroid/widget/FrameLayout;->postInvalidate()V
 
-    goto/16 :goto_39f
+    goto/16 :goto_39e
 
     .line 469
     :cond_1b5
@@ -3237,7 +3237,7 @@
 
     cmpl-float v3, v3, v5
 
-    if-ltz v3, :cond_39f
+    if-ltz v3, :cond_39e
 
     .line 470
     iget-object v3, v0, Lcom/meizu/forcetouch/PeekAndPop/AbsPeekAndPopLayout;->mPeekView:Ljava/lang/ref/WeakReference;
@@ -3753,7 +3753,7 @@
     .line 629
     iput-boolean v7, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mReactForceTouch:Z
 
-    goto :goto_39f
+    goto :goto_39e
 
     .line 471
     :cond_373
@@ -3782,12 +3782,12 @@
 
     move-result-object v2
 
-    goto :goto_393
+    goto :goto_392
 
     :cond_390
-    const-string/jumbo v2, "null"
+    const-string v2, "null"
 
-    :goto_393
+    :goto_392
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
@@ -3799,8 +3799,8 @@
     invoke-static {v2, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 748
-    :cond_39f
-    :goto_39f
+    :cond_39e
+    :goto_39e
     iget v1, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mCurMotionY:F
 
     iget v2, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mLastMotionY2:F
@@ -3817,7 +3817,7 @@
 
     cmpl-float v1, v1, v2
 
-    if-ltz v1, :cond_3b5
+    if-ltz v1, :cond_3b4
 
     .line 749
     iget v1, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mCurMotionY:F
@@ -3828,7 +3828,7 @@
     iput-boolean v7, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mHasMoved:Z
 
     .line 752
-    :cond_3b5
+    :cond_3b4
     iget v1, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mCurMotionY:F
 
     iput v1, v0, Lcom/meizu/forcetouch/PeekAndPop/AppPeekAndPopLayout;->mLastMotionY:F

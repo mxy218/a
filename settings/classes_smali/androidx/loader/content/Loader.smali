@@ -161,17 +161,17 @@
 
     invoke-direct {p0, v0}, Ljava/lang/StringBuilder;-><init>(I)V
 
-    if-nez p1, :cond_10
+    if-nez p1, :cond_f
 
-    const-string/jumbo p1, "null"
+    const-string p1, "null"
 
     .line 528
     invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    goto :goto_32
+    goto :goto_31
 
     .line 530
-    :cond_10
+    :cond_f
     invoke-virtual {p1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object p1
@@ -205,7 +205,7 @@
     invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 536
-    :goto_32
+    :goto_31
     invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object p0

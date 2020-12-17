@@ -1671,32 +1671,6 @@
     return-void
 .end method
 
-.method public setDigitKeyBoardSize(II)V
-    .registers 4
-
-    .line 535
-    iget-object v0, p0, Lcom/meizu/settings/widget/SystemLockView;->mKeyPad:Lcom/meizu/settings/widget/LockDigitView;
-
-    invoke-virtual {v0}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
-
-    move-result-object v0
-
-    check-cast v0, Landroid/widget/RelativeLayout$LayoutParams;
-
-    .line 536
-    iput p1, v0, Landroid/widget/RelativeLayout$LayoutParams;->width:I
-
-    .line 537
-    iput p2, v0, Landroid/widget/RelativeLayout$LayoutParams;->height:I
-
-    .line 538
-    iget-object p0, p0, Lcom/meizu/settings/widget/SystemLockView;->mKeyPad:Lcom/meizu/settings/widget/LockDigitView;
-
-    invoke-virtual {p0, v0}, Landroid/view/View;->setLayoutParams(Landroid/view/ViewGroup$LayoutParams;)V
-
-    return-void
-.end method
-
 .method public setDisplaySpace(I)V
     .registers 3
 

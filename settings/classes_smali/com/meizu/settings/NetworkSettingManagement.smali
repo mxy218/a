@@ -36,7 +36,7 @@
     .line 50
     iput-boolean v0, p0, Lcom/meizu/settings/NetworkSettingManagement;->mIsSlot2Insert:Z
 
-    const-string/jumbo v0, "null"
+    const-string v0, "null"
 
     .line 51
     iput-object v0, p0, Lcom/meizu/settings/NetworkSettingManagement;->mNumericPLMN:Ljava/lang/String;

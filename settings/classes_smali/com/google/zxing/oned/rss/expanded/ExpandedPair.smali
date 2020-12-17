@@ -240,13 +240,13 @@
 
     iget-object p0, p0, Lcom/google/zxing/oned/rss/expanded/ExpandedPair;->finderPattern:Lcom/google/zxing/oned/rss/FinderPattern;
 
-    if-nez p0, :cond_26
+    if-nez p0, :cond_25
 
-    const-string/jumbo p0, "null"
+    const-string p0, "null"
 
-    goto :goto_2e
+    goto :goto_2d
 
-    :cond_26
+    :cond_25
     invoke-virtual {p0}, Lcom/google/zxing/oned/rss/FinderPattern;->getValue()I
 
     move-result p0
@@ -255,7 +255,7 @@
 
     move-result-object p0
 
-    :goto_2e
+    :goto_2d
     invoke-virtual {v0, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     const-string p0, " ]"

@@ -988,9 +988,9 @@
 
     cmp-long v1, v1, v3
 
-    const-string/jumbo v2, "ns"
+    const-string v2, "ns"
 
-    if-eqz v1, :cond_41
+    if-eqz v1, :cond_40
 
     .line 607
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1012,12 +1012,12 @@
     invoke-virtual {v0, v5, v1}, Lcom/google/common/base/MoreObjects$ToStringHelper;->add(Ljava/lang/String;Ljava/lang/Object;)Lcom/google/common/base/MoreObjects$ToStringHelper;
 
     .line 609
-    :cond_41
+    :cond_40
     iget-wide v5, p0, Lcom/google/common/collect/MapMaker;->expireAfterAccessNanos:J
 
     cmp-long v1, v5, v3
 
-    if-eqz v1, :cond_5d
+    if-eqz v1, :cond_5c
 
     .line 610
     new-instance v1, Ljava/lang/StringBuilder;
@@ -1039,10 +1039,10 @@
     invoke-virtual {v0, v2, v1}, Lcom/google/common/base/MoreObjects$ToStringHelper;->add(Ljava/lang/String;Ljava/lang/Object;)Lcom/google/common/base/MoreObjects$ToStringHelper;
 
     .line 612
-    :cond_5d
+    :cond_5c
     iget-object v1, p0, Lcom/google/common/collect/MapMaker;->keyStrength:Lcom/google/common/collect/MapMakerInternalMap$Strength;
 
-    if-eqz v1, :cond_6e
+    if-eqz v1, :cond_6d
 
     .line 613
     invoke-virtual {v1}, Ljava/lang/Enum;->toString()Ljava/lang/String;
@@ -1058,10 +1058,10 @@
     invoke-virtual {v0, v2, v1}, Lcom/google/common/base/MoreObjects$ToStringHelper;->add(Ljava/lang/String;Ljava/lang/Object;)Lcom/google/common/base/MoreObjects$ToStringHelper;
 
     .line 615
-    :cond_6e
+    :cond_6d
     iget-object v1, p0, Lcom/google/common/collect/MapMaker;->valueStrength:Lcom/google/common/collect/MapMakerInternalMap$Strength;
 
-    if-eqz v1, :cond_80
+    if-eqz v1, :cond_7f
 
     .line 616
     invoke-virtual {v1}, Ljava/lang/Enum;->toString()Ljava/lang/String;
@@ -1077,10 +1077,10 @@
     invoke-virtual {v0, v2, v1}, Lcom/google/common/base/MoreObjects$ToStringHelper;->add(Ljava/lang/String;Ljava/lang/Object;)Lcom/google/common/base/MoreObjects$ToStringHelper;
 
     .line 618
-    :cond_80
+    :cond_7f
     iget-object v1, p0, Lcom/google/common/collect/MapMaker;->keyEquivalence:Lcom/google/common/base/Equivalence;
 
-    if-eqz v1, :cond_89
+    if-eqz v1, :cond_88
 
     const-string v1, "keyEquivalence"
 
@@ -1088,10 +1088,10 @@
     invoke-virtual {v0, v1}, Lcom/google/common/base/MoreObjects$ToStringHelper;->addValue(Ljava/lang/Object;)Lcom/google/common/base/MoreObjects$ToStringHelper;
 
     .line 621
-    :cond_89
+    :cond_88
     iget-object p0, p0, Lcom/google/common/collect/GenericMapMaker;->removalListener:Lcom/google/common/collect/MapMaker$RemovalListener;
 
-    if-eqz p0, :cond_93
+    if-eqz p0, :cond_92
 
     const-string/jumbo p0, "removalListener"
 
@@ -1099,7 +1099,7 @@
     invoke-virtual {v0, p0}, Lcom/google/common/base/MoreObjects$ToStringHelper;->addValue(Ljava/lang/Object;)Lcom/google/common/base/MoreObjects$ToStringHelper;
 
     .line 624
-    :cond_93
+    :cond_92
     invoke-virtual {v0}, Lcom/google/common/base/MoreObjects$ToStringHelper;->toString()Ljava/lang/String;
 
     move-result-object p0

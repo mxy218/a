@@ -15,17 +15,17 @@
 .method public static buildShortClassTag(Ljava/lang/Object;Ljava/lang/StringBuilder;)V
     .registers 4
 
-    if-nez p0, :cond_9
+    if-nez p0, :cond_8
 
-    const-string/jumbo p0, "null"
+    const-string p0, "null"
 
     .line 33
     invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    goto :goto_42
+    goto :goto_41
 
     .line 35
-    :cond_9
+    :cond_8
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object v0
@@ -34,17 +34,17 @@
 
     move-result-object v0
 
-    if-eqz v0, :cond_19
+    if-eqz v0, :cond_18
 
     .line 36
     invoke-virtual {v0}, Ljava/lang/String;->length()I
 
     move-result v1
 
-    if-gtz v1, :cond_2f
+    if-gtz v1, :cond_2e
 
     .line 37
-    :cond_19
+    :cond_18
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object v0
@@ -60,7 +60,7 @@
 
     move-result v1
 
-    if-lez v1, :cond_2f
+    if-lez v1, :cond_2e
 
     add-int/lit8 v1, v1, 0x1
 
@@ -70,7 +70,7 @@
     move-result-object v0
 
     .line 43
-    :cond_2f
+    :cond_2e
     invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     const/16 v0, 0x7b
@@ -89,6 +89,6 @@
 
     invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    :goto_42
+    :goto_41
     return-void
 .end method

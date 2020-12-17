@@ -87,18 +87,18 @@
 
     invoke-virtual {p1, v3}, Landroid/widget/TextView;->setText(I)V
 
-    .line 592
+    .line 595
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$UiHandler;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
 
     invoke-static {p1}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->access$1800(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)Landroid/widget/TextView;
 
     move-result-object p1
 
-    const v0, 0x7f121637
+    const v0, 0x7f120d90
 
     invoke-virtual {p1, v0}, Landroid/widget/TextView;->setText(I)V
 
-    .line 593
+    .line 596
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$UiHandler;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
 
     invoke-static {p1}, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;->access$1800(Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;)Landroid/widget/TextView;
@@ -111,7 +111,7 @@
 
     move-result-object v0
 
-    const v1, 0x7f0602d2
+    const v1, 0x7f060032
 
     invoke-virtual {v0, v1}, Landroid/content/res/Resources;->getColor(I)I
 
@@ -424,10 +424,10 @@
     :cond_16e
     if-ne v0, v4, :cond_192
 
-    .line 478
+    .line 480
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$UiHandler;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
 
-    const v0, 0x7f121639
+    const v0, 0x7f120d92
 
     invoke-virtual {p1, v0}, Landroid/app/Activity;->getString(I)Ljava/lang/String;
 
@@ -461,10 +461,10 @@
     :cond_192
     if-ne v0, v5, :cond_1b6
 
-    .line 492
+    .line 494
     iget-object p1, p0, Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity$UiHandler;->this$0:Lcom/meizu/settings/fingerprint/FlymeCreateFPActivity;
 
-    const v0, 0x7f121636
+    const v0, 0x7f120d8f
 
     invoke-virtual {p1, v0}, Landroid/app/Activity;->getString(I)Ljava/lang/String;
 

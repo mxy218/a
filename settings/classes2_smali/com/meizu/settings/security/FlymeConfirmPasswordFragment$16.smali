@@ -47,7 +47,7 @@
 
     iget-object p0, p0, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment$16;->this$0:Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;
 
-    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$1800(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Landroid/widget/EditText;
+    invoke-static {p0}, Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;->access$2900(Lcom/meizu/settings/security/FlymeConfirmPasswordFragment;)Landroid/widget/EditText;
 
     move-result-object p0
 
